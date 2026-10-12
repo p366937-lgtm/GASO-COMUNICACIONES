@@ -1776,10 +1776,10 @@ function processRecord(r){
   const fs = excelSerialToDate(r.fs);
   const estatusSalida = (r.es||'').trim().toUpperCase();
   if (!fi) return null; // ENTRADA = toda fila con Fecha de Ingreso poblada
-  // «No. de Pallet» en 0 = tarima consolidada con otra: no se cuenta en ninguna métrica.
-  // (Vacío se cuenta como 1 tarima; 1 o más, como viene.)
+  // «No. de Pallet» en 0 = tarima consolidada con otra: sigue contando como entrada/salida,
+  // pero no ocupa espacio propio en la bodega (no suma m² en la capacidad).
   const npTxt = String(r.np == null ? '' : r.np).trim();
-  if (npTxt !== '' && parseFloat(npTxt) === 0) return null;
+  const consolidada = npTxt !== '' && parseFloat(npTxt) === 0;
   // SALIDA = tiene Fecha de Salida capturada o el estatus dice explícitamente "SALIDA".
   // Se usan ambas señales porque la columna ESTATUS SALIDA a veces viene incompleta,
   // mientras que Fecha de Salida es más consistente entre archivos.
@@ -1803,6 +1803,7 @@ function processRecord(r){
     idSitio: (r.id||'').trim(),
     nombreSitio: (r.ns||'').trim() || '(sin nombre)',
     noPallet: np,
+    consolidada: consolidada,
     tipoPallet: (r.tp||'').trim(),
     asp: normalizarASP(r.asp),
     pallSalida: pa,
@@ -2965,7 +2966,7 @@ function tipoTarimaCap(t){
   return 'ESTANDAR';
 }
 function tipoTarimaReconocido(t){ const v = String(t || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase(); return /SOBRE|OVER|EURO|ESTAND|STANDARD/.test(v); }
-function m2DeRegistro(r){ const t = CAPACIDAD.tipos.find(x=> x.k === tipoTarimaCap(r.tipoPallet)); return (t ? t.m2 : 1.44) * (r.noPallet || 1); }
+function m2DeRegistro(r){ if (r.consolidada) return 0; const t = CAPACIDAD.tipos.find(x=> x.k === tipoTarimaCap(r.tipoPallet)); return (t ? t.m2 : 1.44) * (r.noPallet || 1); }
 // ¿Sigue en almacén al instante «fin»? (mismo criterio que el inventario al cierre de mes)
 function enAlmacenAl(r, fin){ return r.fechaIngreso && r.fechaIngreso <= fin && !(r.salio && (!r.fechaSalida || r.fechaSalida <= fin)); }
 // Proyectos que muestra la métrica de capacidad: los dos en «Todos»; solo el elegido con Telcel o AT&T
@@ -2981,18 +2982,19 @@ function ocupacionCapacidad(){
     const vig = byProject(p.name).filter(r=> !r.salio);
     const porTipo = {}; CAPACIDAD.tipos.forEach(t=> porTipo[t.k] = { tarimas:0, m2:0 });
     let sinTipo = 0;
-    vig.forEach(r=>{ const k = tipoTarimaCap(r.tipoPallet); const n = r.noPallet || 1; porTipo[k].tarimas += n; porTipo[k].m2 += m2DeRegistro(r); if (!tipoTarimaReconocido(r.tipoPallet)) sinTipo += n; });
+    const consolidadas = vig.filter(r=> r.consolidada).length;
+    vig.filter(r=> !r.consolidada).forEach(r=>{ const k = tipoTarimaCap(r.tipoPallet); const n = r.noPallet || 1; porTipo[k].tarimas += n; porTipo[k].m2 += m2DeRegistro(r); if (!tipoTarimaReconocido(r.tipoPallet)) sinTipo += n; });
     const m2 = Object.values(porTipo).reduce((a,b)=> a + b.m2, 0);
     const tarimas = Object.values(porTipo).reduce((a,b)=> a + b.tarimas, 0);
     const asignada = CAPACIDAD.porProyecto[p.name] || null;
     const pctA = asignada ? m2 / asignada : null;
     const estadoA = asignada ? (pctA > 1 ? 'bad' : (pctA >= CAPACIDAD.limiteAviso ? 'warn' : 'ok')) : null;
-    return Object.assign({}, p, { porTipo, m2, tarimas, sinTipo, asignada, pctA, estadoA });
+    return Object.assign({}, p, { porTipo, m2, tarimas, sinTipo, consolidadas, asignada, pctA, estadoA });
   });
   const total = proy.reduce((a,p)=> a + p.m2, 0);
   const pct = total / capacidadVista();
   const estado = pct > 1 ? 'bad' : (pct >= CAPACIDAD.limiteAviso ? 'warn' : 'ok');
-  return { proy, total, pct, estado, libre: capacidadVista() - total, sinTipo: proy.reduce((a,p)=> a + p.sinTipo, 0) };
+  return { proy, total, pct, estado, libre: capacidadVista() - total, sinTipo: proy.reduce((a,p)=> a + p.sinTipo, 0), consolidadas: proy.reduce((a,p)=> a + p.consolidadas, 0) };
 }
 function fm2(n){ return (Math.round(n*10)/10).toLocaleString('es-MX', {minimumFractionDigits:1, maximumFractionDigits:1}); }
 function textoEstadoCapacidad(o){
@@ -3103,7 +3105,8 @@ function renderCapacidad(){
   tabla.innerHTML = html; tabla.classList.toggle('cap-uno', !varios);
   document.getElementById('capNota').textContent = 'Se cuentan las tarimas que siguen en almacén (vigentes)' + (varios ? ' de ambos proyectos' : ' de ' + quien) + ', multiplicadas por el área de su tipo: ' + textoTiposM2() + '. ' +
     CAPACIDAD.zonas + ' (' + CAPACIDAD.plano + '): ' + fm2(CAPACIDAD.m2Fisicos) + ' m² físicos; capacidad contratada ' + fmt(CAPACIDAD.m2) + ' m² para Telcel y AT&T' + (hayReparto() ? ' (reparto: Telcel ' + (CAPACIDAD.porProyecto['TELCEL'] ? fmt(CAPACIDAD.porProyecto['TELCEL']) + ' m²' : 'sin asignar') + ', AT&T ' + (CAPACIDAD.porProyecto['AT&T'] ? fmt(CAPACIDAD.porProyecto['AT&T']) + ' m²' : 'sin asignar') + ')' : '') + (varios ? '.' : '; con «Todos» se ve la ocupación de los dos.') +
-    (o.sinTipo ? ' ' + fmt(o.sinTipo) + ' tarima(s) sin tipo reconocido se contaron como estándar.' : '');
+    (o.sinTipo ? ' ' + fmt(o.sinTipo) + ' tarima(s) sin tipo reconocido se contaron como estándar.' : '') +
+    (o.consolidadas ? ' ' + fmt(o.consolidadas) + (o.consolidadas === 1 ? ' tarima consolidada' : ' tarimas consolidadas') + ' («No. de Pallet» en 0) no ' + (o.consolidadas === 1 ? 'ocupa' : 'ocupan') + ' m²; sí cuentan como entrada.' : '');
   // Ocupación al cierre de cada mes
   destroy('chartCapMes');
   const om = ocupacionMensualCapacidad(), sumas = om.sumas;
@@ -5929,7 +5932,7 @@ function validarInventario(raw){
   const grupos = {
     sinIngreso:  { t:'Sin fecha de ingreso', d:'No se cuentan en ninguna métrica.', ej:[], n:0, grave:true },
     tipo:        { t:'Sin tipo de tarima reconocido', d:'Se cuentan como estándar en la capacidad (m²).', ej:[], n:0 },
-    pallet0:     { t:'«No. de Pallet» vacío', d:'Se cuentan como 1 tarima. (Las que traen 0 son tarimas consolidadas con otra y no se cuentan.)', ej:[], n:0 },
+    pallet0:     { t:'«No. de Pallet» vacío', d:'Se cuentan como 1 tarima. (Las que traen 0 son tarimas consolidadas: cuentan como entrada, pero no ocupan m² en la capacidad.)', ej:[], n:0 },
     salidaSinFecha: { t:'Salida sin fecha de salida', d:'Cuentan como despachadas, pero no aparecen en ningún mes.', ej:[], n:0 },
     salidaAntes: { t:'Fecha de salida anterior al ingreso', d:'Los días en inventario quedan en 0.', ej:[], n:0, grave:true },
     futuras:     { t:'Fechas en el futuro', d:'Probable error de captura: alteran los meses y los días.', ej:[], n:0, grave:true },
