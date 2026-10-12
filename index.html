@@ -95,6 +95,13 @@
   .hero-info-wrap{position:absolute; top:16px; right:24px; z-index:5; display:flex; flex-direction:column; align-items:flex-end; gap:8px;}
   .hero-info-item{position:relative; z-index:3;}
   #manualBtn{position:relative; z-index:1;}
+  .manual-visor{position:fixed; inset:0; z-index:9999; display:none; flex-direction:column; background:#1b1f24;}
+  .manual-visor .mv-barra{display:flex; align-items:center; gap:8px; padding:10px 12px; background:#0f1317; border-bottom:1px solid #2d333b;}
+  .manual-visor .mv-titulo{flex:1; color:#fff; font:600 15px 'Inter',sans-serif; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .manual-visor .mv-btn{background:#2a313a; color:#fff; border:1px solid #3d4550; border-radius:8px; padding:8px 11px; font:600 13px 'Inter',sans-serif;}
+  .manual-visor .mv-paginas{flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch; padding:10px; display:flex; flex-direction:column; align-items:center; gap:10px;}
+  .manual-visor .mv-paginas img{width:100%; max-width:900px; height:auto; background:#fff; border-radius:4px; box-shadow:0 2px 8px #0006;}
+  .manual-visor .mv-vacio{color:#ddd; font:14px 'Inter',sans-serif; padding:30px 10px; text-align:center;}
   a.hero-info-btn{text-decoration:none;}
   .hero-info-btn{
     display:inline-flex; align-items:center; gap:7px;
@@ -409,6 +416,8 @@
     font-size:12px; color:#7EE08F; background:rgba(63,185,80,0.1); border:1px solid rgba(63,185,80,0.3);
     border-radius:6px; padding:8px 10px; margin-bottom:12px; text-align:left; display:none;
   }
+  html[data-apariencia="claro"] .pw-ok, html[data-apariencia="gris"] .pw-ok{color:#1A6B2C; background:#E3F4E6; border-color:#9BD3A5;}
+  html[data-apariencia="claro"] .pw-error, html[data-apariencia="gris"] .pw-error{color:#B42318; background:#FDECEA; border-color:#F2B8B5;}
   .gate-submit{
     width:100%; background:var(--scale-accent,#3987E5); color:#14171B; border:none; border-radius:8px;
     padding:11px; font-size:13.5px; font-weight:600; font-family:'Inter',sans-serif; cursor:pointer; margin-top:4px;
@@ -2696,17 +2705,53 @@ function applyScaleChrome(sc){
 }
 
 /* ---------- Logo de la portada en las ventanas de acceso ---------- */
-document.querySelectorAll('#gateOverlay .chip, #pwChangeOverlay .chip').forEach(ch=>{
+document.querySelectorAll('#gateOverlay .chip, #pwChangeOverlay .chip, #nubeOverlay .chip').forEach(ch=>{
   const img = document.createElement('img');
   img.className = 'gate-logo'; img.alt = 'GASO Comunicaciones'; img.src = LOGO_PDF_OSCURO;
   ch.replaceWith(img);
 });
 
-/* ---------- Botón «Manual» en el programa de Windows ---------- */
+/* ---------- Botón «Manual»: Windows abre el PDF; Android lo muestra dentro de la app ---------- */
 document.addEventListener('click', (e)=>{
   const b = e.target.closest && e.target.closest('#manualBtn');
-  if (b && typeof window.gasoAbrirManual === 'function'){ e.preventDefault(); window.gasoAbrirManual(); }
+  if (!b) return;
+  if (typeof window.gasoAbrirManual === 'function'){ e.preventDefault(); window.gasoAbrirManual(); return; }
+  if (window.AndroidNative && typeof window.AndroidNative.openManual === 'function'){ e.preventDefault(); abrirManualAndroid(); }
 });
+// Visor del manual en el APK: páginas en imagen (assets/manual/p-NN.jpg), funciona sin internet
+// y sin necesidad de otra app; también permite abrirlo en un visor de PDF o guardarlo.
+function abrirManualAndroid(){
+  let ov = document.getElementById('manualVisor');
+  if (!ov){
+    ov = document.createElement('div');
+    ov.id = 'manualVisor'; ov.className = 'manual-visor no-print';
+    ov.innerHTML = '<div class="mv-barra"><button type="button" class="mv-btn" id="mvCerrar" aria-label="Cerrar">✕ Cerrar</button>' +
+      '<span class="mv-titulo">Manual de usuario</span>' +
+      '<button type="button" class="mv-btn" id="mvPdf">Abrir PDF</button>' +
+      '<button type="button" class="mv-btn" id="mvGuardar">Guardar PDF</button></div>' +
+      '<div class="mv-paginas" id="mvPaginas"></div>';
+    document.body.appendChild(ov);
+    const ocultar = ()=>{ ov.style.display = 'none'; document.body.style.overflow = ''; };
+    // El botón Atrás del teléfono también cierra el manual
+    window.addEventListener('popstate', ()=>{ if (ov.style.display !== 'none') ocultar(); });
+    ov.querySelector('#mvCerrar').addEventListener('click', ()=>{
+      if (history.state && history.state.manualVisor) history.back(); else ocultar();
+    });
+    ov.querySelector('#mvPdf').addEventListener('click', ()=>{ try{ window.AndroidNative.openManual(); }catch(err){} });
+    ov.querySelector('#mvGuardar').addEventListener('click', ()=>{ try{ window.AndroidNative.saveManual(); }catch(err){} });
+    const cont = ov.querySelector('#mvPaginas');
+    const cargar = (n)=>{
+      const img = new Image();
+      img.alt = 'Página ' + n; img.decoding = 'async';
+      img.onload = ()=>{ cont.appendChild(img); cargar(n + 1); };
+      img.onerror = ()=>{ if (n === 1) cont.innerHTML = '<p class="mv-vacio">No se encontraron las páginas del manual. Usa «Abrir PDF».</p>'; };
+      img.src = 'manual/p-' + String(n).padStart(2, '0') + '.jpg';
+    };
+    cargar(1);
+  }
+  ov.style.display = 'flex'; document.body.style.overflow = 'hidden';
+  try{ history.pushState({ manualVisor:true }, '', '#manual'); }catch(err){}
+}
 
 /* ---------- Apariencia: aplicar, guardar y menú ---------- */
 function aplicarApariencia(tema, paleta, redibujar){
