@@ -333,6 +333,33 @@
   .panel-body canvas{max-width:100%;}
   .panel-foot{display:flex; gap:18px; margin-top:10px; padding-top:10px; border-top:1px solid var(--line-soft); flex-wrap:wrap;}
   .foot-stat{display:flex; flex-direction:column; gap:1px;}
+  .cap-resumen{display:flex; flex-wrap:wrap; align-items:flex-end; gap:6px 18px; margin:2px 0 8px;}
+  .cap-resumen .cap-num{font:700 30px 'Barlow Condensed',sans-serif; color:var(--text); line-height:1;}
+  .cap-resumen .cap-num small{font-size:16px; font-weight:600; color:var(--muted);}
+  .cap-resumen .cap-pct{font:700 22px 'Barlow Condensed',sans-serif; line-height:1;}
+  .cap-estado{display:inline-flex; align-items:center; gap:7px; font:600 12.5px 'Inter',sans-serif; padding:6px 11px; border-radius:999px; border:1px solid; width:100%; box-sizing:border-box; line-height:1.35;}
+  .cap-estado::before{content:''; width:9px; height:9px; border-radius:50%; background:currentColor; flex-shrink:0;}
+  .cap-estado[data-e="ok"]{color:#3FB950; border-color:rgba(63,185,80,.45); background:rgba(63,185,80,.10);}
+  .cap-estado[data-e="warn"]{color:#E3B341; border-color:rgba(227,179,65,.5); background:rgba(227,179,65,.10);}
+  .cap-estado[data-e="bad"]{color:#F87171; border-color:rgba(248,113,113,.5); background:rgba(248,113,113,.10);}
+  html[data-apariencia="claro"] .cap-estado[data-e="ok"], html[data-apariencia="gris"] .cap-estado[data-e="ok"]{color:#1A7F37;}
+  html[data-apariencia="claro"] .cap-estado[data-e="warn"], html[data-apariencia="gris"] .cap-estado[data-e="warn"]{color:#9A6700;}
+  html[data-apariencia="claro"] .cap-estado[data-e="bad"], html[data-apariencia="gris"] .cap-estado[data-e="bad"]{color:#B42318;}
+  .panel-body.cap-barra{min-height:96px; flex:0 0 auto; height:96px;}
+  .cap-tabla{width:100%; border-collapse:collapse; margin-top:10px; font-size:12px; color:var(--text);}
+  .cap-tabla th{font-weight:600; font-size:10.5px; text-transform:uppercase; letter-spacing:.04em; color:var(--muted-2); text-align:right; padding:6px 6px; border-bottom:1px solid var(--line);}
+  .cap-tabla th:first-child, .cap-tabla td:first-child{text-align:left;}
+  .cap-tabla td{padding:6px 6px; border-bottom:1px solid var(--line-soft); text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap;}
+  .cap-tabla td:first-child{white-space:normal;}
+  .cap-tabla tr:last-child td{font-weight:700; border-bottom:none; border-top:1px solid var(--line);}
+  .cap-tabla .tm2{color:var(--muted-2); font-size:11px;}
+  .cap-tabla td span{white-space:nowrap;}
+  .cap-tabla tr:last-child .tm2{color:var(--text); font-size:12px;}
+  @media (max-width:600px){
+    .cap-tabla{font-size:11.5px;} .cap-tabla th, .cap-tabla td{padding:6px 3px;}
+    .cap-tabla td{white-space:normal;} .cap-tabla .sep{display:none;} .cap-tabla td .tm2:not(.c){display:block;}
+  }
+  .cap-nota{font-size:11px; color:var(--muted-2); line-height:1.5; margin-top:10px;}
   .trim-tira{display:grid; gap:6px; margin-top:10px;}
   .trim-tira:empty{display:none;}
   .trim-c{border:1px solid var(--line-soft); border-radius:7px; padding:6px 8px; background:color-mix(in srgb, var(--panel-2) 70%, transparent); min-width:0;}
@@ -1010,8 +1037,27 @@
     </div>
   </div>
 
+  <!-- CAPACIDAD DE ALMACENAJE (m²) -->
+  <div class="section-title"><span class="tag">03</span> <span id="secCapTitle">Capacidad de almacenaje (m²) — Telcel y AT&amp;T</span></div>
+  <div class="grid" id="gridCap">
+    <div class="panel">
+      <div class="panel-head"><span class="ptitle">Ocupación del área contratada</span><span class="pnum">M²</span></div>
+      <div class="panel-sub" id="capSub">Zonas 1, 2 y 3 de la Bodega 4 · capacidad contratada 400 m² para Telcel y AT&amp;T</div>
+      <div class="cap-resumen" id="capResumen"></div>
+      <div class="panel-body cap-barra"><canvas id="chartCap"></canvas></div>
+      <table class="cap-tabla" id="tablaCap"></table>
+      <div class="cap-nota" id="capNota"></div>
+    </div>
+    <div class="panel">
+      <div class="panel-head"><span class="ptitle">Ocupación al cierre de cada mes</span><span class="pnum">M²</span></div>
+      <div class="panel-sub">m² ocupados por Telcel y AT&amp;T frente a la capacidad contratada · últimos 12 meses por trimestre</div>
+      <div class="panel-body"><canvas id="chartCapMes"></canvas></div>
+      <div class="panel-foot" id="footCapMes"></div>
+    </div>
+  </div>
+
   <!-- 5/6/7 PERMANENCIA -->
-  <div class="section-title"><span class="tag">03</span> <span id="sec3Title">Análisis de permanencia en inventario</span></div>
+  <div class="section-title"><span class="tag">04</span> <span id="sec3Title">Análisis de permanencia en inventario</span></div>
   <div class="grid">
     <div class="panel">
       <div class="panel-head"><span class="ptitle">Días mínimos, máximos y promedio</span><span class="pnum">PERM</span></div>
@@ -1037,7 +1083,7 @@
   </div>
 
   <!-- 8 ASP -->
-  <div class="section-title"><span class="tag">04</span> Proveedores de transporte (ASP)</div>
+  <div class="section-title"><span class="tag">05</span> Proveedores de transporte (ASP)</div>
   <div class="grid single">
     <div class="panel">
       <div class="panel-head"><span class="ptitle">ASP más utilizados</span><span class="pnum">ASP</span></div>
@@ -1047,7 +1093,7 @@
   </div>
 
   <!-- 9/10 OPERATIVOS -->
-  <div class="section-title"><span class="tag">05</span> <span id="sec5Title">Datos operativos del cross dock</span></div>
+  <div class="section-title"><span class="tag">06</span> <span id="sec5Title">Datos operativos del cross dock</span></div>
   <div class="grid thirds" id="grid5">
     <div class="panel" id="panel9">
       <div class="panel-head"><span class="ptitle">General · Chihuahua</span><span class="pnum">GRAL</span></div>
@@ -1067,7 +1113,7 @@
   </div>
 
   <!-- 11 DISTRIBUCIÓN POR PROYECTO Y ESTATUS -->
-  <div class="section-title"><span class="tag">06</span> <span id="sec6Title">Distribución por proyecto y estatus</span></div>
+  <div class="section-title"><span class="tag">07</span> <span id="sec6Title">Distribución por proyecto y estatus</span></div>
   <div class="grid single">
     <div class="panel">
       <div class="panel-head"><span class="ptitle">Distribución por proyecto</span><span class="pnum">PROY</span></div>
@@ -1084,7 +1130,7 @@
   </div>
 
   <!-- 07 INVENTARIO (tabla filtrable) -->
-  <div class="section-title" id="sec7Head"><span class="tag">07</span> <span id="sec7Title">Inventario</span></div>
+  <div class="section-title" id="sec7Head"><span class="tag">08</span> <span id="sec7Title">Inventario</span></div>
   <div class="grid single" id="sec7Grid">
     <div class="panel" id="invPanel">
       <div class="panel-head"><span class="ptitle" id="invTitulo">Inventario de tarimas</span><span class="pnum">INV</span></div>
@@ -2785,6 +2831,178 @@ function renderKPIs(){
   document.getElementById('kpiSitiosSub').textContent = sitios + ' sitios / ' + asps + ' ASP activos';
 }
 
+/* ---------- Capacidad de almacenaje (m²) · Bodega 4, zonas 1, 2 y 3 ----------
+   Área contratada para Telcel y AT&T y área que ocupa cada tipo de tarima.
+   Plano BOD4-01 Rev. B: zona 1 = 243.10 m², zona 2 = 77.44 m², zona 3 = 158.10 m² (478.64 m² físicos). */
+const CAPACIDAD = {
+  m2: 400,
+  zonas: 'Zonas 1, 2 y 3 de la Bodega 4',
+  plano: 'plano BOD4-01 Rev. B',
+  m2Fisicos: 478.64,
+  tipos: [
+    { k:'ESTANDAR', nombre:'Estándar', m2:1.44 },
+    { k:'EURO', nombre:'Euro pallet', m2:0.96 },
+    { k:'SOBRE', nombre:'Sobredimensionado', m2:3.66 }
+  ],
+  limiteAviso: 0.90   // desde 90 % de ocupación se marca «cerca del límite»
+};
+// Tipo de tarima normalizado: estándar, euro pallet o sobredimensionado(a). Vacío o desconocido = estándar.
+function tipoTarimaCap(t){
+  const v = String(t || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase();
+  if (/SOBRE|OVER|SOBRED/.test(v)) return 'SOBRE';
+  if (/EURO/.test(v)) return 'EURO';
+  return 'ESTANDAR';
+}
+function tipoTarimaReconocido(t){ const v = String(t || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase(); return /SOBRE|OVER|EURO|ESTAND|STANDARD/.test(v); }
+function m2DeRegistro(r){ const t = CAPACIDAD.tipos.find(x=> x.k === tipoTarimaCap(r.tipoPallet)); return (t ? t.m2 : 1.44) * (r.noPallet || 1); }
+// ¿Sigue en almacén al instante «fin»? (mismo criterio que el inventario al cierre de mes)
+function enAlmacenAl(r, fin){ return r.fechaIngreso && r.fechaIngreso <= fin && !(r.salio && (!r.fechaSalida || r.fechaSalida <= fin)); }
+function ocupacionCapacidad(){
+  const proy = [
+    { name:'TELCEL', label:'Telcel', scale:SCALES.telcel },
+    { name:'AT&T', label:'AT&T', scale:SCALES.att }
+  ].map(p=>{
+    const vig = byProject(p.name).filter(r=> !r.salio);
+    const porTipo = {}; CAPACIDAD.tipos.forEach(t=> porTipo[t.k] = { tarimas:0, m2:0 });
+    let sinTipo = 0;
+    vig.forEach(r=>{ const k = tipoTarimaCap(r.tipoPallet); const n = r.noPallet || 1; porTipo[k].tarimas += n; porTipo[k].m2 += m2DeRegistro(r); if (!tipoTarimaReconocido(r.tipoPallet)) sinTipo += n; });
+    const m2 = Object.values(porTipo).reduce((a,b)=> a + b.m2, 0);
+    const tarimas = Object.values(porTipo).reduce((a,b)=> a + b.tarimas, 0);
+    return Object.assign({}, p, { porTipo, m2, tarimas, sinTipo });
+  });
+  const total = proy.reduce((a,p)=> a + p.m2, 0);
+  const pct = total / CAPACIDAD.m2;
+  const estado = pct > 1 ? 'bad' : (pct >= CAPACIDAD.limiteAviso ? 'warn' : 'ok');
+  return { proy, total, pct, estado, libre: CAPACIDAD.m2 - total, sinTipo: proy.reduce((a,p)=> a + p.sinTipo, 0) };
+}
+function fm2(n){ return (Math.round(n*10)/10).toLocaleString('es-MX', {minimumFractionDigits:1, maximumFractionDigits:1}); }
+function textoEstadoCapacidad(o){
+  if (o.estado === 'bad') return 'Por encima de la capacidad contratada: exceden ' + fm2(-o.libre) + ' m² (' + fmt1(Math.round(o.pct*1000)/10) + ' %)';
+  if (o.estado === 'warn') return 'Por debajo de la capacidad contratada, pero cerca del límite: quedan ' + fm2(o.libre) + ' m² libres';
+  return 'Por debajo de la capacidad contratada: quedan ' + fm2(o.libre) + ' m² libres';
+}
+// Ventana de 12 meses hasta el mes en curso (igual que las métricas 1 y 2)
+function ventana12Meses(records){
+  let keys = calendarioContinuo(periodSeries(records).keys).filter(k=> k !== 'SIN-FECHA');
+  const hoy = monthKey(new Date());
+  if (!keys.length) keys = [hoy];
+  if (keys[keys.length-1] < hoy) keys = calendarioContinuo([keys[0], hoy]);
+  const [yh, mh] = keys[keys.length-1].split('-').map(Number);
+  return calendarioContinuo([monthKey(new Date(yh, mh - 12, 1)), keys[keys.length-1]]);
+}
+function ocupacionMensualCapacidad(){
+  const tel = byProject('TELCEL'), att = byProject('AT&T');
+  const keys = ventana12Meses(tel.concat(att)), hoy = monthKey(new Date());
+  const m2Al = (rs, k)=>{ const [y, m] = k.split('-').map(Number); const fin = k === hoy ? new Date() : new Date(y, m, 0, 23, 59, 59);
+    return rs.reduce((a, r)=> a + (enAlmacenAl(r, fin) ? m2DeRegistro(r) : 0), 0); };
+  return { keys, tel: keys.map(k=> m2Al(tel, k)), att: keys.map(k=> m2Al(att, k)) };
+}
+// Línea de capacidad contratada sobre una gráfica (vertical u horizontal)
+function pluginLineaCapacidad(valor, horizontal, impresion, fuente){
+  return { id:'lineaCapacidad', afterDatasetsDraw(chart){
+    const imp = impresion || !!chart.$showNumberLabels, c = chart.ctx, a = chart.chartArea;
+    const col = imp ? '#B42318' : '#F87171';
+    c.save(); c.strokeStyle = col; c.lineWidth = 2; c.setLineDash([6,4]); c.beginPath();
+    if (horizontal){ const x = chart.scales.x.getPixelForValue(valor); c.moveTo(x, a.top - 6); c.lineTo(x, a.bottom + 4); }
+    else { const yv = chart.scales.y.getPixelForValue(valor); c.moveTo(a.left, yv); c.lineTo(a.right, yv); }
+    c.stroke(); c.setLineDash([]);
+    c.fillStyle = col; c.font = '700 ' + (fuente || 11) + 'px Inter, sans-serif';
+    const txt = 'Capacidad contratada ' + fmt(valor) + ' m²';
+    if (horizontal){ const x = chart.scales.x.getPixelForValue(valor); c.textAlign = x > a.right - 90 ? 'right' : 'left'; c.textBaseline = 'bottom'; c.fillText(txt, x + (c.textAlign === 'left' ? 5 : -5), a.top - 2); }
+    else { const yv = chart.scales.y.getPixelForValue(valor); c.textAlign = 'right'; c.textBaseline = 'bottom'; c.fillText(txt, a.right - 4, yv - 4); }
+    c.restore();
+  }};
+}
+function renderCapacidad(){
+  if (!document.getElementById('chartCap')) return;
+  const o = ocupacionCapacidad();
+  const tel = o.proy[0], att = o.proy[1];
+  // Resumen y estado
+  const pctTxt = fmt1(Math.round(o.pct*1000)/10) + ' %';
+  const colPct = o.estado === 'bad' ? 'var(--red)' : (o.estado === 'warn' ? '#E3B341' : 'var(--green)');
+  document.getElementById('capResumen').innerHTML =
+    '<div><div class="cap-num">' + fm2(o.total) + ' <small>de ' + fmt(CAPACIDAD.m2) + ' m² ocupados</small></div></div>' +
+    '<div class="cap-pct" style="color:' + colPct + '">' + pctTxt + '</div>' +
+    '<div class="cap-estado" data-e="' + o.estado + '"></div>';
+  document.querySelector('#capResumen .cap-estado').textContent = textoEstadoCapacidad(o);
+  // Barra horizontal: Telcel + AT&T + disponible (o excedente)
+  destroy('chartCap');
+  const libre = Math.max(0, o.libre), exceso = Math.max(0, -o.libre);
+  const etq = { id:'etqCap', afterDatasetsDraw(chart){
+    const c = chart.ctx, imp = !!chart.$showNumberLabels; c.save(); c.font = '700 11.5px Inter, sans-serif'; c.textAlign = 'center'; c.textBaseline = 'middle';
+    chart.data.datasets.forEach((ds, i)=>{ const el = chart.getDatasetMeta(i).data[0]; if (!el || !ds.data[0]) return;
+      const w = Math.abs(el.x - el.base); const t = fm2(ds.data[0]) + ' m²'; if (w < c.measureText(t).width + 10) return;
+      c.fillStyle = (ds.label === 'Disponible' && imp) ? '#374151' : (ds.$texto || (imp ? '#111827' : '#FFFFFF')); c.fillText(t, (el.x + el.base)/2, el.y); });
+    c.restore(); } };
+  const grisLibre = APARIENCIA.tema === 'oscuro' ? 'rgba(255,255,255,0.10)' : 'rgba(15,23,42,0.08)';
+  const dsCap = [
+    { label:'Telcel', data:[Math.round(tel.m2*10)/10], backgroundColor:tel.scale.accent, $texto:'#FFFFFF' },
+    { label:'AT&T', data:[Math.round(att.m2*10)/10], backgroundColor:att.scale.accent, $texto:'#FFFFFF' },
+    exceso ? { label:'Excedente', data:[Math.round(exceso*10)/10], backgroundColor:'#DC2626', $texto:'#FFFFFF' }
+           : { label:'Disponible', data:[Math.round(libre*10)/10], backgroundColor:(ctx)=> ctx.chart.$showNumberLabels ? '#E5E7EB' : grisLibre, $texto: APARIENCIA.tema === 'oscuro' ? '#C4CDD5' : '#374151' }
+  ].map(d=> Object.assign(d, { borderWidth:0, barPercentage:1, categoryPercentage:0.78, borderSkipped:false }));
+  CHARTS['chartCap'] = new Chart(document.getElementById('chartCap').getContext('2d'), {
+    type:'bar', data:{ labels:['Bodega 4'], datasets:dsCap },
+    plugins:[etq, pluginLineaCapacidad(CAPACIDAD.m2, true)],
+    options:{ indexAxis:'y', responsive:true, maintainAspectRatio:false, animation:false,
+      layout:{ padding:{ top:16, right:6 } },
+      plugins:{ numeroEtiquetas:false, legend:{ position:'bottom', align:'start', labels:{ boxWidth:9, boxHeight:9, usePointStyle:true, pointStyle:'rectRounded' } },
+        tooltip:{ callbacks:{ label: it=> it.dataset.label + ': ' + fm2(it.raw) + ' m² (' + fmt1(Math.round(it.raw/CAPACIDAD.m2*1000)/10) + ' %)' } } },
+      scales:{ x:{ stacked:true, min:0, max: Math.max(CAPACIDAD.m2, Math.ceil(o.total/50)*50), grid:{ color:TH.grid }, border:{ display:false }, ticks:{ color:TH.tick, callback:v=> fmt(v) + ' m²', maxTicksLimit:6 } },
+               y:{ stacked:true, display:false } } }
+  });
+  // Tabla por tipo de tarima
+  const dato = (tarimas, m2)=> tarimas ? '<span>' + fm2(m2) + ' m²</span><span class="sep"> · </span><span class="tm2">' + fmt(tarimas) + ' tar.</span>' : '–';
+  const celda = (p, k)=> dato(p.porTipo[k].tarimas, p.porTipo[k].m2);
+  let html = '<tr><th>Tipo de tarima (m² c/u)</th><th>Telcel</th><th>AT&amp;T</th><th>Total</th></tr>';
+  CAPACIDAD.tipos.forEach(t=>{
+    const tot = { tarimas: tel.porTipo[t.k].tarimas + att.porTipo[t.k].tarimas, m2: tel.porTipo[t.k].m2 + att.porTipo[t.k].m2 };
+    html += '<tr><td>' + t.nombre + ' <span class="tm2 c">(' + t.m2.toLocaleString('es-MX', {minimumFractionDigits:2}) + ' m²)</span></td><td>' + celda(tel, t.k) + '</td><td>' + celda(att, t.k) + '</td><td>' + dato(tot.tarimas, tot.m2) + '</td></tr>';
+  });
+  const pctP = (m)=> fmt1(Math.round(m/CAPACIDAD.m2*1000)/10) + ' %';
+  const tot2 = (m)=> '<span>' + fm2(m) + ' m²</span><span class="sep"> · </span><span class="tm2">' + pctP(m) + '</span>';
+  html += '<tr><td>Total ocupado (de ' + fmt(CAPACIDAD.m2) + ' m²)</td><td>' + tot2(tel.m2) + '</td><td>' + tot2(att.m2) + '</td><td>' + tot2(o.total) + '</td></tr>';
+  document.getElementById('tablaCap').innerHTML = html;
+  document.getElementById('capNota').textContent = 'Se cuentan las tarimas que siguen en almacén (vigentes) de ambos proyectos, multiplicadas por el área de su tipo: estándar 1.44 m², euro pallet 0.96 m² y sobredimensionado 3.66 m². ' +
+    CAPACIDAD.zonas + ' (' + CAPACIDAD.plano + '): ' + fm2(CAPACIDAD.m2Fisicos) + ' m² físicos; capacidad contratada ' + fmt(CAPACIDAD.m2) + ' m².' +
+    (o.sinTipo ? ' ' + fmt(o.sinTipo) + ' tarima(s) sin tipo reconocido se contaron como estándar.' : '') +
+    (currentFilter !== 'all' ? ' El área es compartida, por eso se muestran los dos proyectos.' : '');
+  // Ocupación al cierre de cada mes
+  destroy('chartCapMes');
+  const om = ocupacionMensualCapacidad();
+  const sumas = om.keys.map((k, i)=> Math.round((om.tel[i] + om.att[i])*10)/10);
+  om.tel = om.tel.map(v=> Math.round(v*10)/10); om.att = om.att.map(v=> Math.round(v*10)/10);
+  const trims = calcularTrimestres(om.keys, sumas, sumas.map(()=>0));
+  const hoyK = monthKey(new Date());
+  const etqTot = { id:'etqCapMes', afterDatasetsDraw(chart){
+    const c = chart.ctx, imp = !!chart.$showNumberLabels; c.save(); c.textAlign = 'center'; c.textBaseline = 'bottom';
+    const meta = chart.getDatasetMeta(1);
+    const paso = meta.data.length > 1 ? Math.abs(meta.data[1].x - meta.data[0].x) : 60;
+    c.font = '600 ' + Math.max(8, Math.min(10.5, paso * 0.36)).toFixed(1) + 'px Inter, sans-serif';
+    meta.data.forEach((el, i)=>{ const v = sumas[i]; if (!v) return; c.fillStyle = v > CAPACIDAD.m2 ? (imp ? '#B42318' : '#F87171') : (imp ? '#1B2430' : TH.text); c.fillText(fmt(v), el.x, el.y - 3); });
+    c.restore(); } };
+  CHARTS['chartCapMes'] = new Chart(document.getElementById('chartCapMes').getContext('2d'), {
+    type:'bar',
+    data:{ labels: om.keys.map(k=>{ const [y, m] = k.split('-'); return MESES[parseInt(m,10)-1] + (k === hoyK ? '*' : ''); }),
+      datasets:[
+        { label:'Telcel', data:om.tel, backgroundColor:SCALES.telcel.accent, borderRadius:3, maxBarThickness:30, stack:'m2' },
+        { label:'AT&T', data:om.att, backgroundColor:SCALES.att.accent, borderRadius:3, maxBarThickness:30, stack:'m2' }
+      ] },
+    plugins:[pluginBandasTrimestre(om.keys, trims), pluginLineaCapacidad(CAPACIDAD.m2, false), etqTot],
+    options:{ responsive:true, maintainAspectRatio:false, animation:false,
+      plugins:{ numeroEtiquetas:false, legend:{ position:'top', align:'end', labels:{ boxWidth:9, boxHeight:9, usePointStyle:true, pointStyle:'rectRounded' } },
+        tooltip:{ backgroundColor:TH.tipBg, borderColor:TH.tipBorder, borderWidth:1, titleColor:TH.text, bodyColor:TH.text, mode:'index', intersect:false,
+          callbacks:{ label: it=> it.dataset.label + ': ' + fm2(it.raw) + ' m²', footer: it=>{ const i = it[0].dataIndex; return 'Total: ' + fm2(sumas[i]) + ' m² (' + fmt1(Math.round(sumas[i]/CAPACIDAD.m2*1000)/10) + ' % de ' + fmt(CAPACIDAD.m2) + ' m²)'; } } } },
+      scales:{ x:{ stacked:true, offset:true, grid:{ display:false }, border:{ display:false }, ticks:{ color:TH.tick, maxRotation:0, autoSkip:true } },
+               y:{ stacked:true, beginAtZero:true, suggestedMax: Math.max(CAPACIDAD.m2, ...sumas) * 1.22, grid:{ color:TH.grid }, border:{ display:false }, ticks:{ color:TH.tick, maxTicksLimit:6, callback:v=> fmt(v) } } } }
+  });
+  const iMax = sumas.indexOf(Math.max(...sumas)), sobre = sumas.filter(v=> v > CAPACIDAD.m2).length;
+  document.getElementById('footCapMes').innerHTML =
+    '<div class="foot-stat"><div class="fv num">' + fm2(sumas[iMax] || 0) + ' m²</div><div class="fl">Máximo (' + monthLabel(om.keys[iMax]) + ')</div></div>' +
+    '<div class="foot-stat"><div class="fv num">' + fm2(sumas.reduce((a,b)=>a+b,0)/Math.max(1,sumas.length)) + ' m²</div><div class="fl">Promedio de 12 meses</div></div>' +
+    '<div class="foot-stat"><div class="fv num" style="color:' + (sobre ? 'var(--red)' : 'var(--green)') + '">' + fmt(sobre) + '</div><div class="fl">Meses por encima de ' + fmt(CAPACIDAD.m2) + ' m²</div></div>';
+}
+
 /* ---------- Master render ---------- */
 function renderAll(){
   renderKPIs();
@@ -2819,6 +3037,7 @@ function renderAll(){
   } else destroy('chart4');
   igualarGrosorBarras(['chart3','chart4']);
 
+  renderCapacidad();
   renderPermanencia();
   renderPorSitio();
   renderBuckets();
@@ -3089,21 +3308,25 @@ function estructuraReporte(){
       {titulo:'Cross dock · Telcel', canvas:'chart3', pie:'foot3'},
       {titulo:'Cross dock · AT&T', canvas:'chart4', pie:'foot4'}
     ]},
-    { seccion:'03 · Análisis de permanencia en inventario' + suf, paneles:[
+    { seccion:'03 · Capacidad de almacenaje (m²) — Telcel y AT&T', paneles:[
+      {titulo:'Ocupación del área contratada (zonas 1, 2 y 3 · ' + fmt(CAPACIDAD.m2) + ' m²)', canvas:'chartCap', pie:'capResumen', tabla:'tablaCap', anchos:[0.31, 0.23, 0.23, 0.23]},
+      {titulo:'Ocupación al cierre de cada mes · últimos 12 meses por trimestre', canvas:'chartCapMes', pie:'footCapMes'}
+    ]},
+    { seccion:'04 · Análisis de permanencia en inventario' + suf, paneles:[
       {titulo:'Días mínimos, máximos y promedio' + cmp, canvas:'chart5'},
       {titulo:'Días en inventario por rango', canvas:'chart7'},
       {titulo: todos ? 'Sitios con más días en inventario · Telcel' : 'Sitios con más días en inventario', canvas:'chart6', alto:true},
       {titulo:'Sitios con más días en inventario · AT&T', canvas:'chart6b', alto:true}
     ]},
-    { seccion:'04 · Proveedores de transporte (ASP)', paneles:[
+    { seccion:'05 · Proveedores de transporte (ASP)', paneles:[
       {titulo:'ASP más utilizados', canvas:'chart8', alto:true}
     ]},
-    { seccion:'05 · Datos operativos del cross dock' + suf, paneles:[
+    { seccion:'06 · Datos operativos del cross dock' + suf, paneles:[
       {titulo:'General · Chihuahua', canvas:'chart9'},
       {titulo:'Operativo · Telcel', canvas:'chart10a'},
       {titulo:'Operativo · AT&T', canvas:'chart10b'}
     ]},
-    { seccion:'06 · Distribución por proyecto y estatus' + suf, paneles:[
+    { seccion:'07 · Distribución por proyecto y estatus' + suf, paneles:[
       {titulo:'Distribución por proyecto (anillo interior: Vigente / Salida)', canvas:'chart11', pie:'foot11', alto:true, tabla:'table11'}
     ]}
   ];
@@ -3266,6 +3489,7 @@ function generarReporteEjecutivo(){
   const jsPDFCtor = (window.jspdf && window.jspdf.jsPDF) || window.jsPDF;
   if (!jsPDFCtor) throw new Error('No se pudo iniciar la generación del PDF.');
   const doc = new jsPDFCtor({orientation:'portrait', unit:'mm', format:'a4'});
+  pdfSinSuperindices(doc);
   const W = doc.internal.pageSize.getWidth(), H = doc.internal.pageSize.getHeight();
   const M = 14, AU = W - M*2, PIE = 16;           // PIE: espacio reservado al pie de página
   const sc = activeScale();
@@ -3596,6 +3820,15 @@ function generarReporteEjecutivo(){
   if (salSinAsp) recos.push({id:'registro', p:'Seguimiento', t:'Completar el registro de transportista',
     c:`Capturar el proveedor en ${fmt(salSinAsp)} ${plural(salSinAsp,'salida','salidas')} sin dato.`,
     d:`${fmt(salSinAsp)} ${plural(salSinAsp,'salida no tiene','salidas no tienen')} proveedor de transporte registrado. Completarlo mejora la trazabilidad de los despachos.`});
+  {
+    const oc = ocupacionCapacidad();
+    if (oc.estado === 'bad') recos.push({id:'capacidad', p:'Alta', t:'Liberar área en la bodega',
+      c:`Telcel y AT&T ocupan ${fm2(oc.total)} m² de ${fmt(CAPACIDAD.m2)} contratados: exceden ${fm2(-oc.libre)} m². Despachar o reubicar material.`,
+      d:`La ocupación de Telcel y AT&T es de ${fm2(oc.total)} m², ${fmt1(Math.round(oc.pct*1000)/10)} % de los ${fmt(CAPACIDAD.m2)} m² contratados (zonas 1, 2 y 3 de la Bodega 4): exceden ${fm2(-oc.libre)} m². Priorizar el despacho de tarimas sobredimensionadas, que ocupan 3.66 m² cada una, o negociar más área.`});
+    else if (oc.estado === 'warn') recos.push({id:'capacidad', p:'Media', t:'Prever espacio en la bodega',
+      c:`La ocupación llega a ${fmt1(Math.round(oc.pct*1000)/10)} % de los ${fmt(CAPACIDAD.m2)} m² contratados; quedan ${fm2(oc.libre)} m².`,
+      d:`Telcel y AT&T ocupan ${fm2(oc.total)} m² de ${fmt(CAPACIDAD.m2)} contratados (${fmt1(Math.round(oc.pct*1000)/10)} %). Quedan ${fm2(oc.libre)} m²: programar despachos antes de recibir material sobredimensionado.`});
+  }
   if (!recos.length) recos.push({id:'seguimiento', p:'Seguimiento', t:'Mantener el seguimiento', c:'Sin desviaciones relevantes en el periodo.', d:'Los indicadores no presentan desviaciones relevantes en el periodo; mantener el seguimiento periódico.'});
   const ordenP = {Alta:0, Media:1, Seguimiento:2};
   recos.sort((a,b)=> ordenP[a.p] - ordenP[b.p]);
@@ -3744,9 +3977,14 @@ function generarReporteEjecutivo(){
       ? `${fmt(R.buckets[3])} tarimas superan 180 días (${pctTxt(R.buckets[3],R.vigentes)} del inventario)${masAntigua ? `; la más antigua suma ${fmt(masAntigua.dias)} días (${masAntigua.nombreSitio})` : ''}.`
       : `Ninguna tarima supera 180 días; ${pctTxt(menos60,R.vigentes)} tiene hasta 60 días.`});
     if (ult6.length) claves.push({e:estInv, b:'Tendencia.', t:`En los últimos 6 meses cerrados (${rango6}) entraron ${fmt(sIn)} y salieron ${fmt(sOut)} tarimas: el inventario ${neto6 > 0 ? `creció ${fmt(neto6)}` : (neto6 < 0 ? `bajó ${fmt(-neto6)}` : 'no cambió')}.`});
+    {
+      const oc = ocupacionCapacidad();
+      claves.push({e: oc.estado, b:'Capacidad.', t:`Telcel y AT&T ocupan ${fm2(oc.total)} de ${fmt(CAPACIDAD.m2)} m² contratados (${fmt1(Math.round(oc.pct*1000)/10)} %): ` +
+        (oc.estado === 'bad' ? `por encima de la capacidad, exceden ${fm2(-oc.libre)} m².` : `por debajo de la capacidad, quedan ${fm2(oc.libre)} m² libres.`)});
+    }
     if (sitiosN.length) claves.push({e: sitios[0] && sitios[0].avg > 180 ? 'warn' : 'info', b:'Sitios.', t:`${sitiosN[0].site} tiene más tarimas pendientes (${fmt(sitiosN[0].n)})` + (sitios[0] && sitios[0].site !== sitiosN[0].site ? `; ${sitios[0].site} es el que más espera (${fmt1(sitios[0].avg)} días promedio).` : '.')});
     if (topAsp.length) claves.push({e: pctN(topAsp[0].v,totAspReg) > 50 ? 'warn' : 'info', b:'Transporte.', t:`${topAsp[0].k} realiza el ${pctTxt(topAsp[0].v,totAspReg)} de los despachos${topAsp[1] ? `, seguido de ${topAsp[1].k} (${pctTxt(topAsp[1].v,totAspReg)})` : ''}.`});
-    const items = claves.slice(0, 5);
+    const items = claves.slice(0, 6);
     asegurar(8 + medirPuntos(items));
     fuenteTxt('bold', 9.5); color(OSC); doc.text('Hallazgos principales', M, y + 3.4);
     y += 7;
@@ -3755,7 +3993,7 @@ function generarReporteEjecutivo(){
   }
 
   // Número que tendrá la sección «Conclusiones y recomendaciones» (mismo orden que el detalle)
-  const numConclusiones = String(1 + [ult12.length, (todos && T && A) || ult12.length, true, topAsp.length, tipos.length, filasProy.length].filter(Boolean).length).padStart(2,'0');
+  const numConclusiones = String(1 + [ult12.length, (todos && T && A) || ult12.length, true, true, topAsp.length, tipos.length, filasProy.length].filter(Boolean).length).padStart(2,'0');
 
   // Acciones prioritarias (alta y media; la lista completa está en la sección de conclusiones)
   {
@@ -4002,6 +4240,77 @@ function generarReporteEjecutivo(){
     cajaPuntos(pk);
   }
 
+  // ---------- 03 · Capacidad de almacenaje (m²) ----------
+  {
+    const oc = ocupacionCapacidad(), tel = oc.proy[0], att = oc.proy[1];
+    const pctC = (m)=> fmt1(Math.round(m / CAPACIDAD.m2 * 1000)/10) + ' %';
+    const titular = `Telcel y AT&T ocupan ${fm2(oc.total)} de ${fmt(CAPACIDAD.m2)} m² contratados (${pctC(oc.total)}): ` +
+      (oc.estado === 'bad' ? `por encima de la capacidad, exceden ${fm2(-oc.libre)} m²` : (oc.estado === 'warn' ? `por debajo, pero cerca del límite (${fm2(oc.libre)} m² libres)` : `por debajo de la capacidad, con ${fm2(oc.libre)} m² libres`));
+    // Gráfica mensual: m² al cierre de cada mes, apilado Telcel/AT&T, con línea de capacidad y trimestres
+    const om = ocupacionMensualCapacidad();
+    const sumas = om.keys.map((k, i)=> Math.round((om.tel[i] + om.att[i])*10)/10);
+    const trimsCap = calcularTrimestres(om.keys, sumas, sumas.map(()=>0));
+    const etqSum = { id:'etqSumCap', afterDatasetsDraw(ch){ const c = ch.ctx, meta = ch.getDatasetMeta(1); c.save(); c.font = '700 14px Inter, sans-serif'; c.textAlign = 'center'; c.textBaseline = 'bottom';
+      meta.data.forEach((el, i)=>{ if (!sumas[i]) return; c.fillStyle = sumas[i] > CAPACIDAD.m2 ? '#B42318' : '#111827'; c.fillText(fmt(sumas[i]), el.x, el.y - 4); }); c.restore(); } };
+    const escCap = ejes(false, {x:{stacked:true, offset:true, grid:{color:'transparent'}, border:{display:false}, ticks:{color:TXT, font:{size:15, weight:'600', family:FAM}, maxRotation:0, autoSkip:false}}});
+    escCap.y.stacked = true; escCap.y.suggestedMax = Math.max(CAPACIDAD.m2, ...sumas) * 1.25;
+    const gCap = graficaTemp({type:'bar', data:{labels:om.keys.map(etqMes), datasets:[
+        {label:'Telcel (m²)', data:om.tel.map(v=> Math.round(v*10)/10), backgroundColor:SCALES.telcel.accent, borderRadius:3, maxBarThickness:34, stack:'m2'},
+        {label:'AT&T (m²)', data:om.att.map(v=> Math.round(v*10)/10), backgroundColor:SCALES.att.accent, borderRadius:3, maxBarThickness:34, stack:'m2'}]},
+      options:{layout:{padding:{top:8}}, plugins:{legend:leyenda('top')}, scales:escCap},
+      plugins:[pluginBandasTrimestre(om.keys, trimsCap, { impresion:true, fuente:15 }), pluginLineaCapacidad(CAPACIDAD.m2, false, true, 15), etqSum]}, 1100, 340);
+    const hCap = altoImg(gCap, AU, 56);
+    const filasCap = CAPACIDAD.tipos.map(t=>{
+      const c = (p)=> p.porTipo[t.k].tarimas ? `${fmt(p.porTipo[t.k].tarimas)} · ${fm2(p.porTipo[t.k].m2)} m²` : '–';
+      const tt = tel.porTipo[t.k].tarimas + att.porTipo[t.k].tarimas, tm = tel.porTipo[t.k].m2 + att.porTipo[t.k].m2;
+      return [`${t.nombre} (${t.m2.toLocaleString('es-MX',{minimumFractionDigits:2})} m² c/u)`, c(tel), c(att), tt ? `${fmt(tt)} · ${fm2(tm)} m²` : '–'];
+    });
+    const totalCap = ['Total ocupado (tarimas · m² · %)', `${fm2(tel.m2)} m² · ${pctC(tel.m2)}`, `${fm2(att.m2)} m² · ${pctC(att.m2)}`, `${fm2(oc.total)} m² · ${pctC(oc.total)}`];
+    const sob = { m2: tel.porTipo.SOBRE.m2 + att.porTipo.SOBRE.m2, n: tel.porTipo.SOBRE.tarimas + att.porTipo.SOBRE.tarimas };
+    const nTar = tel.tarimas + att.tarimas;
+    const iMax = sumas.indexOf(Math.max(...sumas)), mesesSobre = sumas.filter(v=> v > CAPACIDAD.m2).length;
+    const pk = [
+      {e: oc.estado, b:'Estado:', t: textoEstadoCapacidad(oc) + '.'},
+      {e:'info', b:'Por proyecto:', t:`Telcel ocupa ${fm2(tel.m2)} m² (${pctC(tel.m2)} de la capacidad) con ${fmt(tel.tarimas)} tarimas; AT&T, ${fm2(att.m2)} m² (${pctC(att.m2)}) con ${fmt(att.tarimas)}.`},
+      sob.n ? {e: sob.m2 > oc.total/2 ? 'warn' : 'info', b:'Sobredimensionadas:', t:`${fmt(sob.n)} de ${fmt(nTar)} tarimas (${pctTxt(sob.n, nTar)}) ocupan ${fm2(sob.m2)} m², el ${pctTxt(sob.m2, oc.total)} del área usada.`} : null,
+      {e: mesesSobre ? 'bad' : 'info', b:'Últimos 12 meses:', t:`la ocupación máxima fue de ${fm2(sumas[iMax] || 0)} m² (${mesLargo(om.keys[iMax])})` + (mesesSobre ? `; en ${fmt(mesesSobre)} ${plural(mesesSobre,'mes','meses')} se rebasaron los ${fmt(CAPACIDAD.m2)} m².` : `; ningún mes rebasó los ${fmt(CAPACIDAD.m2)} m².`)}
+    ].filter(Boolean);
+    seccion('Capacidad de almacenaje (m²) — Telcel y AT&T', titular, 40);
+    subBloque('3.1 Ocupación actual del área contratada', 60);
+    subtitulo(`${CAPACIDAD.zonas} (${CAPACIDAD.plano}) · capacidad contratada ${fmt(CAPACIDAD.m2)} m² · tarimas en almacén al ${fechaCorta(new Date())}`); y += 5.2;
+    {
+      // Estado
+      const e = EST[oc.estado]; const h = 8;
+      doc.setFillColor(Math.round(e.c[0]*0.12 + 255*0.88), Math.round(e.c[1]*0.12 + 255*0.88), Math.round(e.c[2]*0.12 + 255*0.88));
+      doc.roundedRect(M, y, AU, h, 1.6, 1.6, 'F'); relleno(e.c); doc.circle(M + 4, y + h/2, 1.3, 'F');
+      fuenteTxt('bold', 9.4); color(e.c); doc.text(textoEstadoCapacidad(oc), M + 7.5, y + h/2 + 1.3);
+      y += h + 4;
+      // Barra de m² con marca de capacidad
+      const escala = Math.max(CAPACIDAD.m2, oc.total), ab = 10, xCap = M + AU * CAPACIDAD.m2 / escala;
+      const segs = [{v:tel.m2, c:SCALES.telcel.accent, l:'Telcel', blanco:true}, {v:att.m2, c:SCALES.att.accent, l:'AT&T', blanco:true}];
+      if (oc.libre > 0) segs.push({v:oc.libre, c:'#E5E7EB', l:'Disponible', blanco:false});
+      let x = M;
+      segs.forEach(sg=>{ const w = AU * sg.v / escala; if (w <= 0) return; relleno(hexARgb(sg.c)); doc.rect(x, y, w, ab, 'F');
+        if (w > 18){ fuenteTxt('bold', 8.6); if (sg.blanco) doc.setTextColor(255,255,255); else color(TXTC); doc.text(fm2(sg.v) + ' m²', x + w/2, y + ab/2 + 1.3, {align:'center'}); }
+        x += w; });
+      if (oc.total > CAPACIDAD.m2){ doc.setFillColor(220,38,38); doc.rect(xCap, y, AU - (xCap - M), ab, 'F'); }
+      doc.setDrawColor(180,35,24); doc.setLineWidth(0.6); if (doc.setLineDashPattern) doc.setLineDashPattern([1.2,0.9],0);
+      doc.line(xCap, y - 3, xCap, y + ab + 1.5); if (doc.setLineDashPattern) doc.setLineDashPattern([],0);
+      fuenteTxt('bold', 7.4); doc.setTextColor(180,35,24); doc.text('Capacidad contratada ' + fmt(CAPACIDAD.m2) + ' m²', xCap - 1, y - 3.6, {align:'right'});
+      y += ab + 4.5;
+      let lx = M; segs.forEach(sg=>{ relleno(hexARgb(sg.c)); doc.rect(lx, y - 2.3, 2.6, 2.6, 'F'); fuenteTxt('normal', 7.8); color(TXTC);
+        const t = `${sg.l}: ${fm2(sg.v)} m² (${pctC(sg.v)})`; doc.text(t, lx + 3.8, y); lx += doc.getTextWidth(t) + 10; });
+      y += 4.5;
+    }
+    tabla([{t:'Tipo de tarima',w:.31,},{t:'Telcel',w:.23,a:'r'},{t:'AT&T',w:.23,a:'r'},{t:'Total',w:.23,a:'r'}], filasCap, totalCap);
+    ayuda(`área ocupada = tarimas en almacén × área de su tipo (estándar 1.44 m², euro pallet 0.96 m², sobredimensionado 3.66 m²). Las zonas 1, 2 y 3 suman ${fm2(CAPACIDAD.m2Fisicos)} m² físicos; la capacidad contratada para Telcel y AT&T es de ${fmt(CAPACIDAD.m2)} m².` + (oc.sinTipo ? ` ${fmt(oc.sinTipo)} tarima(s) sin tipo reconocido se contaron como estándar.` : ''));
+    subBloque('3.2 Ocupación al cierre de cada mes', hCap + 8);
+    subtitulo(`m² ocupados por Telcel y AT&T · últimos ${om.keys.length} meses por trimestre` + notaCurso); y += 5.2;
+    ponerImg(gCap, M, AU, 56); y += hCap + 2;
+    ayuda(`cada barra es el área que ocupaban las tarimas en almacén al terminar el mes (el mes en curso, a hoy), apilada por proyecto; la línea punteada roja es la capacidad contratada de ${fmt(CAPACIDAD.m2)} m².`);
+    cajaPuntos(pk);
+  }
+
   // ---------- 03 · Análisis de permanencia en inventario ----------
   {
     const titular = !R.vigentes ? 'No hay tarimas en almacén: todo el material recibido ya fue despachado' : (R.buckets[3]
@@ -4034,11 +4343,11 @@ function generarReporteEjecutivo(){
       if (R.buckets[3]) pk.push({e:'bad', b:'Lento movimiento:', t:`${fmt(R.buckets[3])} tarimas superan 180 días` + (masAntigua ? `; la más antigua suma ${fmt(masAntigua.dias)} días (sitio ${masAntigua.nombreSitio}, ${masAntigua.subProyecto}${todos ? ', ' + (masAntigua.proyecto==='AT&T'?'AT&T':'Telcel') : ''}).` : '.')});
     }
     seccion('Análisis de permanencia en inventario' + (todos ? '' : ' — ' + vista), titular, 14 + hP);
-    subBloque('3.1 Días mínimos, máximos y promedio' + (todos ? ' (Telcel vs AT&T)' : ''), hP + 6);
+    subBloque('4.1 Días mínimos, máximos y promedio' + (todos ? ' (Telcel vs AT&T)' : ''), hP + 6);
     subtitulo('Todas las tarimas (despachadas y en almacén) · mismo cálculo que el dashboard'); y += 5.2;
     ponerImg(gP, M, AU, 44); y += hP + 2;
     if (R.vigentes){
-      subBloque('3.2 Días en inventario por rango', hR + 6 + medirAyuda('x') + altoTabla(5));   // gráfica y tabla juntas
+      subBloque('4.2 Días en inventario por rango', hR + 6 + medirAyuda('x') + altoTabla(5));   // gráfica y tabla juntas
       subtitulo(`Tarimas en almacén según días de permanencia · total ${fmt(R.vigentes)}`); y += 5.2;
       ponerImg(gR, M, AU, 46); y += hR + 2;
       ayuda('verde = rotación normal; ámbar = vigilar; rojo = lento movimiento que ocupa espacio. La tabla agrega las despachadas y el total, que coincide con la gráfica del dashboard.');
@@ -4055,7 +4364,7 @@ function generarReporteEjecutivo(){
         options:{indexAxis:'y', layout:{padding:{right:190}}, scales:ejes(true)},
         plugins:[etiquetas((v,i)=> `${d1(v)} días prom. · ${fmt(top[i].n)} ${plural(top[i].n,'tarima','tarimas')}`)]}, 1100, 50 + top.length*40);
       const hS = altoImg(gS, AU, 72);
-      subBloque('3.3 Sitios con más días en inventario', hS + 8);
+      subBloque('4.3 Sitios con más días en inventario', hS + 8);
       subtitulo(`Días promedio en almacén por sitio (principales de ${fmt(sitios.length)}) · mismo orden que el dashboard`); y += 5.2;
       ponerImg(gS, M, AU, 72); y += hS + 1.5;
       { let lx = M; [['Hasta 60 días', EST.ok.c], ['61 a 180 días', EST.warn.c], ['Más de 180 días', EST.bad.c]].forEach(([t, c])=>{
@@ -4286,14 +4595,23 @@ function generarReporteEjecutivo(){
 }
 
 // Dibuja una tabla HTML sencilla (encabezado, cuerpo y total) en el PDF.
-function pdfTabla(doc, tablaId, M, y, ancho, H){
+// Las fuentes estándar del PDF no van incrustadas y algunos visores no muestran «²»: en los PDF se escribe «m2».
+function pdfSinSuperindices(doc){
+  const fix = (t)=> typeof t === 'string' ? t.replace(/²/g, '2') : (Array.isArray(t) ? t.map(fix) : t);
+  const text0 = doc.text.bind(doc), split0 = doc.splitTextToSize.bind(doc), ancho0 = doc.getTextWidth.bind(doc);
+  doc.text = (t, ...r)=> text0(fix(t), ...r);
+  doc.splitTextToSize = (t, ...r)=> split0(fix(t), ...r);
+  doc.getTextWidth = (t, ...r)=> ancho0(fix(t), ...r);
+  return doc;
+}
+function pdfTabla(doc, tablaId, M, y, ancho, H, anchos){
   const t = document.getElementById(tablaId);
   if (!t) return y;
   const filas = [...t.querySelectorAll('tr')].map(tr=>[...tr.children].map(td=>{
     const c = td.cloneNode(true); c.querySelectorAll('.pj,.bar').forEach(e=>e.remove());
     return c.textContent.trim();
   }));
-  const colW = [ancho*0.55, ancho*0.15, ancho*0.15, ancho*0.15];
+  const colW = (anchos || [0.55, 0.15, 0.15, 0.15]).map(f=> ancho*f);
   const alto = 5.2;
   filas.forEach((fila, i)=>{
     if (y + alto > H - M - 4){ doc.addPage(); y = M; }
@@ -4321,6 +4639,7 @@ function generarPDF(){
     return;
   }
   const doc = new jsPDFCtor({orientation:'portrait', unit:'mm', format:'a4'});
+  pdfSinSuperindices(doc);
   const W = doc.internal.pageSize.getWidth();
   const H = doc.internal.pageSize.getHeight();
   const M = 12;                 // margen
@@ -4457,7 +4776,7 @@ function generarPDF(){
             }
           }
         }
-        if (pn.tabla) y = pdfTabla(doc, pn.tabla, M, y, anchoUtil, H);
+        if (pn.tabla) y = pdfTabla(doc, pn.tabla, M, y, anchoUtil, H, pn.anchos);
         y += 4;
       });
       y += 2;
@@ -5507,10 +5826,12 @@ async function nubeRenovar(){
   try{
     d = await nubeHttp('/auth/v1/token?grant_type=refresh_token', { method:'POST', body: JSON.stringify({ refresh_token: s.refresh_token }) });
   }catch(err){
-    if (err.tipo !== 'red'){ nubeGuardarSesion(null); throw NubeError('auth', 'La sesión de la nube expiró. Vuelve a iniciar sesión.'); }
+    // Solo se borra la sesión con la que se intentó renovar (si ya se inició otra, se respeta)
+    if (err.tipo !== 'red'){ if (NUBE.sesion === s) nubeGuardarSesion(null); throw NubeError('auth', 'La sesión de la nube expiró. Vuelve a iniciar sesión.'); }
     throw err;
   }
-  nubeGuardarSesion({ access_token:d.access_token, refresh_token:d.refresh_token, expires_at: Date.now() + (d.expires_in || 3600) * 1000, email: (d.user && d.user.email) || s.email, esLider: s.esLider });
+  if (NUBE.sesion !== s) return NUBE.sesion;   // mientras tanto se cerró o se inició otra sesión
+  nubeGuardarSesion({ access_token:d.access_token, refresh_token:d.refresh_token, expires_at: Date.now() + (d.expires_in || 3600) * 1000, email: (d.user && d.user.email) || s.email, esLider: s.esLider, rol: s.rol });
   return NUBE.sesion;
 }
 // Petición a la base de datos con el token del usuario; si caducó, se renueva una vez.
@@ -5797,6 +6118,7 @@ async function nubeSincronizar(op){
   if (!nubeConfigurada()){ nubeEstado('aviso', 'Falta configurar el proyecto de la nube.'); return; }
   if (!NUBE.sesion){ nubeEstado('aviso', 'Inicia sesión en la nube para ver los datos compartidos.'); return; }
   NUBE.ocupado = true;
+  const sesionInicial = NUBE.sesion;
   nubeEstado('sync', 'Sincronizando…');
   try{
     const filas = await nubeApi('/rest/v1/' + NUBE_TABLA + '?id=eq.' + NUBE_FILA + '&select=actualizado,actualizado_por,nombre_archivo');
@@ -5829,7 +6151,7 @@ async function nubeSincronizar(op){
     if (op.rol) await nubeConsultarRol();
     nubeEstado('ok', 'Sincronizado');
   }catch(err){
-    if (err.tipo === 'auth'){ nubeGuardarSesion(null); nubeEstado('aviso', err.message); }
+    if (err.tipo === 'auth'){ if (NUBE.sesion === sesionInicial) nubeGuardarSesion(null); nubeEstado('aviso', err.message); }
     else if (err.tipo === 'red') nubeEstado('error', 'Sin conexión: se muestra la última copia descargada.');
     else nubeEstado('error', err.message);
     if (!op.silencioso) throw err;
