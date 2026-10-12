@@ -1911,6 +1911,74 @@ function etiquetasMesAnio(keys){
 
 // Trimestre calendario de un mes «AAAA-MM»: T1 (ene–mar) … T4 (oct–dic)
 function trimestreDe(k){ const [y, m] = k.split('-').map(Number); return { clave: y + '-T' + Math.ceil(m/3), q: Math.ceil(m/3), y }; }
+// Agrupa una serie mensual por trimestre: índices, totales y si está completo o en curso
+function calcularTrimestres(keys, dataIn, dataOut){
+  const trimestres = [], hoy = monthKey(new Date());
+  keys.forEach((k, i)=>{
+    const t = trimestreDe(k);
+    let g = trimestres[trimestres.length-1];
+    if (!g || g.clave !== t.clave){ g = { clave:t.clave, q:t.q, y:t.y, i0:i, i1:i, in:0, out:0, meses:[] }; trimestres.push(g); }
+    g.i1 = i; g.in += dataIn[i] || 0; g.out += dataOut[i] || 0; g.meses.push(k);
+  });
+  trimestres.forEach(g=>{ g.enCurso = g.meses.includes(hoy); g.parcial = g.meses.length < 3 || g.enCurso; });
+  return trimestres;
+}
+// Franjas de trimestre con su nombre arriba (dashboard y reportes). En impresión (fondo blanco) usa tonos oscuros.
+function pluginBandasTrimestre(keys, trimestres, op){
+  op = op || {};
+  return {
+    id:'bandasTrimestre',
+    beforeDatasetsDraw(chart){
+      if (!trimestres.length) return;
+      const imp = op.impresion || !!chart.$showNumberLabels;
+      const a = chart.chartArea, x = chart.scales.x, c = chart.ctx;
+      const paso = keys.length > 1 ? (x.getPixelForValue(1) - x.getPixelForValue(0)) : a.width;
+      c.save();
+      trimestres.forEach((g, n)=>{
+        const xa = Math.max(a.left, x.getPixelForValue(g.i0) - paso/2), xb = Math.min(a.right, x.getPixelForValue(g.i1) + paso/2);
+        if (n % 2 === 0){ c.fillStyle = imp ? 'rgba(15,23,42,0.045)' : hexAlpha(TH.text, APARIENCIA.tema === 'oscuro' ? 0.045 : 0.05); c.fillRect(xa, a.top, xb - xa, a.bottom - a.top); }
+        if (n > 0){ c.strokeStyle = imp ? 'rgba(15,23,42,0.28)' : hexAlpha(TH.text, 0.22); c.setLineDash([3,3]); c.lineWidth = 1; c.beginPath(); c.moveTo(xa + 0.5, a.top); c.lineTo(xa + 0.5, a.bottom); c.stroke(); c.setLineDash([]); }
+        const ancho = xb - xa, fs = op.fuente || 11;
+        c.fillStyle = imp ? '#374151' : TH.tick; c.textAlign = 'center'; c.textBaseline = 'top';
+        c.font = '700 ' + fs + 'px Inter, sans-serif';
+        const txt = ancho > fs * 6.5 ? ('T' + g.q + ' ' + g.y) : ('T' + g.q + (ancho > fs * 3.6 ? ' ' + String(g.y).slice(2) : ''));
+        c.fillText(txt, (xa + xb)/2, a.top + 4);
+      });
+      c.restore();
+    }
+  };
+}
+// Tarjetas por trimestre en un PDF (jsPDF): nombre, meses, entradas, salidas y diferencia. Devuelve la altura usada (mm).
+function pdfTarjetasTrimestre(doc, trimestres, x, y, w, colIn, colOut){
+  if (!trimestres || !trimestres.length) return 0;
+  const rgb = (h)=>{ const n = parseInt(String(h).replace('#','').replace(/^(.)(.)(.)$/,'$1$1$2$2$3$3'), 16); return [(n>>16)&255, (n>>8)&255, n&255]; };
+  const gap = 2, n = trimestres.length, cw = (w - gap*(n-1)) / n, h = 19.5;
+  trimestres.forEach((g, i)=>{
+    const cx = x + i*(cw + gap);
+    doc.setFillColor(248,250,252); doc.setDrawColor(203,213,225); doc.setLineWidth(0.25);
+    if (g.parcial && doc.setLineDashPattern) doc.setLineDashPattern([0.9, 0.7], 0);
+    doc.roundedRect(cx, y, cw, h, 1.4, 1.4, 'FD');
+    if (doc.setLineDashPattern) doc.setLineDashPattern([], 0);
+    const m0 = MESES[parseInt(g.meses[0].split('-')[1],10)-1], m1 = MESES[parseInt(g.meses[g.meses.length-1].split('-')[1],10)-1];
+    doc.setFont('helvetica','bold'); doc.setFontSize(8.4); doc.setTextColor(17,24,39);
+    doc.text('T' + g.q + ' ' + g.y, cx + 2.2, y + 4.3);
+    doc.setFont('helvetica','normal'); doc.setFontSize(6.4); doc.setTextColor(100,110,122);
+    doc.text((m0 === m1 ? m0 : m0 + '–' + m1) + (g.enCurso ? ' · en curso' : (g.meses.length < 3 ? ' · parcial' : '')), cx + 2.2, y + 7.4);
+    const fila = (yy, etq, val, cMarca, cVal, negrita)=>{
+      if (cMarca){ const c = rgb(cMarca); doc.setFillColor(c[0],c[1],c[2]); doc.rect(cx + 2.2, yy - 1.9, 1.7, 1.7, 'F'); }
+      doc.setFont('helvetica','normal'); doc.setFontSize(6.6); doc.setTextColor(90,99,110);
+      doc.text(etq, cx + (cMarca ? 4.7 : 2.2), yy);
+      doc.setFont('helvetica', negrita ? 'bold' : 'bold'); doc.setFontSize(7.6); doc.setTextColor(cVal[0], cVal[1], cVal[2]);
+      doc.text(val, cx + cw - 2.2, yy, {align:'right'});
+    };
+    const d = g.in - g.out;
+    fila(y + 11, 'Entradas', fmt(g.in), colIn, [17,24,39]);
+    fila(y + 14.1, 'Salidas', fmt(g.out), colOut, [17,24,39]);
+    doc.setDrawColor(226,232,240); doc.setLineWidth(0.2); doc.line(cx + 2.2, y + 15.4, cx + cw - 2.2, y + 15.4);
+    fila(y + 18, 'Diferencia', (d > 0 ? '+' : '') + fmt(d), null, d < 0 ? [220,38,38] : [17,24,39], true);
+  });
+  return h;
+}
 function renderMovChart(canvasId, records, mode, scale, tipo, op){
   // mode: 'mov' -> counts of movements, 'tar' -> pallet quantities
   // scale: escala de color a usar (activeScale() para las gráficas combinadas,
@@ -1957,38 +2025,9 @@ function renderMovChart(canvasId, records, mode, scale, tipo, op){
       {label:'Entradas', data:dataIn, backgroundColor:sc.entrada, borderRadius:4, maxBarThickness:26, categoryPercentage:0.94, barPercentage:0.97},
       {label:'Salidas', data:dataOut, backgroundColor:sc.salida, borderRadius:4, maxBarThickness:26, categoryPercentage:0.94, barPercentage:0.97}
     ];
-  // Trimestres dentro de la ventana: inicio/fin (índices), totales y si están completos
-  const trimestres = [];
-  if (conTrimestres){
-    keys.forEach((k, i)=>{
-      const t = trimestreDe(k);
-      let g = trimestres[trimestres.length-1];
-      if (!g || g.clave !== t.clave){ g = { clave:t.clave, q:t.q, y:t.y, i0:i, i1:i, in:0, out:0, meses:[] }; trimestres.push(g); }
-      g.i1 = i; g.in += dataIn[i]; g.out += dataOut[i]; g.meses.push(k);
-    });
-    const hoy = monthKey(new Date());
-    trimestres.forEach(g=>{ g.enCurso = g.meses.includes(hoy); g.parcial = g.meses.length < 3 || g.enCurso; });
-  }
-  const bandas = {
-    id:'bandasTrimestre',
-    beforeDatasetsDraw(chart){
-      if (!trimestres.length) return;
-      const a = chart.chartArea, x = chart.scales.x, c = chart.ctx;
-      const paso = keys.length > 1 ? (x.getPixelForValue(1) - x.getPixelForValue(0)) : a.width;
-      c.save();
-      trimestres.forEach((g, n)=>{
-        const xa = Math.max(a.left, x.getPixelForValue(g.i0) - paso/2), xb = Math.min(a.right, x.getPixelForValue(g.i1) + paso/2);
-        if (n % 2 === 0){ c.fillStyle = hexAlpha(TH.text, APARIENCIA.tema === 'oscuro' ? 0.045 : 0.05); c.fillRect(xa, a.top, xb - xa, a.bottom - a.top); }
-        if (n > 0){ c.strokeStyle = hexAlpha(TH.text, 0.22); c.setLineDash([3,3]); c.lineWidth = 1; c.beginPath(); c.moveTo(xa + 0.5, a.top); c.lineTo(xa + 0.5, a.bottom); c.stroke(); c.setLineDash([]); }
-        const ancho = xb - xa;
-        c.fillStyle = TH.tick; c.textAlign = 'center'; c.textBaseline = 'top';
-        c.font = '700 11px Inter, sans-serif';
-        const txt = ancho > 70 ? ('T' + g.q + ' ' + g.y) : ('T' + g.q + (ancho > 40 ? ' ' + String(g.y).slice(2) : ''));
-        c.fillText(txt, (xa + xb)/2, a.top + 4);
-      });
-      c.restore();
-    }
-  };
+  // Trimestres dentro de la ventana y sus franjas
+  const trimestres = conTrimestres ? calcularTrimestres(keys, dataIn, dataOut) : [];
+  const bandas = pluginBandasTrimestre(keys, trimestres);
   const muchos = labels.length > 14;
   const escalas = baseGridOpts();
   escalas.x.grid = { display:false };
@@ -2024,6 +2063,8 @@ function renderMovChart(canvasId, records, mode, scale, tipo, op){
     }
   });
   CHARTS[canvasId].$meses = keys;
+  CHARTS[canvasId].$trimestres = trimestres;
+  CHARTS[canvasId].$coloresTrim = { in: sc.entrada, out: sc.salida };
   const totalIn = dataIn.reduce((a,b)=>a+b,0);
   const totalOut = dataOut.reduce((a,b)=>a+b,0);
   return {totalIn, totalOut, trimestres, meses: keys};
@@ -3326,7 +3367,7 @@ function generarReporteEjecutivo(){
     const tc = t.getContext('2d'); tc.fillStyle = '#FFFFFF'; tc.fillRect(0,0,t.width,t.height); tc.drawImage(cv, 0, 0);
     const out = { png: t.toDataURL('image/png'), ratio: cv.height / cv.width };
     // Posición horizontal de cada categoría (fracción del ancho) para alinear datos debajo de la gráfica
-    if (ch.scales && ch.scales.x && ch.options.indexAxis !== 'y' && ch.config.type === 'bar')
+    if (ch.scales && ch.scales.x && ch.options.indexAxis !== 'y' && (ch.config.type === 'bar' || ch.config.type === 'line'))
       out.xs = ch.data.labels.map((l, i)=> ch.scales.x.getPixelForValue(i) / wPx);
     ch.destroy(); cv.remove();
     return out;
@@ -3768,6 +3809,33 @@ function generarReporteEjecutivo(){
       {label:etiquetaOut || 'Salidas', data:ks.map(getOut), backgroundColor:colOut, borderRadius:3, maxBarThickness:30}]},
     options:{layout:{padding:{top:8}}, plugins:{legend:leyenda('top')}, scales:ejes(false, {x:{grid:{color:'transparent'}, border:{display:false}, ticks:{color:TXT, font:{size: wPx < 800 ? 13 : 15, weight:'600', family:FAM}, maxRotation:0, autoSkip:false}}})},
     plugins:[etiquetas(v=> v ? fmt(v) : '')]}, wPx, hPx);
+  // Mismo diseño que las métricas 1 y 2 del dashboard: líneas (o barras) con franjas por trimestre,
+  // mes en curso con asterisco y tramo punteado. Devuelve la imagen y los trimestres para las tarjetas.
+  const graficaTrimestres = (ks, getIn, getOut, colIn, colOut, wPx, hPx, tipo, etiquetaIn, etiquetaOut)=>{
+    const dIn = ks.map(getIn), dOut = ks.map(getOut);
+    const trims = calcularTrimestres(ks, dIn, dOut);
+    const linea = tipo === 'line', iCurso = ks.indexOf(hoyKey);
+    const punteado = (iCurso > 0 && linea) ? { borderDash: c=> c.p1DataIndex === iCurso ? [7,6] : undefined } : undefined;
+    const degradado = (c)=>{ const a = c.chart.chartArea; if (!a) return hexAlpha(colIn, 0.16);
+      const g = c.chart.ctx.createLinearGradient(0, a.top, 0, a.bottom); g.addColorStop(0, hexAlpha(colIn, 0.30)); g.addColorStop(1, hexAlpha(colIn, 0.03)); return g; };
+    const pts = { pointRadius:3, pointHoverRadius:3, pointBorderColor:'#FFFFFF', pointBorderWidth:1.5, cubicInterpolationMode:'monotone', tension:0.3 };
+    const datasets = linea ? [
+        Object.assign({label:etiquetaIn || 'Entradas', data:dIn, borderColor:colIn, pointBackgroundColor:colIn, backgroundColor:degradado, fill:'origin', borderWidth:3, order:2, segment:punteado}, pts),
+        Object.assign({label:etiquetaOut || 'Salidas', data:dOut, borderColor:colOut, pointBackgroundColor:colOut, backgroundColor:colOut, fill:false, borderWidth:3.4, order:1, segment:punteado}, pts)
+      ] : [
+        {label:etiquetaIn || 'Entradas', data:dIn, backgroundColor:colIn, borderRadius:3, maxBarThickness:30, categoryPercentage:0.86, barPercentage:0.94},
+        {label:etiquetaOut || 'Salidas', data:dOut, backgroundColor:colOut, borderRadius:3, maxBarThickness:30, categoryPercentage:0.86, barPercentage:0.94}
+      ];
+    const esc = ejes(false, {x:{offset:true, grid:{color:'transparent'}, border:{display:false}, ticks:{color:TXT, font:{size: wPx < 800 ? 13 : 15, weight:'600', family:FAM}, maxRotation:0, autoSkip:false}}});
+    if (esc.y) esc.y.grace = '22%';
+    const img = graficaTemp({type: linea ? 'line' : 'bar', data:{labels:ks.map(etqMes), datasets},
+      options:{layout:{padding:{top:8}}, plugins:{legend:(()=>{ const l = leyenda('top'); l.labels.sort = (a,b)=> a.datasetIndex - b.datasetIndex; return l; })()}, scales:esc},
+      plugins:[pluginBandasTrimestre(ks, trims, { impresion:true, fuente:15 })]}, wPx, hPx);
+    img.trimestres = trims; img.colIn = colIn; img.colOut = colOut;
+    return img;
+  };
+  const tarjetasTrim = (img)=>{ const h = pdfTarjetasTrimestre(doc, img.trimestres, M, y, AU, img.colIn, img.colOut); y += h + 3; };
+  const ALTO_TRIM = 22.5;
   // Serie mensual de un subconjunto de registros, con los mismos meses de calendario del reporte
   const serieMeses = (rs)=>{ const ps = periodSeries(rs); return (k)=> ps.months[k] || {in:0, out:0, palIn:0, palOut:0}; };
   // Tarimas en almacén al cierre de cada mes (el mes en curso, a hoy)
@@ -3785,9 +3853,9 @@ function generarReporteEjecutivo(){
       (neto6 > 0 ? `En los últimos 6 meses (${rangoTxt}) entraron ${fmt(neto6)} tarimas más de las que salieron: el inventario está creciendo`
         : (neto6 < 0 ? `En los últimos 6 meses (${rangoTxt}) salieron ${fmt(-neto6)} tarimas más de las que entraron: el inventario se está reduciendo`
           : `En los últimos 6 meses (${rangoTxt}) entró lo mismo que salió: el inventario se mantiene estable`));
-    const g = graficaMeses(ult12, k=>months[k].in, k=>months[k].out, sc.entrada, sc.salida, 1100, 380, 'Entradas (movimientos)', 'Salidas (movimientos)');
+    const g = graficaTrimestres(ult12, k=>months[k].in, k=>months[k].out, sc.entrada, sc.salida, 1100, 380, 'line', 'Entradas (movimientos)', 'Salidas (movimientos)');
     const hg = altoImg(g, AU, 56);
-    const gT = graficaMeses(ult12, k=>months[k].palIn, k=>months[k].palOut, sc.entrada, sc.salida, 1100, 330, 'Entradas (tarimas)', 'Salidas (tarimas)');
+    const gT = graficaTrimestres(ult12, k=>months[k].palIn, k=>months[k].palOut, sc.entrada, sc.salida, 1100, 330, 'line', 'Entradas (tarimas)', 'Salidas (tarimas)');
     const hgT = altoImg(gT, AU, 54);
     const u3 = P.u3, p3 = P.p3;   // trimestres de meses cerrados
     const prom = (ks, c)=> ks.length ? ks.reduce((a,k)=>a+months[k][c],0)/ks.length : 0;
@@ -3819,8 +3887,8 @@ function generarReporteEjecutivo(){
       pk.push({e:'info', b:'Mes en curso:', t:`${mesLargo(hoyKey).split(' ')[0]} lleva ${fmt(months[hoyKey].in)} entradas y ${fmt(months[hoyKey].out)} salidas al ${dd}; no se incluye en comparaciones.`});
     }
     seccion('Movimientos generales — ' + (todos ? 'Telcel y AT&T' : vista), titular, 14 + hg + 10);
-    subBloque('1.1 Entradas vs. salidas por periodo (movimientos)', hg + 10);
-    subtitulo(`Movimientos por mes · últimos ${ult12.length} meses (${monthLabel(ult12[0])} a ${monthLabel(ult12[ult12.length-1])})` + notaCurso);
+    subBloque('1.1 Entradas vs. salidas por periodo (movimientos)', hg + 10 + ALTO_TRIM);
+    subtitulo(`Movimientos por mes · últimos ${ult12.length} meses por trimestre (${monthLabel(ult12[0])} a ${monthLabel(ult12[ult12.length-1])})` + notaCurso);
     y += 5.2;
     ponerImg(g, M, AU, 56);
     y += hg + 1.5;
@@ -3835,13 +3903,15 @@ function generarReporteEjecutivo(){
       });
       y += 10;
     }
-    ayuda('barras claras = movimientos de entrada; oscuras = de salida. El saldo en rojo (+) indica que el inventario creció ese mes; en verde (–), que se redujo.');
+    tarjetasTrim(g);
+    ayuda('línea clara con relleno = movimientos de entrada; línea oscura = de salida. Las franjas separan los trimestres (T1 ene–mar … T4 oct–dic) y debajo va el total de cada uno; los de borde punteado están incompletos o en curso. El mes en curso lleva asterisco y su tramo va punteado. El saldo en rojo (+) indica que el inventario creció ese mes; en verde (–), que se redujo.');
     const igualTarimas = ult12.every(k=> months[k].palIn === months[k].in && months[k].palOut === months[k].out) && R.tarIn === R.entradas && R.tarOut === R.salidas;
     if (!igualTarimas){
-      subBloque('1.2 Movimiento por tarimas (cantidad de tarimas físicas)', hgT + 6);
-      subtitulo('Tarimas por mes según «No. de Pallet» (entradas) y «Pallets salida» (salidas)' + notaCurso);
+      subBloque('1.2 Movimiento por tarimas (cantidad de tarimas físicas)', hgT + 6 + ALTO_TRIM);
+      subtitulo('Tarimas por mes según «No. de Pallet» (entradas) y «Pallets salida» (salidas) · por trimestre' + notaCurso);
       y += 5.2;
       ponerImg(gT, M, AU, 54); y += hgT + 2;
+      tarjetasTrim(gT);
     } else {
       subBloque('1.2 Movimiento por tarimas (cantidad de tarimas físicas)', altoTabla(2) + 10);
     }
@@ -3864,8 +3934,8 @@ function generarReporteEjecutivo(){
     const titular = `${md[0]} despacha más (${pctTxt(md[1].salidas,md[1].entradas)} vs ${pctTxt(md[3].salidas,md[3].entradas)}), pero el material de ${ml[0]} permanece ` +
       (veces >= 1.5 ? `${fmt1(r1(veces))} veces más tiempo en promedio (${fmt1(r1(ml[1].avg))} vs ${fmt1(r1(ml[3].avg))} días)` : `más tiempo en promedio (${fmt1(r1(ml[1].avg))} vs ${fmt1(r1(ml[3].avg))} días)`);
     const sT = serieMeses(byProject('TELCEL')), sA = serieMeses(byProject('AT&T'));
-    const gT = graficaMeses(ult12, k=>sT(k).in, k=>sT(k).out, SCALES.telcel.entrada, SCALES.telcel.salida, 1100, 300);
-    const gA = graficaMeses(ult12, k=>sA(k).in, k=>sA(k).out, SCALES.att.entrada, SCALES.att.salida, 1100, 300);
+    const gT = graficaTrimestres(ult12, k=>sT(k).in, k=>sT(k).out, SCALES.telcel.entrada, SCALES.telcel.salida, 1100, 300, 'bar');
+    const gA = graficaTrimestres(ult12, k=>sA(k).in, k=>sA(k).out, SCALES.att.entrada, SCALES.att.salida, 1100, 300, 'bar');
     const hT = altoImg(gT, AU, 48), hA = altoImg(gA, AU, 48);
     const filas = [
       ['Tarimas recibidas', fmt(T.entradas), fmt(A.entradas), fmt(R.entradas)],
@@ -3884,12 +3954,14 @@ function generarReporteEjecutivo(){
       R.buckets[3] ? {e:'warn', b:'Lento movimiento:', t:`${T.buckets[3] >= A.buckets[3] ? 'Telcel' : 'AT&T'} concentra ${fmt(Math.max(T.buckets[3],A.buckets[3]))} de las ${fmt(R.buckets[3])} tarimas con más de 180 días.`} : null
     ].filter(Boolean);
     seccion('Movimiento del cross dock por proyecto', titular, 14 + hT);
-    subBloque('2.1 Cross dock · Telcel', hT + 6);
-    subtitulo(`Movimientos por mes · Telcel` + notaCurso); y += 5.2;
+    subBloque('2.1 Cross dock · Telcel', hT + 6 + ALTO_TRIM);
+    subtitulo(`Movimientos por mes · Telcel · últimos ${ult12.length} meses por trimestre` + notaCurso); y += 5.2;
     ponerImg(gT, M, AU, 48); y += hT + 2;
-    subBloque('2.2 Cross dock · AT&T', hA + 6);
-    subtitulo(`Movimientos por mes · AT&T` + notaCurso); y += 5.2;
+    tarjetasTrim(gT);
+    subBloque('2.2 Cross dock · AT&T', hA + 6 + ALTO_TRIM);
+    subtitulo(`Movimientos por mes · AT&T · últimos ${ult12.length} meses por trimestre` + notaCurso); y += 5.2;
     ponerImg(gA, M, AU, 48); y += hA + 2;
+    tarjetasTrim(gA);
     subBloque('2.3 Comparativo de indicadores', altoTabla(9));
     tabla([{t:'Indicador',w:.46},{t:'Telcel',w:.18,a:'r'},{t:'AT&T',w:.18,a:'r'},{t:'Total',w:.18,a:'r'}], filas);
     fuenteTxt('normal', 7.2); color(GRIS);
@@ -3904,8 +3976,8 @@ function generarReporteEjecutivo(){
     const titular = `${vista}: ${pctTxt(R.salidas,R.entradas)} despachado y ${fmt(R.vigentes)} tarimas en almacén` +
       (finInv !== iniInv ? ` (${finInv > iniInv ? '+' : ''}${fmt(finInv - iniInv)} en 12 meses)` : '');
     const g = graficaTemp({type:'bar', data:{labels:ult12.map(etqMes), datasets:[{label:'Tarimas en almacén al cierre del mes', data:inv, backgroundColor:sc.accent, borderRadius:3, maxBarThickness:40}]},
-      options:{layout:{padding:{top:10}}, plugins:{legend:leyenda('top')}, scales:ejes(false, {x:{grid:{color:'transparent'}, border:{display:false}, ticks:{color:TXT, font:{size:15, weight:'600', family:FAM}}}})},
-      plugins:[etiquetas(v=> fmt(v))]}, 1100, 340);
+      options:{layout:{padding:{top:10}}, plugins:{legend:leyenda('top')}, scales:(()=>{ const e = ejes(false, {x:{grid:{color:'transparent'}, border:{display:false}, ticks:{color:TXT, font:{size:15, weight:'600', family:FAM}}}}); if (e.y){ e.y.suggestedMax = Math.ceil(Math.max(1, ...inv) * 1.32); } return e; })()},
+      plugins:[etiquetas(v=> fmt(v)), pluginBandasTrimestre(ult12, calcularTrimestres(ult12, inv, inv.map(()=>0)), { impresion:true, fuente:15 })]}, 1100, 340);
     const hg = altoImg(g, AU, 56);
     const maxI = Math.max(...inv), kMax = ult12[inv.indexOf(maxI)];
     const pk = [
@@ -4357,7 +4429,8 @@ function generarPDF(){
         if (imgH > maxH){ imgH = maxH; imgW = imgH / ratio; }
 
         const filasTabla = pn.tabla ? document.querySelectorAll('#'+pn.tabla+' tr').length : 0;
-        const bloque = imgH + 10 + (pn.pie ? 6 : 0) + filasTabla*5.2 + (filasTabla ? 2 : 0);
+        const trimPn = (CHARTS[pn.canvas] && CHARTS[pn.canvas].$trimestres) || [];
+        const bloque = imgH + 10 + (pn.pie ? 6 : 0) + filasTabla*5.2 + (filasTabla ? 2 : 0) + (trimPn.length ? 22 : 0);
         if (y + bloque > H - M){ doc.addPage(); y = M; }
 
         doc.setFont('helvetica','bold'); doc.setFontSize(9.5);
@@ -4367,6 +4440,10 @@ function generarPDF(){
 
         doc.addImage(img, 'PNG', M + (anchoUtil - imgW)/2, y, imgW, imgH, undefined, 'FAST');
         y += imgH + 2;
+        if (trimPn.length){
+          const ct = CHARTS[pn.canvas].$coloresTrim || {};
+          y += pdfTarjetasTrimestre(doc, trimPn, M, y, anchoUtil, ct.in, ct.out) + 2.5;
+        }
 
         if (pn.pie){
           const pie = document.getElementById(pn.pie);
