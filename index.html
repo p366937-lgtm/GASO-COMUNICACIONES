@@ -1776,6 +1776,10 @@ function processRecord(r){
   const fs = excelSerialToDate(r.fs);
   const estatusSalida = (r.es||'').trim().toUpperCase();
   if (!fi) return null; // ENTRADA = toda fila con Fecha de Ingreso poblada
+  // «No. de Pallet» en 0 = tarima consolidada con otra: no se cuenta en ninguna métrica.
+  // (Vacío se cuenta como 1 tarima; 1 o más, como viene.)
+  const npTxt = String(r.np == null ? '' : r.np).trim();
+  if (npTxt !== '' && parseFloat(npTxt) === 0) return null;
   // SALIDA = tiene Fecha de Salida capturada o el estatus dice explícitamente "SALIDA".
   // Se usan ambas señales porque la columna ESTATUS SALIDA a veces viene incompleta,
   // mientras que Fecha de Salida es más consistente entre archivos.
@@ -5925,7 +5929,7 @@ function validarInventario(raw){
   const grupos = {
     sinIngreso:  { t:'Sin fecha de ingreso', d:'No se cuentan en ninguna métrica.', ej:[], n:0, grave:true },
     tipo:        { t:'Sin tipo de tarima reconocido', d:'Se cuentan como estándar en la capacidad (m²).', ej:[], n:0 },
-    pallet0:     { t:'«No. de Pallet» vacío o en 0', d:'Se cuentan como 1 tarima.', ej:[], n:0 },
+    pallet0:     { t:'«No. de Pallet» vacío', d:'Se cuentan como 1 tarima. (Las que traen 0 son tarimas consolidadas con otra y no se cuentan.)', ej:[], n:0 },
     salidaSinFecha: { t:'Salida sin fecha de salida', d:'Cuentan como despachadas, pero no aparecen en ningún mes.', ej:[], n:0 },
     salidaAntes: { t:'Fecha de salida anterior al ingreso', d:'Los días en inventario quedan en 0.', ej:[], n:0, grave:true },
     futuras:     { t:'Fechas en el futuro', d:'Probable error de captura: alteran los meses y los días.', ej:[], n:0, grave:true },
@@ -5938,7 +5942,7 @@ function validarInventario(raw){
     const fi = parseFloat(r.fi), fs = parseFloat(r.fs), es = String(r.es || '').trim().toUpperCase();
     if (!(fi > 0)) { marca('sinIngreso', r); return; }
     if (!tipoTarimaReconocido(r.tp)) marca('tipo', r);
-    if (!(parseFloat(r.np) > 0)) marca('pallet0', r);
+    if (String(r.np == null ? '' : r.np).trim() === '') marca('pallet0', r);
     if (es === 'SALIDA' && !(fs > 0)) marca('salidaSinFecha', r);
     if (fs > 0 && fs < fi) marca('salidaAntes', r);
     if (fi > hoy || fs > hoy) marca('futuras', r);
