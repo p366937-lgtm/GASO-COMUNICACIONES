@@ -2173,7 +2173,7 @@ function renderMovChart(canvasId, records, mode, scale, tipo, op){
       responsive:true, maintainAspectRatio:false,
       interaction:{mode:'index', intersect:false},
       plugins:{ legend:{ position:'top', align:'end', labels:{boxWidth:9, boxHeight:9, usePointStyle:true, pointStyle:esLinea?'circle':'rectRounded', sort:(a,b)=> a.datasetIndex - b.datasetIndex} },
-                 tooltip:{ backgroundColor:TH.tipBg, borderColor:TH.tipBorder, borderWidth:1, titleColor:TH.text, bodyColor:TH.text, padding:10,
+                 tooltip:{ backgroundColor:TH.tipBg, borderColor:TH.tipBorder, borderWidth:1, titleColor:TH.text, bodyColor:TH.text, footerColor:TH.text, padding:10,
                            itemSort:(a,b)=> a.datasetIndex - b.datasetIndex, usePointStyle:true, boxWidth:8, boxHeight:8,
                            callbacks:{ title: it=> it.length ? labels[it[0].dataIndex] + (conTrimestres && keys[it[0].dataIndex] === monthKey(new Date()) ? ' (mes en curso)' : '') : '',
                                        footer: it=>{ if (it.length < 2) return ''; const i = it[0].dataIndex, d = dataIn[i] - dataOut[i];
@@ -2300,7 +2300,7 @@ function renderPermanencia(){
       plugins:{
         numeroEtiquetas: false,   // usa sus propias etiquetas (incluyen el 0)
         legend:{ display:false, mostrarEnImpresion:true, position:'top', align:'end', labels:{ boxWidth:10, boxHeight:10, usePointStyle:true, pointStyle:'rectRounded' } },
-        tooltip:{ backgroundColor:TH.tipBg, borderColor:TH.tipBorder, borderWidth:1, titleColor:TH.text, bodyColor:TH.text, padding:10,
+        tooltip:{ backgroundColor:TH.tipBg, borderColor:TH.tipBorder, borderWidth:1, titleColor:TH.text, bodyColor:TH.text, footerColor:TH.text, padding:10,
           callbacks:{ label:(c)=> ` ${c.dataset.label}: ${formatNumeroEtiqueta(c.parsed.y)} días` } }
       },
       scales:{
@@ -2350,7 +2350,7 @@ function dibujarSitios(canvasId, bodyId, recs, color){
       plugins:{
         numeroEtiquetas:false,
         legend:{display:false},
-        tooltip:{ backgroundColor:TH.tipBg, borderColor:TH.tipBorder, borderWidth:1, titleColor:TH.text, bodyColor:TH.text, padding:10,
+        tooltip:{ backgroundColor:TH.tipBg, borderColor:TH.tipBorder, borderWidth:1, titleColor:TH.text, bodyColor:TH.text, footerColor:TH.text, padding:10,
           callbacks:{ label:(c)=>{ const e = entries[c.dataIndex];
             return [` ${fmt1(e.avg)} días promedio en inventario`, ` ${fmt(e.n)} ${e.n===1?'tarima vigente':'tarimas vigentes'} · máx. ${fmt(e.max)} días`, ` ID sitio: ${e.id || '–'}`]; } } }
       },
@@ -2408,7 +2408,7 @@ function renderBuckets(){
       interaction:{ mode:'index', intersect:false },
       plugins:{ numeroEtiquetas:false,
                 legend:{position:'top', align:'end', labels:{boxWidth:9, boxHeight:9, usePointStyle:true, pointStyle:'rectRounded'}},
-                tooltip:{ backgroundColor:TH.tipBg, borderColor:TH.tipBorder, borderWidth:1, titleColor:TH.text, bodyColor:TH.text, padding:10,
+                tooltip:{ backgroundColor:TH.tipBg, borderColor:TH.tipBorder, borderWidth:1, titleColor:TH.text, bodyColor:TH.text, footerColor:TH.text, padding:10,
                   callbacks:{ label:(c)=> ` ${c.dataset.label}: ${fmt(c.parsed.y)} tarimas`,
                               footer:(it)=> it.length > 1 ? 'Total: ' + fmt(it.reduce((a,x)=>a + x.parsed.y, 0)) + ' tarimas' : '' } } },
       scales:{ x:{...baseGridOpts().x, grid:{display:false}, stacked:true, ticks:{color:TH.tick, font:{size:11.5, weight:'600'}}},
@@ -2441,7 +2441,7 @@ function renderASP(){
       responsive:true, maintainAspectRatio:false,
       layout:{ padding:{ right:92 } },
       plugins:{ numeroEtiquetas:false, legend:{display:false},
-                tooltip:{ backgroundColor:TH.tipBg, borderColor:TH.tipBorder, borderWidth:1, titleColor:TH.text, bodyColor:TH.text, padding:10,
+                tooltip:{ backgroundColor:TH.tipBg, borderColor:TH.tipBorder, borderWidth:1, titleColor:TH.text, bodyColor:TH.text, footerColor:TH.text, padding:10,
                   callbacks:{ label:(c)=> ` ${fmt(c.parsed.x)} salidas (${totalAsp ? (Math.round(c.parsed.x/totalAsp*1000)/10).toLocaleString('es-MX') : 0}% del total)` } } },
       scales:{ x:{grid:{color:TH.grid}, border:{display:false}, ticks:{color:TH.tick, maxTicksLimit:6, precision:0}, beginAtZero:true},
                y:{grid:{display:false}, border:{display:false}, ticks:{color:TH.tick, font:{size:11.5, weight:'600'}}} }
@@ -2515,7 +2515,7 @@ function renderDoughnut(canvasId, records, title, scale){
             return Object.assign(it, { text: `${it.text}  ${fmt(data[i])} (${pct.toLocaleString('es-MX')}%)` });
           }) } },
         tooltip:{
-          backgroundColor:TH.tipBg, borderColor:TH.tipBorder, borderWidth:1, titleColor:TH.text, bodyColor:TH.text, padding:10,
+          backgroundColor:TH.tipBg, borderColor:TH.tipBorder, borderWidth:1, titleColor:TH.text, bodyColor:TH.text, footerColor:TH.text, padding:10,
           callbacks:{
             label:(c)=>{
               const pct = total ? Math.round((c.parsed/total)*1000)/10 : 0;
@@ -2603,7 +2603,7 @@ function renderDistribucionProyecto(){
       animation:{ animateRotate:true, duration:650, easing:'easeOutQuart' },
       plugins:{
         legend:{ display:false },
-        tooltip:{ backgroundColor:TH.tipBg, borderColor:TH.tipBorder, borderWidth:1, titleColor:TH.text, bodyColor:TH.text, padding:10,
+        tooltip:{ backgroundColor:TH.tipBg, borderColor:TH.tipBorder, borderWidth:1, titleColor:TH.text, bodyColor:TH.text, footerColor:TH.text, padding:10,
           callbacks:{
             title:(items)=>{
               const it = items[0];
@@ -3126,7 +3126,7 @@ function renderCapacidad(){
     plugins:[pluginBandasTrimestre(om.keys, trims), pluginLineaCapacidad(capacidadVista(), false), etqTot],
     options:{ responsive:true, maintainAspectRatio:false, animation:false,
       plugins:{ numeroEtiquetas:false, legend:{ position:'top', align:'end', labels:{ boxWidth:9, boxHeight:9, usePointStyle:true, pointStyle:'rectRounded' } },
-        tooltip:{ backgroundColor:TH.tipBg, borderColor:TH.tipBorder, borderWidth:1, titleColor:TH.text, bodyColor:TH.text, mode:'index', intersect:false,
+        tooltip:{ backgroundColor:TH.tipBg, borderColor:TH.tipBorder, borderWidth:1, titleColor:TH.text, bodyColor:TH.text, footerColor:TH.text, mode:'index', intersect:false,
           callbacks:{ label: it=> it.dataset.label + ': ' + fm2(it.raw) + ' m²', footer: it=>{ const i = it[0].dataIndex; return (varios ? 'Total: ' : '') + fm2(sumas[i]) + ' m² (' + fmt1(Math.round(sumas[i]/capacidadVista()*1000)/10) + ' % de ' + fmt(capacidadVista()) + ' m²)'; } } } },
       scales:{ x:{ stacked:true, offset:true, grid:{ display:false }, border:{ display:false }, ticks:{ color:TH.tick, maxRotation:0, autoSkip:true } },
                y:{ stacked:true, beginAtZero:true, suggestedMax: Math.max(capacidadVista(), ...sumas) * 1.22, grid:{ color:TH.grid }, border:{ display:false }, ticks:{ color:TH.tick, maxTicksLimit:6, callback:v=> fmt(v) } } } }
