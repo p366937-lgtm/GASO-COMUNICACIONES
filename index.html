@@ -6,6 +6,12 @@
 <title>GASO Cross Dock Analytics</title>
 <meta name="robots" content="noindex, nofollow">
 <script>window.GASO_WEB_PUBLICA = true;</script>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0D1B30">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="GASO Cross Dock">
+<script>if ('serviceWorker' in navigator && location.protocol === 'https:') window.addEventListener('load', ()=> navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
 <style id="fuentes-incluidas">
 /* Tipografías incluidas en el archivo: se ven igual con o sin internet */
 @font-face{font-family:'Inter';font-style:normal;font-weight:400;font-display:swap;src:url(data:font/woff2;base64,d09GMgABAAAAAFQ8ABAAAAAA9HwAAFPXAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGoEIG/xcHNReBmA/U1RBVEgAhTQRCAqByDyBpzYLh2YAATYCJAOPSAQgBYQWB6g+DAcb+N5HUHbbcaTozaoSnM94r1fCPHv4uFtlBahb1cxAsHEAeD/tkf3//5+bVMbQNmJaiiAqU+f3/UJgJiamzXOUUEtEbbKGRHRNd0Nm66I233MGR/aN1MMM0sorn6oEJAsyK8jN4IWIDvBq9XaVZ9dlU4tUw0xPRCEO+CasnNw5fSd2KqN64I/cRzl0zDCrpj6/EuidbiQrSS7E2XynLVRD8eEkSmVo6k+asxA8xCb36bXLKH21moOuqxmZL7myrEEdbmKEBY0dcn7juAP0v6/vZzQpuKVvCU5Z0X+CfKuRosMzsG3kT3LyahKBOqFmJdlWnEPi6rgiegCCFqj7iqA6wvjncVvv/Q02YKONBsQowMhE7tq6qqkXHc0P8N7+z/y2GEbrUla+/bm++WfzGYt/5vMfmxmG0TD/zXZxkeTzXZGNf6hUQqUIlRtXKmXdKN3cckule72XLurpb3sTBACJ5ppioP9Rj+1h7hzkE4KEeJTFYHxFU2NU7xm2bSO0f8wOcQmhEGLhH/Qze/NxnJi5MBdskNSmXiqpF+wi6XSxqeQkmwtDkSDBWyS1vSHIMgQJ3iKLhBBkTxYJXhiCtyeL5KZBcsNWNtPEujaVMGwlJ7ncVvbsdhrsIls39fbSnNjfNOelAAK29ntDSStbXvll5JMrZGTLKYxPyzKyMuMLGV88wj3iAqkrUoTr4lwlO9c+gQJWAOzuVekBaY0wdmOzYwaD+4YHo8Fwg7VUdYGp9xNkQHX3OmlYcrk9ZnrDvjMP7szf7yehJIUA4PnwxJyWioVCcYYBPMAAFnCEYwzI/oO09vCqlfzO9l2SzHwCCjAqAKCgA9dS7PlwHXSV+ZXCc97APEOtk3k65Oe/P8DgORF90WnAo3xVqLlYv0nS3+7eYEFJjMUog18bBSvHdkLMiACw6kDUTDJ/S1ItmBesSzYzyWZplpP/ulmwHTBRCEajh/VdZ1+6pwqweu6eWyJ7Ayg4XFa4iW8O+bkB/KEcl7ysRo62yrCGwgvm36ZWO1+KXqTAW02ItQjVtRslewDcEVV//p8/oz9fE43HdiJ5nLUVL02cu5UC76TAi0YjsiyF2FlAUnwkLzo5YO6AKwKqN92W2eu2u/aakrDbd0VTX1EiDx9rpr2fd7hXQgloXISuUwH+zWwnWwR1czKqZbklfyBca2sMoHCuEOGNw2xnJzq3Pvo0y9IwACucFQRxQPHQ//KdnZuEYmTG8R3r3Uv6UEpVK/9BLe6jehEO43i4VvwvVbPdj483BEFy7nCJOmc4Ua2LTqOiQlcugAUUll+MmgG1olO6kBLkkCqVKj2uXLR2l0IVSzdlZZ4nT+Qk9+9hVxqQd22klwvPbDehuQ4GNAEcDv7LVUo9Vr/xKeQdaMR3KbMjdeear5yd6yoeAFMelgUwjAb+a++rPnctyMOamG6cjSoTTBiq775M/ao9Vea8IzRYg8lGIRtCb+ixrN7jE+5+x53Yf3/S1UAe/ddWPBURo8aIGDEiIqp7nEPcKnnty+9hi55q+uq0BNjO89+GhQbhCDnbDG11A7rlPvTQbwj/bUtEKAKMAhWA6SY1TG+ZYQbLDzPML2GmqgqzhCjMGpfCbDUQZreRqBxwOyqPvQkhMPOVglzwm5cgf8qf71eQowHLogBBnvz38xW0X57QV6EGyYylnU6MVpfNwrb9NS5sq+MY223+x8ZseZIEMM27axww/KWymcNlroGLBfF0GXAcu8hMg7MTOc2JqQ1lHqeWh8Y6RqSSB8SWUoicu4FbC5qSbF1iesRfykbSWV/DBnyWoVgyt2gs7XQpkSxmifJYES1/5jEDuRpvhgKxyNuZEoRNiOnMWOziR2IBg8DIRg60z7wkhrrR7tAaVtc/sevem7VBAKvkXFicPxtehaCZ0MkmS6SgpbJTSdSDN0ioMtKaIyKAGbzwgEkE3JKbomQClvOKf8qJEWNBGHZYjCgH3OnK8Zft8KitYfg8dExNmfYbOuDqmCRNoUTKgH8yII+ULR0hRVmAVPeCFktrQ2inw2poVUu/4V+MRh+u9EYfTvHmVEQXJViVqaK0UyJ5pg2LbPSstQ5FqxxM6B2KZxfDunuUDkque9vrNmoEqmKR9JNp0akbk25MZBwarJv4URqLkiFfMpgJDxk+SumQCaxXXuzq4G8bU6/bpMiqGRlMC9/3OkikaGWMmWFjOafZHGr0S/yNKdb+uN1DNlEoryHOWlyulMllCnwZydw2L06ydWwZRcE9Me7kpOGtmreUoxEqJlc1mYUqPSuuLZ2SgXjhxX+SfeYLh/3Sv3w5/3+2+VA/9r/8uec5fzpCHqsONC4TkpJ6kNCD/mWAOK5/MNv7Pxzs/5V99kxx2W7Vf+Byoa0OfQ+QlMqfWZL41EVZIAqNc1CgN9XKENlvgrVE2z0I1g9su48gXNFPwdmXSp5bWSjpAGNP0FaWjjjFumzeITEg1G+sk0nhNEeh6DWxSMaTA2rQk0yLOotSrZpZp+QzNH67zY4i6/Tm30Jg7fYMuK+9bGkyNZMf7kONNbZYKxU9URYJyae96dC0p+X8m8yVfutiaePxyILw/7CQVYwweLdrDjgULVc2HPg4MVqDXlnJ/xbqz+IrmjujKzX2o4CzohIPilfcJeFAu1hqnbLYUXDx2hDAfUBl7eGWz1YNocVosWCofK0tWwOpHsYVdef2lE6VpFr/AORqUvflDDSV/yrnf5HVXQDZp+8Z+zjL9SrEoZKpJbhSgayIm7yjpLbNkLOeZJs1dOgCi0JSWIdLiccsIzL7CUJe87BukVxTS7fVYze/LbezVf5FXH5vxum16m3JP+fSrcy9CynJXE/3cm4QREPISPjarIXtNpAGKm+3Y7k7+eW6NZacHBRZa4QtP/yy4GYl2s+XlGu8NCBhlp99LcDV5dLRlfM+Akk1cjl7lrWJsm+jkLTOA5LZLujBlAjWsbF62doYQRxaHs0lhl5Fxt5YMcvaEt7MBVqRYU0pWHB+IPtTvfy+Sal8rr9fagFNobKeJYM8BdfvDxKBTTYy0z3dLopOcrHvKlZyamXNpIxz/I2OYTkM47ummjg53XKPt2qKDAN56lDvAeXKkrfWf2kVrwq3SZXZtKoENuoZ+a2sCguCRVnMT4GV/9Gcd9my7tJDKGfkQerKUTsun9QzxrmS18vTTQ0sl/ol/5x+/WZH2m9zjTsY6vnffnnOXgjkH7kglX1LIaSRcmTW8kL9eBqJVS/MJ4Vmz59+3JQqA4V9Vr94kzK5VCkCq3JKLcSszxQKOC4mCg1y3fp726+zE97LcirqSUb51d9YLmU2M6klWQcnk5xcCH/FBXKhXyGmG5dMFau4okv3ciEeV6ibiq0UY9epu5m1HUVK1rFIusdg6eiyzLC5HoF+abAQYdy8t+ui++q4da1xi+u6tbBFOkZfW5s7rmWyG/4N+9k2FfpvJwC/N/6vbQ8ljQz8TR45RHSnR6N32Xqk6IMM/eAwpObRLJQcI++pxIqjliAVVgYXe+Se2vsUOUmTTQA9jYUcfFuB4ogaNAbaYDDSXgoT3aSz0Rvs9AVvQIsgXyl7FRq56zy1/E24L8ATC0K8Pj2PiOiHUBBRUkFqWjSHbyzrvGsjXzQ/ga0gwTRCmCCz0J0w4VOENi+R0qjTlaPZNKChhjTS5P9NNadWoRKnM4GLWt24664HlZ4GkBloMEdDTMCYaBI02QLEQgvpLbIEsdRyaIWVlFZZzdMa6yitZ4ANNr3dbAtnW+2G9jiMcsR5xAUXUS4xwGVX99fcoHCTr9Atd0jd9QzruZckXnnHzXsfuProXzv8XOvpDyD8Rco/EP6jyl5KKMEQLZgSCfGJhbAYITCJYMjdfPIw3zzD8OKFjg49fRoxv3zjhj//DGYuxj99eGTOJYvQ+ERg2iJjJ0ZMxmKhxZ0WUILEvEuS1JAs+UoK+yxlcM6/bCfSVYTxKbagSiy40jDKnEwbu+RpIGCcjTBtjY1Pk+jRVEhWEEYlCtUiqRFFC9TSUvTo2DVj7WTa2pu5Dkano3nUKQZLZ8l71slC6mrRdbe4elhkvSyqPrNsVqzPnyuiIUoTO7zIqX371mnT8TnnUfLcsrgfuOtlx+1rhUef4DZ5CoznKTkEvWHA8C4Z5Pz0Ynq4PT18HtJno7mJEUdPWMflhmk2cOYyL1OlE6nz+fDlig/deCyb40zA+j/Ii1OpzbAAGwL+zU44AbgIaBHc4e08A+Pc+DxYhBMFDSUJipyRN6XxT8SPjvPttp1wsVIF3opMWk5AcrK2neGQg3AmFiYWpollCy0yF5mrzKLJZCcqWICO29kyo8+WGZsFk1a+Csa5nRlTYcGSBUvYVBEqsFRgU8XnVAJ7mAYqaeDwZmsHGeTBb8hNR2/DTew28AIcCjjegK35YC5w38YhJhBToIK4j7gPWMQTxLP94AJioYNS5pvSEqG+DLCmWvVCWQgul6bKOByu6v55HZVBlcTMJwnwSIWi4slXxGxh4lTDcRJjpvxlZT4mVoToQicnez5VJik7IPTuqCotpIuUepWylax7KJT0W1MzpT2lMyUMW+iOKj5QHKRfr2LHcPQX9HzPR/7mwVS1W2gCeh8ai5ZT2FB4Ie+9XeYw38W1T2dKc+uHH9A/Al+r91pGSVkBqoue7umgeLL66X8jcWilazWR/fXwh2mTOcoikn6KPEgpd2j7AIx/ws/H32a6SdIPU60q3rA5KWA7O1lvWWybq2q27ZX074YdHSc8WDmxaShWhcESjDZatWmmq7HQEi2tsFtbBxzQ11HH9HPJVQPcdMcQDzwwwnPvjPTRd+UBgo8kjRTMC4lSmB8aOVicGqeWtJtbS9MX0ooMhbYqnmDt7HGty1ZyG27mBKjaEkA7cmf0clfoLt0dGbk9d4PaG7Q8GDGH8ki45o9Gl9Kx4MxfjoPTlbDMX42H17WYPHs9MXEP6+DWo3pL1ZPI5FPmi2/uPKVMX2P1nOnleuujr376G9CjEztsvdQuAt9FMnjFZZuBub+HC2OnFUHeLe/x3uH7NrM2yAd80Id8+G+/GOjpubNZO569uTm7n1sfnJehgbvIOwHT7f1HmkbNxJ7UO6AxWkY+fKXLkClLthy58uQrUKhIsRKlyliVR8OvRNql2ix9afyl0KZKiSyGEpqIGIMlISXD4ckpVKh8gGo6UEE9VYedhYWe/Q5w5ITImQuSE1y5cefBkxdvPk7yRRaQ4dsUEUW5iBSFiiYaXQyGWHHiMSWMidtakARWtgMFOnTrcVGffpfyMgIDV3IYuDDipltuG3XHXTNmzXlsPtmGzxe98NJHn3z2xVfffI8fn0nZpcz/P5CLDVcUitphFKDLcDzGTtuRMUsZFb9L2E3RefKJ6KwLoXp2q5frrY+++ul/eEDDqQpAgIpmMJp0K7O1LWxpK1vnDYsqs/NAF4Jadep11S27j/TInivzQi/yYi/xUi/z8nzF0KAYPFPeDs2rsdezO0mqOcVd+Gx0fr0eMRl3YUK66zH2HOvleuujr376x4Db5e15Wh/hVG4ic1H2vfIqheH/oO031YPstqpsvOJOEPRLWG2kUx6s7sn/d82VNhdTDe/rjB65Rv9y336FjNcdfJSuaU6jDS45xAA36VVwuNLHGDfP2pE69brqls/HXnjpo08+++Krb77Hj7l7hg1jaLXp1qN28KNTQkQ43+056xvkiXPtiBjqDDwdz/BMz/Jsz8nnghydF0wTw/mN8cVbm/Iemxo5siBKaCJiDJaElAyHJ6eYVapYUpmdZ7oQsueSXnrro69++seAmYazVmH3vJhYwQYha6fq1Ot6uFvUAAAAANDI5zMvvPTKa2+89c5Hn3z2xVfffI8fnYbDVivLGfvh44P1yvKk5czpREnCkpwVk5WqVKtRq069Bo3ROVCDbP4QhSYixmBJSMlweHKKYcRx/ImhhhluhJFGGW2MscYZb0JjP2uYaprpZphpltnmmGue+RZYZLEluSqAL/la/nrsqGOOO+GkU04746xzzruU16auu7H6d4v9L0rbt8rZ1yLt3VH2kzvqoTzEJLPvRffVJo+MEi63J52uIXLe7zIkJ9Jr2Gfqu7LccVN+1GvwWq/zem/wRm/y5njLwJiUSft0miVy3qXbSTQssydNnD+Jm0unN7rj4e+oJ2MH2rwXsijK0UTEGCwJKRkOT05xX8ToXew7NRCDYvBW/7hM7SRizIGD6weRyeEIfq4/uhjrCNYbmP6RA5wHrduNZpK+KKTgilEZu2NpNW5Xnpfyhb8AQUJEoIhCOxwtYSP5wwK/KFCoyK+KlSjNigZWqUq1GrXq1GvQqDMfTD807bkXsfgFGOtWkMTOl4070IaAIo74ZnOKKpjzbxYvzEvvffDRJ5998dU33+PHAsGGmLjpx7QgDwUbGL2qXlc1na1NCdNEqYsqgnTb1ohVD1utlYes18vJwEZ6Au4AoWGNtVs1W5skEJpsji3GnkbyCDDzER4mUBOETNtTLmdjpfdXBaqcVU3NmpxFxrEndXVUYlFQGjKSDfr2xAPQCMh4QwOkRsSauHYrTo8iwUPY0pJwCo1q/kAgjd7RpFlUioZTN/s6pTqcQIQqIphZYA1cQx/iCCR5mEBp+DQ9liyIwH6CU70G6XLi1DMAyrB5yuJP259wGulYL5zZXc27M/fAcN8DDz3y2BNPPRu+Hns/9GF9pPnpV/zGKQqDmY8bWwa5y10UlwGiEbeWaO1Gmw295/R+C16X8on89GctzJmSMRphmU8YFeBMjsJ1qpdI3JN4bg3w1HNVQsRT7pQORBEGgTUL1xPU2EEc48lfgKAKoSKiKBKFJvoeZOtdB2OMMW1rZFIWa06UEVI+Kq1ANWkSDRE+eLQaozpJPao2k8PWCKCTFc6pwNUyG86LwKzE5d8rd5meXCM8/0f2ghQsiw4EQf09DCEYRHtyZonr8whFjWSyIY1KTWBBIi0xKQEY9JRIKrgyk6hMcEpMTUgBO9ZHA1iyvzCTs8wJnI5OLSD92BRBDlAgD2hQuiOe8ydQhz2Ag31poK1KvT/tMqADunAADgLx8IHDGJ1wHZz2lrZEc0JzULNMk6tJdmDO/eTZtwFmQRfIB4FA/zMJtff/exf2PtjL2WuusKGQq0BTcNjRAYrjf/QsXsflfRv7cLVw+SaZB3nBEwby8ChHBSqpqGloOXCUx407jwg6FHIAuQAx6S2pkyvGE2wKhTSKUIwMsihBKcqQwwuJnpCPhEdH72U8Uk6da+0bSbVYmityxMabkQ9ffvwT7x8bdx48edHRa4SBvsvhaYZLDxApSrQYOUKFCb8l8oik1PShf+KpZxY898IiiZf+8MqSZX6tQFr41XQmwXhf9gzZgyGMZZ7YhIlIIqPXKuR05bi5HAUA1SLjhBzweL9LizDhsoH438uzb/c3EP/7mX4uP+6P5WNw8o5BV/6kL/XFvoVv7mM/5hv++nC1KlUoqdJ1q0bKWID9P2rKuZfbWQ6f2YzHEhw982OXLPqmJz1iGo2nHCKTZoV5WMYYBIdTj+wRxWGw4fJ3eXFAqM/q4BgVOgxOS4gSLBHYKzhahfSHdLNngA40gKOIdtJa1ZqCsQp1yDmOHNoeTkYNA3LOI0Cc+jusYAxwOIVPLHEWjUnIboDDHJ+Yq8aogAEOdcDdFjFCDA4Re0YR+8s/I3X16cB5NNuuMRSmt2LR8s5tT+3sr1Fo5YbPecGAG/SqcRrv7Mdqu/cN5OCd1Z62JlUFjXdmdv87bQFak+Cd8US929HWFPVOD6d5sxdgUfWk02ND0beaU5wqfzCvYBOFLnZek5zKtNCmn9G5diT+ZXbZvbwCKUHp3axBnBOKJHJaopoWYdkSZHDCnThOrUY1KJW6mLASxSkVraahm5oQjPknnxZNWDligsfhpOqpCDemcgFR5MR4dSCdZcsbvsNgFCdUOeHSesMxIIbjq5QwbZuXUuW4yLkrQsusHq04tlqQzszaV73kmOi2V3j/nSjrcLRzqn4/Vt6idhOZDau4fZ7DkeAH9wFiXuHwgK9KVd6mLgAIv6dx9SQEh0HAiPrIgUPj0aTsE+LCNp+MKKifVlBf9d3rN52Yi7yoV/YKv9bHe43X9LnewKnPx8LqgwIEles61/VRH3BPhT7na+3BgOBgOFyqIAjPQH1SB26vE5KCQB3jcEwkDwfgQw3lNscwNENyK3GfK4jeyXjizr1MfdcLKlylG3gJCTEBnvfyufA38F8FkmnhhuUro0w/shrP1hoIw67wc2JRLB9/Gg2t+yChVXl5hXKOzj3Rt2OocdeGDnFYjRlG53yLpBnavnZ5IlIzqfJWDrl3XvdldtKq4SOxdckrYhfIzwujRb2mZXOx3q8XCsohoVAnUgOzRhKsLH9GK5BNU8kgTaRnYpioW0y2XDj/k43At9xn8tBvIf76IQ2BcacPFIxMgzZd0RYD+lwrL71k0IrL/jr3lfV8zlKh0+E60QBWh/GQh3JSPqtllMNhWppHYXmkWSbXLV0tykayAF8m3GnjF3owhtgRaoara4hCVsv+W0R/O/1jk4CDBopkiOPPEcER50EkzT+lPOD7/McpROei5wtDSv+HrjtNba3FZhpvaI1caxXU354lSRQT3wh8F2iUitXsB8kWEG79YmJLwQYb2dxyNHYQ5kEe+IXwG9gwDVvD5tl+IBF/Os7UuNwt0vtt08scs51s/OiHyTFiWPgzcOdIKZK9LYc9A/bWY37a77nzfZ0Hc2zvITbW7exQ4SZMTle3VUVJoxCdrtlIV7ckZfDi6ByPkvjfNCXC6MhRQJEgAghwYHC4RB4OmDtTNsJ6KG4QGcI0S0Q6rqTMjKPQEaMwX2vWXC6zh23/6Vtt/LGUhd+V3+H/lZ+igUDvJ97tl3w3X/QtvuCbe943/Vxv7Nne0DM+Qy8YHrin9+lV78NbvntXvls3c9dv4q7cyF243L16PXfyOu+la72Dl75ET3c729onW9vDVbawud3c9K5tfJc2vNc2sLPL7sQyO7qWHViqByW1OZvmHE91DqY0OyPNxqRmdWJzY0IzP/6ZmakZH8eMjHn6h9Rf9Pf9vBv9uI/6QRf7Xmf7Tgt9q5f7evP9Xvv67Xb35bb3cJu6T48T56d9Tk79PDqVs3/y5+4Rz+2TPDdP9Cye4Jk73jN9XGfs2M7QMR4DAVvD7jF3Gdx1iSVgiyrQGOjre14qEIh3q1OtelK1OiylCpWrzUrXWsVrqcJ1rQI1W2xNFFOjZamBonAU03KWZo5TzUFK2YmUjaSymlhuJJT5+DOTqYxnLKMZzmD6Y8A0433x3qgUMhHQwaQSsUgokEklYpFQID9MHKFjDywlQ144kO6T5VEVHsUOcBDjBCwAAAAcDofD4SCEEEIMwzAMQwghRB3785nShx4cLU3OAQCcc845kiTNzMwkSWkiMQAAAAAAAAAAAAAAAIDcbuBo3QAA4JxzzpEkaWZmJknqhiRJkiRJkiRJkiRJkiSz3cDRugEAwDnnnCNJ0szMTJLUjSRJkiRJkiRJkiRJkqTaVw4XHZQtMqyTYIUIC3BcxcMkTi5hZRAaAro6Wp6oOaQoyNl0x7pVNy25bsG8OT4z/V1okPtZuk1rxx5bw1iMKZXmb7wefmmaJkgpTUlJkiQlSZJqP84Lkupm0olnKdcSyGzYTITJaCyhMBQ9c9NVH7jkHUvecMqrvuGQ/Z7xuB0esdn9JpELvqdJnSPK5MkxrMPr23HHnuH0YTh67rZPXPcjV5z3Xd920lEvOug5ez1tl8c8ZKMBeYCnqDykzB6yju5J4ukfCxHABytn6brjlp+45kMrLjjnTae95riXHPY1Bzxr1hNmPGqLB0yhKKJxRpNjqhxQYgeJDVKsEuMGIebxM8MULhjsWDFjhEJw6Iq63rHQvMs/hMYnZ1lxxAvmfNUeT9rpS7Z60LQJpEuHFk+ocYhCgRybpFkjzhJhrhFgFpYJGEaxMACFoKA503Ss6sC+gnu2bLhtzS0rzO3L8/D+oBwXFN+2F5q1x3IxZqk0qul+fD0cLU3ONYYN4xN2gkJP0JTGkW4ejpaufkdGiyRJmpmZSZIk1Z7fx70Gh1Xod8M+Y6TIEAK/KFCoyK+KlShV7qwzTiuLoL5Pue7B42IT8Hj6nf5UCZJVqFSlWo1adeo1aNSk2XlC5yJEVpQV/OxEskYaR27YrMiAIj7Ajcecp9oAE8eAveEiOYS9i6ytm5u6JfODld8T4XsqldNoOd3pnTQJr6zriWK7446vKEmUhuU4f7tS49bmualtH8bPzqfqL6T9wL47fzvS63VopmEX0/62f8RmIl2BrXX+tm2diFYGbLTztzUVgoaJtU/423LGMoRWwdq6RpCf9j91yCd1Ja3YmnzNPxV0rsNQYMVjBotVL4Azo4tjDb61SWHxZ9azSQrYhkOHiRVhOsmSjqlJ6KiryNskiAmb58NyOUJeQ/BTCugdQNMZcUCMMGOp3sUSXlpqd7XQGUvDPSyI0tJ4T9vQlxbTPSzIOyz6PW2j5w7bWN3TkuGelub7tui9h22s72nnif1oUU2kpJlKFh20kgf9d870tZ1xH+pM7VPs3kccM0CNINbQI/b7KIBOhOxsITtrA/k/HN16feh+z7/G9/g7+la+0Df3DXw43qlG7d965v8d4RiB3UliNvrh4dB+7LL3LHvLIc9NGTdSyDktHpMf8j/uYxKHHtD0QNGK0N1703mk6Oev25Me46g7/6aC+je6DV+jEfgnugUbbhi+4emzuwlfTh1DgAx8OorMw8nDB9zc8bf31nqc+Y42Vt8/Cv7wxltLVrysL9Pki5jFXuBZ/WnafPk403LWf/i3st3zwLRJD42beqvYvI3POxh366MmbwbNI4aab7jm6qYc6MOB709sYkEJumizNxd9uqOzdSl7Con+6SiR1nqbJCHafQRaitVE6Lx659SVDRxqOr6sCutneaNs9xE4w6JUsV8VKVRQFwgi/8M8Gnmy5MqWI7PMyO596fqUIhW7+ZQkrD+jgQahQAZ3cAI7sASTymQ0IunsEkRioonaiANpxO2I+FMjiJsQM755IGPh8DAwelnWI2TMsGc9NKsMDiKohyz9Pd+tipD4fcmtBLAWLIm5cnWSCx9OSNwPjoBn3J565M6rRXjHyNSthLckTTx92lNyqBNMHg+abVk3W7FgPkbN/cgcjOAI6ME+UAdVMKJO4/yZMGDqqJ9Dv7xJ6FD9cDM4YP9OO8C5rnexoGPtpW03LTh7pvsEodlb/NTxgTVUV6lqKlF+jHKBZOyAJkuBNDny/9ORkBcKR/CU1Bw4M/ITKFKMeEnSZbFppKkKVTqr1V1PAw0xzkSTTTPDIkutsNJWO+yx3xHHXXDZNbfc9dwr7320OZP7oWnbdf6VNtncOrnIYy9TJIw/EbDTq4ojDgP2uyQwu91m9MweoW0UT2zxYgRUYguQVGSjLc3l05PJxERgOuiZHfjz7qt/6eD1JlCIKoCCfkVwJ/BkAFz57Ak4SHceji/8bwfzF05HkI8HjFjAPjiYvwF2cNwBbxDP/3f/jcoAz35fvxET0qJREIlTwPIAqECJk4lB+UmAAlRgBxQ0PF0WGhdIGfhvimax+rPnWNYzcibOiyN5QVA0JaG8XwK+Gd277kP3BQUGbPhoMOONkZg76FjfofKo+j8Y9mERZ2HGys4wwb0DVSl2m09I0G53jYn9uQTw/Blt/juu/I/F785eRKPLd5aHl4eWNQGWdZZVl7WWMcs/LdstSy/5L7kuOSzZvyLSkC8QMoCbvAT5jLYA8initts3H+glnl9Slyiw//VSk8Cdh7b8OTGSSV+2E3z5IdvDEFG56m0LI+ztsGl4Fe1j5qUNuv6GaF5daPe+5XZccOktJi0h9Jq6a3f2BIMAHqXeJfES+YhmrL1rEgRLlaavB6XwdANbkpN6dLtI46ed/wGgsHgaLly5cRfCxCyoxyXLliNXpowCy1KtRgst9fLHgpGGGmas4cYYZ4pZZptjpjXWWmeVv2474aRTjjlaUMc99Mhj93z2w2dk51thY48ht42wEic1hEYv/gJyj4D6T0E+INjxVsH+v4UtniboLxBgAAp82VK9w544AabJdqaetMqhLMwRJ/P0httvZHEgi0HP4nf7xZ5BxRRP2uE0AvSNDLZFLe5sSnHZTSgMclM64StmWa3FZ1mqvFqhBlYAquo8Q0BFLZHYtgiyuJB2MNwuCgHBFZfAogKyukwiIq2tsIRVRbIuggQ47TRDuCGFuiwL0NJsi+wLyVRFlncLU+baK/bxAQQbq5c3SUx5d2JrweHSpV0IlsNIZVWU7DQFAbcyQmqLRqrrHwqt+zXGHqA/eIpnm4IohUkwpImjVRsxWW/K7qRfi8FXKKrUfB50ONfcbnOwY2gA8PylsAJwHRDQocS2rw/qYYmXbXs5RI+VqkaYcMCfKmtgr2z7ycPlWEKTUvgXqYBzfClmXYdF/1fHVduCtylCjIHO5PNMs4HugDVCbPGxAuase7Tat20FfJD6QZkuuoS/MpuvB9JWH5d32iXbZu4y7Hsy9PPWuUZiwhyej2M0iLrhBK+NATgJTw05h9/iPRSNYzxApAFQG/sVvs4CF/u1pjZcqtrsHfKMemIc2QTiy9v/4j1x1/mhQYl6z6YdxShu9vShL0PI9pijcVUIW5TC1xiyQ4y0RnDIxJBw6t6SsYn3CJcagxsGDRulWshJ+ztyzqzAH5mh4SMmXzIXleTOo1R/SN9v9jV4krFzpuzVO8wUd15kJtoCryb62NhqhdQSDyUMyZfFR8WFAGfOfIyUSrRdLA5eRbFyK5lYqB2PelP0oZRcRQ3EMjhmXwFyeQwJoCAo9CTPinG9Bg+1CKoaYcWTkiVHEZSI8qNH6pmyOn5P60nG++depDGrtlIsXSflItdMwBpbL9b6FB1yTvjWAyX+zWKUKUc2mRBfVKJeP5ubQc5UKuit+xhMFeO0sh8Uwyu/m51UkCKvvRPp2azzqkI0SpxSVPC1IUtcT/BMEl0lgGctcIlxRPkGItZhS2406oxwKNuidpGR8ipx1BgVbAI3O0KMnFNIg2j7hsyfjgghbm0R0leTQmjQ3sG1dubIVz6GZMRKPmBxlNnond7dlx4+ncGsMUCc6JUmUUGmYZMdr0UtvNIVExFlqUscV27wl/eS+YX+040RDEuDiqYtAtAjV4eScWupKjNoF5eCguwXvCSPcpOFkD4TgIBLfUmXrPjIhV+SnerTIIyoJKcMpZ/uCgzIuZWBLj4fqmOdsraMXQ6NEllYsLP5BmqRclDENaNFbQUimRUKYXxLypktPgibufhhfWsH71J7Jj0N+LH3gGyHqcGjQnT5gTkIDDD1Pu11OtR1DbWVCDFm1D/IsiQatjNI5m0Zz1zlWDB6Qo2Ndd3Ulmu/bYxijxA5uGjSifAWx3r6jamws6vZOrbfvnRhZLpbmKRJFU6ugd1Xh3LLYxbVEy5hKQW2FuRA6pVFa+rWmX0MunXU7UavE5scW9rcKl1RP9ECxwq29sDpNbXUkpvBxMXOyQ56Itdbb7U2m5XZbtZ7DhenHprCPQSOV9tyibT8vesxTMJCRFloPj9VX22uVrmdbnLlVV2c3krsGC2t3Ue51etbk43hQmoMUYNHu6ss6wQNQMrKF5WuSVIn6lnsUPcmxJG0c3WomxCjO+QEyXJjv6vECfj3wadMJFDqCknjIor8t3upEdlTjz3HQ+5ZDML6EPdINNRZ8afdudIMl4yPn8omRM4+GyI5g4hwuTcmliT3XpOkp04XVnakZK6RhcSd+lkV8BQ1TamQzw9FTdfx/8p3uxVi1aKsQz37/NQ8FhPi2KhX3ByRkDWm+hXBipk4mOz+oMRBfUwFa9gWJV/og+SDdUqYVP5xIE9ZVRkfMY9jhM+DOza9lZzjuEqMq7a6ReQMqNMUuZS38gZocU+cQnHysPdjVnb9HGSHXf0PN7cS/pYzXOgxXQyuAusEZfUPUsTGMD+YSYRoMRwin43OryM+KnLJxFjRi0Fnx/6bHum8tKmJ5ufnjQZgxAMVHz01qLi9KDuNKMBvba1c0ZAPOwYZHgKUGm7TIYO2ixFlICSeYMOJHAKoGQUI5aL2gkrtIKdUjI0XGbjgPQUMebuHv9rQxbggSUusEhz5lLIAeqWwSwzPZ79Mp13tAs1pFusKTW2GLBKZVZQnxoWthIV7erIDTaZ8mdlFMbcZcHVqd+PhLbdeZ2hR+67juRS606Xd6eB6uIpregRAy/iQcqqI2qDmdWFQu+Ohd/V+etRp0Uc9NcXYvNarsWxpd4EF0lj6CiPaIG9XhNtiy7ByvAbaotbsy/DSC2tq63oJL7+oLooJiwlVFocKQk7vCrG5ZpdUF0ZEU2L1Sioz3OlyZ1g9MGWXjZpPawg2zRajFKNCy6hZM/VEPIWBVh97nuQNr/TKKJ9OivGAe9NsNE4nfW16JmpkBrfTM4NRY9mngWUsPtOIbDRkZicTDkfA0xLXtWoiPWrgO6vE6qQy/GLoyp11Y7xIHs0v0IavDXllmtwIUhAf7gYDsKP0G1iwvpYHc5EDNWaZpHd5BB+LUc/67DjJ67gicRugct131EyOzYehLnec5QBqUHcvEoA92OwwyXQOMHpgV8UCWvKMxfG3PlqOcCYeJxgTQAxPXpp8N3qbDP4nUvC/FoMH1Bk+eLzUphFOuaO4fLpbYcSSiLhuBEoha4m8syEfAFw0CUoqgmQBnUFkVMc2d27uZxidH2Z7y+cQtR4vYGskRiBVb4pj448LeIOPvTMIemFBaJYHzD+SDwPwe/wzb6hZCWwOniWbWhrwxybN67N5uKKPEfuRbAkG15y24DAkKjwStY4O+xjOk2gixzqMQtzscBTtrlgXymbJnQLKJIFVEsLUJjcWuThjRgK4kxq6i9FUC+Uoa3EqpeFa3MGcZCSuZHF9DIhJObZN+efqzLrizXTh9XegmdXNPegRLnkOOv1EDlm2tmKzZVa3GoSBmPHHY+OK04oe7MLSbk4LB2E+tjRaQmOz4npRaevPT6vT7IGCe5gPeB1eizy8lyfJhYLmjx3qpzM54F5vfA1fLwmnqEVNK4tkNyJM9FsYUuRhSF4lHCBtNyuHE32wJUr6SFQeZ/ay70NVSlMYgvNikrKunkk1t/RmM3Xs36dB7wppoPDtkpEKjTMIt2eEko5DpO6SBuDGwpu3I/KZmFu1F3m+xq0lfSKz76kcsXMZHer/oB3/5kE5AJSjCJAtXWr0Nh7cZQxRAOm7WuaA8whGy1GoLlGvqKA0MYKnUPBESjCnLziYiA+mfA/th1TRmiBxOjs53h58voe3t2Aw70us1xk7H/Lx41Ltgrc2INmhIIIAEsmAUCIcXJOsAFKv6tiknshRMiWBTUDB9NNdFYX/1AhCu2uoAWrYMNmb6XmvWhpKvhmc+fJhce3r9EghI7Z/LK5gc2GaNRAQ18QsHB6Znoe0X7ibu+KYFxoShy3oQ/rD/Qny8kC0IXoN2+4xW3bFbmoIK/9d7MEENcrVbv/1zMnJoGlysUH78qn8B1gcQEHVkfaN5Sk7wpvpK/9cX2T95zEmiv3/5gW6/eh6KbDWJJKHVWUk2K6tR4sAUMzPsHPcdpA1eA7NcymK9YYjmR/gSDhVECPL1aLFNVck37BJunZ4uC9BXv5SguHwrX50TQ12xE2ZIUFLfjxN5UxvYBq2V545fc0XfFJxOXuvRZ0i6a/c0KiC1bIpOJVnY1JOVaBJSKf+Xi7Rti6faUIRbILs4PgZFdnTlztkM6vfnNsI8OfWukTGVwd59uZheWI0dSv+ptOxMeGxcZq+Pn9wW7OusgtA6g1KQLkIDh0tEKun9FBNzCrIYbGHAEtuLBirkMpMdP23E6RbnbR54afl3Ke5Q5YAtCBpRA7qPjlqT9KkHOS8f4dsCuTlENvnWxsThLJ9X79I/io9CUZKNfB62sTMD13zn1Kgc1fxJEhAjtQ/cWSyLfbLOsaR+xNy+0HswGeTnsr9V69WHDTu/bQuWW2dTA6+m5UVfOd+YvsAIPXAToqLeXPUxst3DPPqqIXbwTESRZjEmHXTlkqNypVqxuc/Gi0dEk9FBPeftg65fp/W9janP1anya/T0pSuA78CUKndbh8qehDAqo866cnOci80Kpux8MKOnxjITb1X3taj4HpuTUI4fe2HQjvsOFVUM0fKLFsO5bex6Ml5N7zi9353+eSktj3TMwS2ZeMTpqUDX2UaAFWoJ6EASASA1NsMa4FqcQnuc+Ok6JHPn4FB566F+42zrOGvbgi6u78J8ldrADsFB+RG1ENpuekCmLoo2BqcEGA1nAXqPsVe6FbZBJwzBRPsBdRQoC1NxkT1DjlBZOppSzth/KjeYSfwk0GmCHC6/BF1/4zhfnYacN90v++QPHHAUR7DwABRjhUqCSRA/i8roVG34u/EkrkaQYz4Ytjcz3GKJSq9qt4GVqiqZpGo83blAd9XXjYlU8KPdmzXUZ2B+PTn1zfWZtHJSck3vCIfl44mRF2kLCzTcPnYTCVyiMJ5MwojOOtaNsqOIP7x5u9qSTQRs2uLLg6i1FOuiU3iCDq9JSK8iSrh9S1B0bXk+FMkt3gOOcIcN9L+vR+kgNa2zyMHpo5+d72IuzfN+cvr9uXk/c9ozdP9+fSHI6nc09PFCX/kFvVmrD/LLgurMUuI2+v1Bq97qrP3fxSv0VkK6hmPxdoLQ9wT/vjnWDS382FYoioviFs6Rp8Qu8afzjnyftFOlB3rwe71E5957zep/o9jbQNbG5rdG1Vz9+CdVuqXjVba/rujVZeiInLrcWvS25to1FhVWdWEkCYvbomSmairKR8rp0qBGVdrweJhe/Sf73vo5g9mW6TTW5/tPLO2hzHYIix+VJYi1XuZhXx0tjS0Gh+Tvst3bWehcAFywXhUa3T/3VbaxpdW6sE7d2t6o0Kza7Eba4CClTVcfUTupahTj8vGqqJRvT1UqbHy8pqJuiiZFjFNfkIIx0a1/iCM90StrfUwzB/MytD9Mg9w/J3JI2CH9iG1XOwPraUzTNlOKRcAyM0LsvruBSQGJGh0Oz7ctWyaSk9NATkhmDlQur/5t5Qaeg3z/xfJ7PIuGfp8ZdQSWx+e2R9eM3Sgr8trfa01/ODo3Zr+qPDsWvWNFZDTn7i8qc9GS7uXjfGiv3a1UX+MnSmvmaiN2hY20zYmigHnKBSuAQrW1rHH0hZKr577kJ0PE7Nro9dHptrZ1yIZw7AAcrAGcoB0AWJUmINDVBgxk6vl1w7tdgE+dcWCXh/DWGWUmbvJVWh1tASNRTOpuamVa0S6sEhe9hVDaV2jpm69h4+x+8b0AQXmf2wB/7aLDMaEgCPBPWbpRb6yjjXMfFJUU/egyDITY532obT1kSwoy6zJdN04m9ty6W716jqO39lcEHo+ktKTPKoOPGhDx9iLZb3Cv3J5MO7PfnX4gTi5PzJ62HkTZy3v9VI/rvdGhzJ7CUevf6wh1WYen394IRLZ0BC546Ho/HmHIQQBZJvz/h1CHXCXZWyWb22Mo5zZ+/o94Az0XEjP8IAirGzgRvCJwuoDkRC3ekkR9LETrp2qMenFbaysE6Hp61jEWvmbZRVzOHnxdPEeD4Tx+mUy2pDVG0prYUyDj6DjsY2ZO41vH3N6iEsNzIsu1H5j8Zvx/ekLgpoZxfQrH0wfHhp7ZaGZdTnrbOvdUqp3EvPUnm2bOePxuab8isn/kltWZCZhE2Q3umv+lRf0dinmNX4Q9135eMYYe1d1U/5pS+V/ChUDS5KVhPMBAY20809+uzawxI2uoHuJQ8tvTbY2Tg9WguwGWDjDFG7qXdIayA7SrKNCtcwOqr82fMzxU3Wg3fLL7isAVyl26RrIwZoM5hj7TUtv+avcPEuZu2NksjLwWlD2DQVXWivNYYzciuVyb8VFMLv7Rq6gj3Ne5nK5klw7DloPQuVAtwDWUx/sEUxhqoPZXmfYNI7XYbCCui2sU5Ui41WbZXN1l4xQPYgB9QJIOpW8mE/bXjrJ14t5tw31FOFtw1TVbWb8dvEV6Iwj7KPpugUohBeXQxNLR9N4wi63Ph1CBBFc8InpGTAXUDDukuyRYzKBGKYElIqOxpre+T72hcH5RvmWFofxNLzASDBlY+ToFjY7um0ssAwDvkihqX2pY+VTBY0p70cGN0VuT1/oZ0m7bnSxL3qlp2tgj2b16Rpr/50R097uT1JUpDePIDfbww0G7z+uuFdIfVuWH7Q91nm+4k51xLfyoqCPt6tAsQjWmDZ8m0+UNdSkO9u2D80+7oB15sIeJ08CUwSAPIjDLVDd5ThorgIKxP4Kd3y7Enaxcwq0xtm3vQ7IjB8WsM8UG2mbZmWXpOsWA5wBF17pLQkoBCCPgiS9tvThxSviT5VS0jTZHMt5b8t/LWzx6buaNBBjNOTzXk3caeGZv+hNF/ELuOR3eMWY4PJm12DKpeDkEQi5px8y6cMFl0kSotwCzOhGJL8nYuZ/p30bDfy7lIfPJcjLC9K9rkChQZHXWeoMI2o3rf6fzO2nz5ycgHTvnyZsAlgA7vXxf9qferp3PLXbXFoCorl71rC93nV5cenfvnJ5VurcWNUf/xs4I590au4OWJMAULAJclvor25b277mB0Rv0nj1o65d4Uz6uUt+SWm9lPCLqWsDrcr7aq8M7Ko9hzif7P10Qq5v5OEHzKAELLm4CbPCgS/I5i1kVHrZHY80wcOQUyJmclLPs0ihWCLOHAxgNDEZIfVtfslxQ+6p5TLR67LNV78cKLx0S7nu7P/OXhz42vAz5o7mc9RY+wDKohZEomlLYnmVLe2IwAwzIpEWvY4A2dtrgAI4RsD17y7p/IpsXFcsXho4lzueynrEL2DPPczIhzC4Z/3jnQZybP2QJNAlBL180z5m5MDljmOT470mxv1gMYrLQXwPmXmRk4bDRIvvaKlWX+xBF3V+VT+/of3r2NWWj5hzkIqxIDdwhu1j+3V7+0wmbnVamww+epk7lcN+nJ/Hmh3Pyo0QuWbyiG2hmSmPp3iAtXLBYrQkJwFWrZDqYE7APbKu6JOCVuDFSAaqknaiK/Zf/A9aoLHpm/rpgctqp5u/QSO09P53Zj86ceelqlgJ8KC1X8qyYnqx5H5QgggS4FTqpQfR+fzpaPYlOAUJTNHDINTYdGJXQOQ5iIWYiIZOcvKpbnJYA8RALOVcdwCYo3A58P3dmYWc1D0q9LZRbbGqdG2oXdjQKh2/1vK36rnMs9e3PmNMXL9eb++ORzosTW7M/OHLZs9xuc5MLn9oCCfl97dB41HcA93Kc4g2LnNitCvH7+CivyWDF+tZdDbJM83TgUMgeVZk1tl7WY9n44z4HfG8vscxv3GKM2f/YNc0vExLv5tSefZZTmit4a/RkbePUKitV6Mz2YtRl4cZyNaV6TBE6lnTW8dvRSUaMEEbBQji6KrvHlWEcY2NdZ3d2MjH2wiUkZimxU55VQ8xMfL2+S6jgEcjbrktl5REWovCosx5XlEhZ+o9wk/WOkafRaZuITubP6PyWvplSsq+ChMdLmWXBBwLMI/lGLYistBJXnieAkv+CBpuur8uKY60qQinmnO9oXnpZ+VuTa7zgjPJr5mVus8c1TFK5njmNflZl6hsrbBAs6QrH0P+ahRF8GevyY9ngoF0002yLn9gbk0gD97jLEBxWONwFEW5fq7I8UOz2wUlYkKx2f10/iS+cpwtcDGvSS33PJSXEPLA+LDeVmWnYjrf7H4xQSwoac9uSXCF/Y9gz/JU82oBiW3qOL6+tg5WjjQYdzjJvHpQjcDlN16AA87kSRveUfTEcH/bb3YOU53au9uu4czL+I/OahwO2hyqbXJuP8qLVvBDZ0TFnD+eLM2TuRcnGHTYKCv0elXWPkpLUqDuEOnFkhbRrPkiclheMJ1Zckh3pYAkU/Hm1UX9qNsfUsqlsAXF37cLSlDKhaWQ+OSwyNjG4vrzCdMlbUURrqA13u15W4fvsMiNk9KcRh5ncx2X6othfhcKpjzB+a6l5mQEF5bJJx0sywNVidBdwBNwnQfzlz7kWF2/nmO59NdBXmfXIV5oeZa1lmfVexkcyu9czHpKu3ApZFVw+bwu+qJYrHSxWfdyf7OeUu/PAsum9p0aonZ550M7NZpEamqU0Y51J2oikbzj+oba1TTAeopy+ETVgntBV55XPDR1ZYA8KOmQKN7niiVieGzamOjEl0i4EgiUfgsHAmTQ7+ivaMzjZEympU1mZKZNBEzaRBpaZkYNgfO9BIkfLahfuAMnrQdZPV74vBi7oNC7SYOwpwjKJ0iCUclodfGlfl+BUfe0XF6h21+BhZpyPCbZSfrEWzXHgZnDvx+RUixQSAK+8kiyDdcmrcfuMy5Z/+hM8N4OpLR7FROQzFYGYFfyIvLiV7BbIwwvRoaizHRlF6Ax0+ydXw7H70jyDuXdjgcgymG2hG6Sd/IlC7MLHlLeSgJTKAXZQ0vpaTBy0Fs6yYUliJIuX/IGWIJAbrOzgFFbuxjO3LoMIjdVOCR9yI3BcCMxYvz9jYkhucUwZARoEx9DQx+Tchg0IiY5ruHNP5Q9tV9rMUsYeBch1Zp8/1oInd4RyAw/gQ80PeZPzUakLTziWfev77g9MCGchA86/z4MFiIfVMbK+bpZjuU3Lhi56QhGXxnWzeSxbmkyrKfZV0Bey15zGWWuYFdgq+4NIIGDSG8SjbRdsnuMgvFurDleUcdfgQPSXOXrpz5EtBc+THCFG6yKjj6/FOAwv+p1mkGsiSvD28eDlWhlrMSRaLvbOzi5G+5tiNMIuR5y+UoI8LFt2lmLi1nabW0OA+7F2m4TW2937BSJdnZ0GLTCjvCpBH0ZEDcpKjaJy9Yzzs2pCr7spF/NZ9NEkZEiGk1QsTR2cz6W/qUbUzn3Z0aZeApOVtHjZ7/IFenoiHPgBby4xWjr5IheLDb9tXREQMTlVXnXfTRveTnvCHRCV97R7aDDed1dh3G/5oa7oKNX+fXyES6Q3moRXwneaJSAIMyWJe4SeLeWmrnNEUksAgsOyXDyZrOyZvPyHKow75KYO0lKJRJTSSRBFZKC1zowkWmeD/AM9AmOJjp82Fm8enVsYPHWzX4HpQy3jU+YBJt7zVOc+BBbKzc7smWKsbuLjlrTXvtm3unWy12n69+3/Q077gmZZacWn+RU/PFD9cl5SPLzx1nVEUqfCMys9GZOakpzFpNzSpSqp4kAJQDCPEFOMG1KcjEy8rCpkUs8l01dnGBXQUfHPGG6H6XrL6IxhWP3e+fn+5mcLCqVy4VgpN66PvuFQVujztAgBxt0vKAp/9jxWgJeBbgVXn7X6eAUe3Oqia0jg3ryO/9NNPVESJztmTBX98rcZDc1GRc7RzGl6sytd6GC89+yS/5sXq3sFxYmdTCT3B2jqcRpzyv6nzVM2/Iwkkt1TqqPGuqju5CSnTO6mFjW8Co/409Zxy/Wxyh+7t8L39xIMSZnkSnsTFf9U89qMw3DU0GDBl8MNr/PE5/NTgNqHISPm4jHwyINQ8yCf42lM/kpYbPdP2YnBJPhSWLGSfuSkuqECOk3KFo/7B9bL14Iyb2AiJVIeVdHJaXWxJPJzfGFtGZaUhWV7JkTTadXUKV8ZxGxmU2Pgrj59wKS6qOYlb/Gq6AqsMKmJHpO88tQkBOsdujxbavWQ5vwKK2e9Hc4EmN2GkzVFrf0FVBbBxcXpaEU9kovulOLp8ZuFk+kpqLdHOOfKpBGl1e4NL/r+iwBuHXdMRHeAUl4z4yw4OCMKJ+p+re3hoZe3jpNsszK/SXGb/EKSq8DdJW5U34p1ZR5oiCYSuWGE0mnA1ICqwKpAn+iQ3JQcHBOMHEaEZZwdtiXw7nuGVMUGMbPildCFaiUF1NDk8vvn4SQMbHCs/KVwPgPMrMdEWOb0i4wTgA15cxh3/hqROS0lEdmWDD9l7Qwyq+n6FYM4+djB21sxjuwB21k8AU2Powef7qQkZjUfS8SjiqHtR3n8U48ON0Wv+P3xobulzeVfp1VcIrz9BHwnwyhtDz6w+hxrUERjVFxzPa7kfwmqoATEFDIpjjEW9qEB6CCMpNBqDVWjqJ02HZojdXBQWXBjE96iT+loZ6tgorHppeRTybwht3S2ENuTN5JcnpZPBaVia2qD/NPL/nNh1fpFGdo62VEKoqhOjANCF4mpIIYxqcATqSDAycsIDg1zMEhNRK0ZchUPhziePnfhQ29L7bV9egKiwXM7kTkNRHoFrZh1mRBOpUUhzePiMhcrtkfiIIVOxSo0UBvh6yO47pG1rc2f131q+0YB8k17x3vl5TZP6j1HOoB2wL2O1CIbvR8DUndB/kC9esJJ5Orp218Ip5ZfOOyTT6Hv7IPmm5iE/xg34T6gIRvqhz3jVg89i2TY/YlXIIPOHWrLsEdPHlcJit06DKLm9/HChpi3fHBQ/3VLrFChh4uMsMCKpix/hVhn8D3ZAuucOc/7LovSu6lSivoys1+ncFazIChOAu4dwh0kN+rwu9vIdTqQcfkBmfUykFLGMemheXragyoTwxeR9b33uVZBRzwMiYfMLfyDMRfURb2XucRgw4QjT0OWFm5BgKWNN3l/DtNwVTHFOxCfk28fjQKen7ueKGoIceVvTwUeHGpvPmWGWRjWKY1kRhtnIwCcxQBWbsaXwtqWMokftf8malf0DO+wJD1NzAyzzEORtbOzJ/h0HlhHgpghthiMFpjKc39kVRfm5FBbwaJL5aRXgG6/HaZu+MAJK+WpGr9u7fv3h0uWVy8QgHJlUjJp7u1WYNwWdHCGQENWn7CBFcJMp9RX9sC6u+hSk5IIkIIvBN7CxjLvRAqSaLAGhd5QSKJbP5cHFoawbjjCmh1tqZSXl9NQInuEC7kW3kr+rLV+TINhjWedeQKrbSR4+rgq1689Nr2fedxPHd8dCw552LnQI6ZntH4pOg+RWvrMzK+HDEEr0LdWk9QuJpba3gzV9lLbedq9POU/D33rUDrcdY1L8fGGPso4iwH4KA8S9cQG2NYOONkzzUL1GifRf93i8YCe+8gN0+fIAe8N9nDyzOAb03wCfR08w7E23qEeHruHQKnHS6rJ2679mX/hKIYzRrBYVfvo4Y4X8P4won1NLoQZjtmFTRsPUO8PLwD8XgfsqebN5lvY+/j5+np8QXeaW6eD5rhwHvv+QDuECM+SVwsd971SdwdHeRAuiadV013DTL1MrU1sCOZ1k8uNUdItws1Dja2NnBwfKeB9wj09PTxc8DO2Yo8Cg/dXh42EDxuRoO4QuqngjBTNtszC2qF3u5b7m80Ah2BAtAjH8XtU1CVXE8WTEhux5zcjTNZiLv3zaiCpDJq8f7YKlb+Ra/QsgUObreY0DVc5P5jHxd5acOMwSl5oYjTYhqYqFKS28rdXY1TBLKzj8nsFrQ0vdOBB43nphOSZikklDiYJ4p1QE6KdT4s86t7lMlLxTvqYebR3rO6DHryxmJIbm/U/bub75te7Xd7f3aRM7sLmy57+y1brE5pecobQxJeUpS12+nsJk6bBf+tVmH9t1rdyhNRPsFSkttJdGXVbA4clCv+4yKucB1XOIUrLOMKF/0rZraF9P47+Yuz9+1oBjvP7OTp6Bw8hxkR4XyWrYnbOT1U/3doaYhfoW6mx3X/HaeZKOyovNTlPUQVINwUWAHHUXD1FHo7amGa5+MTMyHOgCOmhDybiYE7mVwwSH47Av2HkwaRb2mC4ylZDANrOxe3Af7DHjnNopLbJdPbicYUKz2K7t+IrHeJRGdAVMlkIY6uzJeRW4iyiii3/NimGkwNS/JHu55md1c+K2rwbxCI/Ne7RacgqESyoBTmn8N/2lMoSergduFFaMzf23UkP45ycFtW/lzEa/2/jCD/POQllCmfJHcVuwVKVo+oGZ34slmYfwHeZ0XeJzeRrS+rRR9uaINQ+rr85khY2i0/3kVye5NP7m6q3cJGzbazMAZ/E8G+gxv5dpLIh1J+BXz/jPvJPKYmRRHLcr8Br/mffLbYeVDpZH1/ItivZ8x98j9XZsqfzvMSkpfIfZKL5GBWiSv4lKv4tKgvwNHawRPA4/B+xuUz256CHq0SlXzhbr5cTvY/N+U65n3Y0f/ySWdYNms7jl6guiJq993t5p+jJf/1zhg16gXLeKwgoYyRlSD1Txp7l8uJsJf/vfvDOCUpx5rcTv2gMhX7Z2N7P+A2b0t7HEqXZkf+SV7rjpYSzGjsXtqua3NsaNnxGLPA4Qiosc7FMUE/DvUQkkzYYwkNobDX/k2UBapHzADEwEsYwsuw4FdquELs5WDoQGO0Lq+DmLgaBDLuRuIa0bkKKH6T3syq1G/2/wwwG18ot2V6wA7OQQpFIh47iCBKgzElyi1rwWkDpMZEeGNdcOzEJkghj9YkB8hrFWlFL/aGtwpeR6Q4BADmYwbAf27ikIQMZCIL2chBLvLABU8Jvf/jHJ2nHDVRCc0xB0AGkIls5IILXswBkB5FBjKRhWzkIBd54Hq8c+AgIl/aaEJRJYx+dabsBoBxOFuWYlc5zZa7yWurM67v+9ITN/B/wXTjSQDgylTCfUzjNzzCDGbxO8/tlgO1m4/vXZfK3trg165u6f9rpJwVnPfnzNeEt9udhLwfNyMSPtSXmeMn/n77X6P5+c/iKYD8DzRHHWvm7CigTgDQ3H7fn7cF2jxCAPbXu7gB2AC9bWZlORG8D7RF0Lh0jNcUnjTYZ6hE2qhJJE6XTrr4biaYprGaevf7GoCuru8keLh96K5jgouqsrazpizTmpYNLfTw7ZofnaeWPMCm1uKiBiDtXkOMprmUf9w68+IBeGBmFgMY2/M0NLem4Ddqo+Yp0RxdW4G+pLUM2mRVU/Sce2cGEM3SyZuNOC/OLJcTwfuALTprFiLCS2JB45vdrNcoVM703iSCkPwSKL8lTt3SCk4jPSKJNVvVLCjH3QQ83GB8wBYba/kATWdrN/z/BZ0OQnlqwHhJuXT1RbOYlDvYGFO95wkgynVWs0bKpBpI0DjIojWR70kBhHOkpCbhvFCYugJdFMUHjX/BaLQ2VxQF4DFvrUwHMTOkqWPCkZStXW0og/Forkm9i4C3UHJIHY2dFaWY146o+qzhNlA9NlkEz1m3R7einfF0jJS7aIieRm69D51fljnpgK3Eilrym4jW3cmOfENXm8WWtlaiZ5Faa5naaiM/OrLYqWMyGmvm6c4AYp7TmCUMDSq4nAg+X3KbgJZhI1cy3oEebx7F1tZNrKGyizB1NEkNxUhH0HjKmr93ujCFF21OtbByU48o2cEsJ4I3M91OjsDLVhTcFKBTGOEgJa3fIoXuTg0xHWlSVDTURReOIqXAB4DGuLmiuJiRC9BxWkHjKVdUpml/N6f3HXi2Q2hAmLtZ46Q8gSy8PUSIUjXa0szaPDUr8D1ndPsCk9VS88uxL+aNrgDiVq2Jx0AGcJy8FR4CUpuaGHrLvaECaGytA2x9iLXF5F5D5+EK26pDkX3wZaszK3LXLDQxURkn7ewbH6QAG54ru6lJWWqrg+q0b2f85KZQe0wapIjocCTfC/iAuPMopjFKUT80cZD4XIw53GidwLPsju8MIHMprTm6BVoghWq4lnK6tESiBrXa5DuNJoEAtcQtCK0aCJj10sXOqHGydi002ujFiuNPpTC4I9ytmBWnjFyOSM3YVyPc4eF0wwG0GkV6RQi1Flwg2nDSba3tWu8+0DaUgzU0lWYpzUFKme5wxANlrzQecm122lAabkHRaoCAWe9G7IwaJ2vXQqONno8L6KkggCDHawbzaJM39KkydfFRv4uLY5gMiD3cFEOvj4VowAUX4Fr1z10hWMprVA5cSuAq+41D6vBY6XAnOQIEAIZ/dURwkvpbu+4nX1wDAKj/P3kDAHz1Q1b9cJ/KAAACCgAABPwqXO2lVwzc7V0dEHi+U6Qzt2lwtOjD2FeDd9OwstFGkUAaUS3ag81SGlM0LjKatJMGWWm90FbfJa+q2ldmQ7yHmOBImkjZd4mDCYfBPRU3i2TvpBzJvZeHuUtD1IqUzME4fKIfLUHv31vOYV0LiF/X8Inmub292NFukO5ghjB42w13jTbYSnDV9iF/A9CwzhMGxKg7WYSSIXEq3KOVXizUvEbssVxHetVrqY9Sl4pyOqIJc/utJVBvlsN3FIFQu5ujqiq2E2iibp+VIiX0p2k48GMPi+YgFajjExxkwd2Mu83JESX5zDBK38vN5LaWuZGR//A6RUg4pDdB9kGNzDNPj6RWoFq0rGWq6/JmJVzxwaG5LCruSY6jPRo0C6BAjfu+ty+mJ+EdoNUwVCnhMUl0Y68RD+DhuF74I709EvYmuc0xfS+LU26kw5fTkNIiWkXGxEAvHC7hCKcfTXFIJAlHlDB6VSi0Ag47V3ZsKyFJRvYKoxJI+MNyQcStwTfAvpMa2kp0aWS5YwZOQPW0YGu5PcujNp1SW7qyCSsmIxsojrBp31huoyBPE/SLJZmrIcqwuNPSpgm4LkxRnCVRHuHJC2AAR5cIWTz9ArSJ0CWAOpYeAbpwwC8uLxNmmMidBhUzRbrGu+vitgO3ilEpjL/bThUtDu0sxTGWWOIAqoqpsU+TbHw2RRLCPNnWBrigBf/zBZzXzUeBbgD4p5piAkB+ASgFdmSIZWArRd1TuBlwHm5P8YDpHdg+icR5uq8FrtThq0nO0SnalgvoOgXn2ogBpAYCLcGsxzjVd205gE9YvpqPQzp+H4QfRgeB+wzTDb3wpnfz4D0AhOje2y4wwz3bFdgK/rldhWPkt2vmG/zbTnc5oUTPRW3bx8xmwUagDKBNpgJYZ+uNkZuwW+hpmRegVzD5hp9Hcx5P/ciwMP5hTpugfYfmoxl5jCEb0LSN3Eth5Mu2xqQZqIL24w0Drw9Pz9+/mZb6UN4/he/PTx/pU9TKD2CtNSWZ9VJ/e1tVasn8cD9spyW3Ai9PryKA0oDUMgIVbpG+qlhcaIDLSbF+aU3A1dTU+T2RZrGMROMpo5WRx0IYdJ5DsY2brqV2CdxzNFU8tFawgxT7vamct5iUnJK6J5S0e0C5rLiktKy8orLqz8qp7T02/qp6ZdkVoJCUYy+AUQjOPIpRArIDFihBnQmiJCvq3v88xtoseycoRprtxBKUc9ZN2/V/dK51mi9+nf9H+3qz3e0Px9P5QlJ/3I5XtbUb5h+t45P0BZUXZVU3bdcP4zQv62a72x/25QDO9Jq+V7w/nq/35/vDhDJF1XTDtGzH9fwgjOKdrlxvPk7zsm77cV73834/EouaR1bP3gMYpsVqszucLrfH6/MjKBaHJxBJZAqVRmcwgcXmcHl8gVAklkhlcoVSpdZodXqD0TQpYM2GrePs4BGAIDAECoMjkCg0BovDE4gkMoVKozOYLDaHy+MLhCKxRCqTK5QqtUar0xuMJnMLSytrG1s7ewdHJ2cXJAqNweLwBCKJTKHS6Awmi83h8vgCoUgskcrkCqVKrdHq9AajyWyx2tja2Ts4Ojm7uLq5e3h6efv4+sEIilGoNDqDyWJzuDy+QCgSS6QyuUKpUmu0Or3BaDJbrDa7w+lye7w+v8+dun84fhApp1dGHUUgGBTbMdHlPrd8iqLE/Pog7/RaARFmXQOVHF0HudKSlWolklob4h4TN5rXXlSMFD0Vo3pNgugYsPDorQs7dUY7dXxlLHjvnAUVAmtjkgbB8llM0oBra1+LoaU+ytvNrCpaJTjXdd3GAkhRsXwFKmlaBlzSCIY6owOHrMfjUqkWi1AizVESy6o6pJqJJZEUbZO+klXdRvjaZCxY1aPyXvKchjqWRS4CQLVKWDE6WfZbDuwgGFdQPFqpatw71wn5bMdJwFuMskTaZz2IsoRE9BHbs5vh81EwEDXRmnZyptMib5KdiY4WckTEMePZMYvJW+RiqeUujNQIW0dosunnJ6ptzaK1KkXkYRM8lUZQ5YiIPtcEny9KWuBcLpfLna/2kiLptnbISkdE2YyYA1MjQMeWo5uLSHvPzLBi5Iiwr81oUSZKXeI98hijVUSXHb0DGIxYzqEtQa42EQQjggEqZqJDUXJ9Dc0CsFM5gXs2hQADBMVwgnWaz8/aNgAExXCCRaqWIIcxlXLFUbEsq3XM3jXxVem55tH//as/JXv1BuzeZoONeaXkn4fJdWnF1Tw2l+nERku3IBbTBAZk9zNs3tvXK8DrtVK/aN6h+ykogIn+nFJ+apxhoIWXDDDrOT28MCTbX6YQxZzZcQ5Kqi4Udc5ZZTi2nwPfAL7ZYqHL0duPzmdYxp6Pznv7u6J72w7/5A/B9fPZnCbl+BcSl+q6yc6Cet6cUQd9GjsGsslS6SbPT9AbYpryEkJJ4KdZBHQ0MZxgkRTN+Ck0tBXHbg4RBgiK4QSLpGiGzbFbN8EAQTGcYJEUzbA5du+yAwYIKlsjbTBxwkTOdLgnXq+3E+jfzz++/I+ifv746S/fYvgLe57x+9+P35+/3F+orjLFifV8YRFiCGWRJoYdgUo9xRcHWfqGk/6Maw8P+S57rPUxYL7iQ/NWngVV5FBKnK7lWRTSfr4N64femw+W5Wc/wL7/jYLDfZS1B3oU5VtzswmMfRPQv0Ietq8MTqbJa5U7PgtS/Cbe/UwR3w7v61IL8ynmN/X+d8+9/7fZFZwGAAAA) format('woff2');}
@@ -333,6 +339,15 @@
   .panel-body canvas{max-width:100%;}
   .panel-foot{display:flex; gap:18px; margin-top:10px; padding-top:10px; border-top:1px solid var(--line-soft); flex-wrap:wrap;}
   .foot-stat{display:flex; flex-direction:column; gap:1px;}
+  .btn-instalar{position:fixed; right:14px; bottom:14px; z-index:900; background:#2F81F7; color:#fff; border:none; border-radius:999px; padding:11px 16px; font:600 13px 'Inter',sans-serif; box-shadow:0 6px 18px rgba(0,0,0,.35); cursor:pointer;}
+  .alertas-tira{display:flex; flex-wrap:wrap; gap:8px; margin:-6px 0 18px;}
+  .alerta-chip{display:flex; align-items:center; gap:8px; border:1px solid; border-radius:9px; padding:8px 12px; font:600 12.5px 'Inter',sans-serif; cursor:pointer; background:none; text-align:left; line-height:1.35;}
+  .alerta-chip::before{content:'!'; display:inline-flex; align-items:center; justify-content:center; width:18px; height:18px; border-radius:50%; background:currentColor; color:var(--bg,#0d1117); font-weight:800; font-size:12px; flex-shrink:0;}
+  .alerta-chip[data-e="bad"]{color:#F87171; border-color:rgba(248,113,113,.5); background:rgba(248,113,113,.08);}
+  .alerta-chip[data-e="warn"]{color:#E3B341; border-color:rgba(227,179,65,.5); background:rgba(227,179,65,.08);}
+  html[data-apariencia="claro"] .alerta-chip[data-e="bad"], html[data-apariencia="gris"] .alerta-chip[data-e="bad"]{color:#B42318;}
+  html[data-apariencia="claro"] .alerta-chip[data-e="warn"], html[data-apariencia="gris"] .alerta-chip[data-e="warn"]{color:#9A6700;}
+  html[data-apariencia="claro"] .alerta-chip::before, html[data-apariencia="gris"] .alerta-chip::before{color:#fff;}
   .cap-resumen{display:flex; flex-wrap:wrap; align-items:flex-end; gap:6px 18px; margin:2px 0 8px;}
   .cap-resumen .cap-num{font:700 30px 'Barlow Condensed',sans-serif; color:var(--text); line-height:1;}
   .cap-resumen .cap-num small{font-size:16px; font-weight:600; color:var(--muted);}
@@ -346,6 +361,9 @@
   html[data-apariencia="claro"] .cap-estado[data-e="warn"], html[data-apariencia="gris"] .cap-estado[data-e="warn"]{color:#9A6700;}
   html[data-apariencia="claro"] .cap-estado[data-e="bad"], html[data-apariencia="gris"] .cap-estado[data-e="bad"]{color:#B42318;}
   .panel-body.cap-barra{min-height:96px; flex:0 0 auto; height:96px;}
+  .cap-reparto{display:flex; flex-wrap:wrap; gap:6px; width:100%;}
+  .cap-estado.cap-mini{width:auto; flex:1 1 220px; font-size:11.5px; padding:4px 10px;}
+  .cap-estado[data-e="info"]{color:var(--muted); border-color:var(--line); background:transparent;}
   .cap-tabla{width:100%; border-collapse:collapse; margin-top:10px; font-size:12px; color:var(--text);}
   .cap-tabla th{font-weight:600; font-size:10.5px; text-transform:uppercase; letter-spacing:.04em; color:var(--muted-2); text-align:right; padding:6px 6px; border-bottom:1px solid var(--line);}
   .cap-tabla th:first-child, .cap-tabla td:first-child{text-align:left;}
@@ -572,6 +590,26 @@
   .nube-inv{display:flex; align-items:center; gap:8px; background:var(--panel-2); border:1px solid var(--line); border-radius:7px; padding:7px 10px; font-size:12.5px; color:var(--text);}
   .nube-inv span{flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
   .nube-mini{flex:0 0 auto; padding:6px 10px; font-size:11.5px;}
+  .cfg-form .cfg-titulo{font:700 11px 'Inter',sans-serif; text-transform:uppercase; letter-spacing:.05em; color:var(--muted-2); margin:12px 0 6px;}
+  .cfg-grid{display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:8px;}
+  .cfg-grid .pw-field{margin-bottom:0;}
+  .cfg-grid label{font-size:11px;}
+  @media (max-width:600px){ .cfg-grid{grid-template-columns:1fr 1fr;} }
+  .act-lista{max-height:320px; overflow-y:auto;}
+  .val-overlay{z-index:9998;}
+  .val-card{max-width:520px; text-align:left; max-height:calc(100vh - 24px); overflow-y:auto;}
+  .val-card h2{text-align:left !important;}
+  .val-card > p{text-align:left !important; margin-bottom:12px !important;}
+  .val-lista{display:flex; flex-direction:column; gap:8px;}
+  .val-item{border:1px solid var(--line); border-left:4px solid #E3B341; border-radius:7px; padding:8px 10px; background:var(--panel-2);}
+  .val-item.grave{border-left-color:#F87171;}
+  .val-item .vt{font:600 13px 'Inter',sans-serif; color:var(--text);}
+  .val-item .vd{font-size:12px; color:var(--muted); margin-top:2px; line-height:1.45; word-break:break-word;}
+  .val-nota{font-size:12px !important; color:var(--muted) !important; margin:12px 0 4px !important;}
+  .act-fila{display:grid; grid-template-columns:auto 1fr; gap:2px 10px; font-size:11.5px; padding:6px 8px; border-bottom:1px solid var(--line-soft); color:var(--text);}
+  .act-fila .af{color:var(--muted-2); white-space:nowrap; grid-row:span 2;}
+  .act-fila .aa{font-weight:600;}
+  .act-fila .ad{color:var(--muted); word-break:break-word;}
   .nh-fila{display:flex; align-items:center; gap:8px; background:var(--panel-2); border:1px solid var(--line); border-radius:7px; padding:8px 10px; font-size:12px; color:var(--text);}
   .nh-fila .nh-i{flex:1; min-width:0;}
   .nh-fila .nh-f{font-weight:600;}
@@ -922,6 +960,37 @@
             <div class="nube-nota" style="margin-top:4px;">La nube guarda las últimas 6 publicaciones. Si alguien publicó un Excel equivocado, restaura una versión anterior: todos los equipos la recibirán.</div>
             <div class="nube-lista" id="nubeHistLista" style="margin-top:10px;"><div class="sub">Cargando…</div></div>
           </details>
+          <details class="nube-config nube-solo-lider-bloque" id="nubeActBox" style="display:none;">
+            <summary>Registro de actividad</summary>
+            <div class="nube-nota" style="margin-top:4px;">Quién entró, publicó, restauró, invitó o cambió la configuración (últimos 60 movimientos). Solo lo ven los líderes.</div>
+            <div class="nube-lista act-lista" id="nubeActLista" style="margin-top:10px;"><div class="sub">Cargando…</div></div>
+          </details>
+          <details class="nube-config nube-solo-lider-bloque" id="nubeCfgBox" style="display:none;">
+            <summary>Configuración del dashboard</summary>
+            <div class="nube-nota" style="margin-top:4px;">Se guarda en la nube y se aplica en todos los equipos (dashboard, reportes y alertas).</div>
+            <form id="nubeCfgForm" autocomplete="off" class="cfg-form">
+              <div class="cfg-titulo">Capacidad de almacenaje · Bodega 4</div>
+              <div class="cfg-grid">
+                <div class="pw-field"><label for="cfgCap">Contratada total (m²)</label><input type="number" id="cfgCap" min="1" step="0.01" required></div>
+                <div class="pw-field"><label for="cfgCapTel">Asignada a Telcel (m²)</label><input type="number" id="cfgCapTel" min="0" step="0.01" placeholder="sin asignar"></div>
+                <div class="pw-field"><label for="cfgCapAtt">Asignada a AT&amp;T (m²)</label><input type="number" id="cfgCapAtt" min="0" step="0.01" placeholder="sin asignar"></div>
+              </div>
+              <div class="cfg-titulo">Área por tipo de tarima (m²)</div>
+              <div class="cfg-grid">
+                <div class="pw-field"><label for="cfgEst">Estándar</label><input type="number" id="cfgEst" min="0.01" step="0.01" required></div>
+                <div class="pw-field"><label for="cfgEuro">Euro pallet</label><input type="number" id="cfgEuro" min="0.01" step="0.01" required></div>
+                <div class="pw-field"><label for="cfgSobre">Sobredimensionado</label><input type="number" id="cfgSobre" min="0.01" step="0.01" required></div>
+              </div>
+              <div class="cfg-titulo">Alertas</div>
+              <div class="cfg-grid">
+                <div class="pw-field"><label for="cfgAviso">Aviso de ocupación desde (%)</label><input type="number" id="cfgAviso" min="1" max="100" step="1" required></div>
+                <div class="pw-field"><label for="cfgDias">Avisar si no se publica en (días)</label><input type="number" id="cfgDias" min="1" max="60" step="1" required></div>
+                <div class="pw-field"><label for="cfgCorreo">Correo para alertas</label><input type="email" id="cfgCorreo" required spellcheck="false"></div>
+              </div>
+              <div class="nube-nota" id="cfgInfo"></div>
+              <button type="submit" class="gate-submit" id="nubeCfgBtn">Guardar configuración</button>
+            </form>
+          </details>
           <details class="nube-config" id="nubeMiPassBox">
             <summary>Cambiar mi contraseña de la nube</summary>
             <form id="nubeMiPassForm" autocomplete="off">
@@ -1001,6 +1070,8 @@
   </div>
 
   <!-- 1. MOVIMIENTOS GENERALES -->
+  <div class="alertas-tira no-print" id="alertasTira" style="display:none;"></div>
+
   <div class="section-title"><span class="tag">01</span> <span id="sec1Title">Movimientos generales — Telcel &amp; AT&amp;T</span></div>
   <div class="grid">
     <div class="panel">
@@ -2847,6 +2918,42 @@ const CAPACIDAD = {
   ],
   limiteAviso: 0.90   // desde 90 % de ocupación se marca «cerca del límite»
 };
+CAPACIDAD.porProyecto = { 'TELCEL': null, 'AT&T': null };   // reparto de los m² contratados (null = sin asignar)
+const CONFIG_GASO = { diasSinPublicar: 7, correoAlertas: 'alexander86.milanes@gmail.com', actualizado: null, por: null };
+const CONFIG_CACHE_KEY = 'gaso_config_nube_v1';
+// Aplica la configuración que el líder guarda en la nube (capacidad, reparto, m² por tipo y umbrales)
+function aplicarConfigGaso(cfg){
+  if (!cfg || typeof cfg !== 'object') return;
+  const num = (v, d)=>{ const n = parseFloat(v); return isFinite(n) && n > 0 ? n : d; };
+  CAPACIDAD.m2 = num(cfg.capacidad_m2, 400);
+  const cp = cfg.capacidad_proyecto || {};
+  CAPACIDAD.porProyecto = { 'TELCEL': num(cp.TELCEL, null), 'AT&T': num(cp['AT&T'], null) };
+  const mt = cfg.m2_tipo || {};
+  CAPACIDAD.tipos.forEach(t=>{ t.m2 = num(mt[t.k], t.m2); });
+  const u = cfg.umbrales || {};
+  CAPACIDAD.limiteAviso = num(u.ocupacion_aviso, 90) / 100;
+  CONFIG_GASO.diasSinPublicar = num(u.dias_sin_publicar, 7);
+  CONFIG_GASO.correoAlertas = cfg.alertas_correo || CONFIG_GASO.correoAlertas;
+}
+function configGasoActual(){
+  return { capacidad_m2: CAPACIDAD.m2, capacidad_proyecto: Object.assign({}, CAPACIDAD.porProyecto),
+    m2_tipo: Object.fromEntries(CAPACIDAD.tipos.map(t=> [t.k, t.m2])),
+    umbrales: { ocupacion_aviso: Math.round(CAPACIDAD.limiteAviso*100), dias_lento: 180, despacho_meta: 80, dias_sin_publicar: CONFIG_GASO.diasSinPublicar },
+    alertas_correo: CONFIG_GASO.correoAlertas };
+}
+try{ const c = JSON.parse(localStorage.getItem(CONFIG_CACHE_KEY) || 'null'); if (c && c.config){ aplicarConfigGaso(c.config); CONFIG_GASO.actualizado = c.actualizado; CONFIG_GASO.por = c.por; } }catch(e){}
+// Capacidad que aplica a la vista: con un solo proyecto y reparto definido, la asignada a ese proyecto
+function capacidadVista(){
+  const ps = (typeof proyectosCapacidad === 'function') ? proyectosCapacidad() : [];
+  if (ps.length === 1 && CAPACIDAD.porProyecto[ps[0].name]) return CAPACIDAD.porProyecto[ps[0].name];
+  return CAPACIDAD.m2;
+}
+function capAsignada(){ const ps = proyectosCapacidad(); return ps.length === 1 && !!CAPACIDAD.porProyecto[ps[0].name]; }
+function capPal(){ return capAsignada() ? 'asignados' : 'contratados'; }
+function capPalF(){ return capAsignada() ? 'asignada' : 'contratada'; }
+function hayReparto(){ return !!(CAPACIDAD.porProyecto['TELCEL'] || CAPACIDAD.porProyecto['AT&T']); }
+function etiquetaCapacidad(){ return 'Capacidad ' + capPalF(); }
+function textoTiposM2(){ return CAPACIDAD.tipos.map(t=> t.nombre.toLowerCase() + ' ' + t.m2.toLocaleString('es-MX',{minimumFractionDigits:2}) + ' m²').join(', ').replace(/, ([^,]*)$/, ' y $1'); }
 // Tipo de tarima normalizado: estándar, euro pallet o sobredimensionado(a). Vacío o desconocido = estándar.
 function tipoTarimaCap(t){
   const v = String(t || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase();
@@ -2874,18 +2981,21 @@ function ocupacionCapacidad(){
     vig.forEach(r=>{ const k = tipoTarimaCap(r.tipoPallet); const n = r.noPallet || 1; porTipo[k].tarimas += n; porTipo[k].m2 += m2DeRegistro(r); if (!tipoTarimaReconocido(r.tipoPallet)) sinTipo += n; });
     const m2 = Object.values(porTipo).reduce((a,b)=> a + b.m2, 0);
     const tarimas = Object.values(porTipo).reduce((a,b)=> a + b.tarimas, 0);
-    return Object.assign({}, p, { porTipo, m2, tarimas, sinTipo });
+    const asignada = CAPACIDAD.porProyecto[p.name] || null;
+    const pctA = asignada ? m2 / asignada : null;
+    const estadoA = asignada ? (pctA > 1 ? 'bad' : (pctA >= CAPACIDAD.limiteAviso ? 'warn' : 'ok')) : null;
+    return Object.assign({}, p, { porTipo, m2, tarimas, sinTipo, asignada, pctA, estadoA });
   });
   const total = proy.reduce((a,p)=> a + p.m2, 0);
-  const pct = total / CAPACIDAD.m2;
+  const pct = total / capacidadVista();
   const estado = pct > 1 ? 'bad' : (pct >= CAPACIDAD.limiteAviso ? 'warn' : 'ok');
-  return { proy, total, pct, estado, libre: CAPACIDAD.m2 - total, sinTipo: proy.reduce((a,p)=> a + p.sinTipo, 0) };
+  return { proy, total, pct, estado, libre: capacidadVista() - total, sinTipo: proy.reduce((a,p)=> a + p.sinTipo, 0) };
 }
 function fm2(n){ return (Math.round(n*10)/10).toLocaleString('es-MX', {minimumFractionDigits:1, maximumFractionDigits:1}); }
 function textoEstadoCapacidad(o){
-  if (o.estado === 'bad') return 'Por encima de la capacidad contratada: exceden ' + fm2(-o.libre) + ' m² (' + fmt1(Math.round(o.pct*1000)/10) + ' %)';
-  if (o.estado === 'warn') return 'Por debajo de la capacidad contratada, pero cerca del límite: quedan ' + fm2(o.libre) + ' m² libres';
-  return 'Por debajo de la capacidad contratada: quedan ' + fm2(o.libre) + ' m² libres';
+  if (o.estado === 'bad') return 'Por encima de la capacidad ' + capPalF() + ': ' + (o.proy && o.proy.length === 1 ? 'excede ' : 'exceden ') + fm2(-o.libre) + ' m² (' + fmt1(Math.round(o.pct*1000)/10) + ' %)';
+  if (o.estado === 'warn') return 'Por debajo de la capacidad ' + capPalF() + ', pero cerca del límite: quedan ' + fm2(o.libre) + ' m² libres';
+  return 'Por debajo de la capacidad ' + capPalF() + ': quedan ' + fm2(o.libre) + ' m² libres';
 }
 // Ventana de 12 meses hasta el mes en curso (igual que las métricas 1 y 2)
 function ventana12Meses(records){
@@ -2916,7 +3026,7 @@ function pluginLineaCapacidad(valor, horizontal, impresion, fuente){
     else { const yv = chart.scales.y.getPixelForValue(valor); c.moveTo(a.left, yv); c.lineTo(a.right, yv); }
     c.stroke(); c.setLineDash([]);
     c.fillStyle = col; c.font = '700 ' + (fuente || 11) + 'px Inter, sans-serif';
-    const txt = 'Capacidad contratada ' + fmt(valor) + ' m²';
+    const txt = etiquetaCapacidad() + ' ' + fmt(valor) + ' m²';
     if (horizontal){ const x = chart.scales.x.getPixelForValue(valor); c.textAlign = x > a.right - 90 ? 'right' : 'left'; c.textBaseline = 'bottom'; c.fillText(txt, x + (c.textAlign === 'left' ? 5 : -5), a.top - 2); }
     else { const yv = chart.scales.y.getPixelForValue(valor); c.textAlign = 'right'; c.textBaseline = 'bottom'; c.fillText(txt, a.right - 4, yv - 4); }
     c.restore();
@@ -2927,16 +3037,29 @@ function renderCapacidad(){
   const o = ocupacionCapacidad(), varios = o.proy.length > 1, quien = nombreCapacidad();
   const setTxt = (id, t)=>{ const el = document.getElementById(id); if (el) el.textContent = t; };
   setTxt('secCapTitle', 'Capacidad de almacenaje (m²) — ' + quien);
-  setTxt('capSub', 'Zonas 1, 2 y 3 de la Bodega 4 · capacidad contratada ' + fmt(CAPACIDAD.m2) + ' m²' + (varios ? ' para Telcel y AT&T' : ' · ocupación del proyecto ' + quien));
+  setTxt('capSub', 'Zonas 1, 2 y 3 de la Bodega 4 · capacidad ' + capPalF() + ' ' + fmt(capacidadVista()) + ' m²' + (varios ? ' para Telcel y AT&T' : (capAsignada() ? ' a ' + quien + ' (de ' + fmt(CAPACIDAD.m2) + ' m² contratados)' : ' · ocupación del proyecto ' + quien)));
   setTxt('capMesSub', 'm² ocupados por ' + quien + ' frente a la capacidad contratada · últimos 12 meses por trimestre');
   // Resumen y estado
   const pctTxt = fmt1(Math.round(o.pct*1000)/10) + ' %';
   const colPct = o.estado === 'bad' ? 'var(--red)' : (o.estado === 'warn' ? '#E3B341' : 'var(--green)');
   document.getElementById('capResumen').innerHTML =
-    '<div><div class="cap-num">' + fm2(o.total) + ' <small>de ' + fmt(CAPACIDAD.m2) + ' m² ocupados' + (varios ? '' : ' por ' + quien) + '</small></div></div>' +
+    '<div><div class="cap-num">' + fm2(o.total) + ' <small>de ' + fmt(capacidadVista()) + ' m² ocupados' + (varios ? '' : ' por ' + quien) + '</small></div></div>' +
     '<div class="cap-pct" style="color:' + colPct + '">' + pctTxt + '</div>' +
     '<div class="cap-estado" data-e="' + o.estado + '"></div>';
   document.querySelector('#capResumen .cap-estado').textContent = (varios ? '' : quien + ': ') + textoEstadoCapacidad(o);
+  // Con reparto definido: estado de cada proyecto frente a su asignación
+  if (varios && hayReparto()){
+    const cont = document.createElement('div'); cont.className = 'cap-reparto';
+    o.proy.forEach(p=>{
+      const d = document.createElement('div'); d.className = 'cap-estado cap-mini';
+      if (p.asignada){
+        d.dataset.e = p.estadoA;
+        d.textContent = p.label + ': ' + fm2(p.m2) + ' de ' + fmt(p.asignada) + ' m² asignados (' + fmt1(Math.round(p.pctA*1000)/10) + '\u00a0%)' + (p.pctA > 1 ? ' · excede ' + fm2(p.m2 - p.asignada) + ' m²' : '');
+      } else { d.dataset.e = 'info'; d.textContent = p.label + ': ' + fm2(p.m2) + ' m² · sin capacidad asignada'; }
+      cont.appendChild(d);
+    });
+    document.getElementById('capResumen').appendChild(cont);
+  }
   // Barra horizontal: proyectos + disponible (o excedente)
   destroy('chartCap');
   const libre = Math.max(0, o.libre), exceso = Math.max(0, -o.libre);
@@ -2953,12 +3076,12 @@ function renderCapacidad(){
   ]).map(d=> Object.assign(d, { borderWidth:0, barPercentage:1, categoryPercentage:0.78, borderSkipped:false }));
   CHARTS['chartCap'] = new Chart(document.getElementById('chartCap').getContext('2d'), {
     type:'bar', data:{ labels:['Bodega 4'], datasets:dsCap },
-    plugins:[etq, pluginLineaCapacidad(CAPACIDAD.m2, true)],
+    plugins:[etq, pluginLineaCapacidad(capacidadVista(), true)],
     options:{ indexAxis:'y', responsive:true, maintainAspectRatio:false, animation:false,
       layout:{ padding:{ top:16, right:6 } },
       plugins:{ numeroEtiquetas:false, legend:{ position:'bottom', align:'start', labels:{ boxWidth:9, boxHeight:9, usePointStyle:true, pointStyle:'rectRounded' } },
-        tooltip:{ callbacks:{ label: it=> it.dataset.label + ': ' + fm2(it.raw) + ' m² (' + fmt1(Math.round(it.raw/CAPACIDAD.m2*1000)/10) + ' %)' } } },
-      scales:{ x:{ stacked:true, min:0, max: Math.max(CAPACIDAD.m2, Math.ceil(o.total/50)*50), grid:{ color:TH.grid }, border:{ display:false }, ticks:{ color:TH.tick, callback:v=> fmt(v) + ' m²', maxTicksLimit:6 } },
+        tooltip:{ callbacks:{ label: it=> it.dataset.label + ': ' + fm2(it.raw) + ' m² (' + fmt1(Math.round(it.raw/capacidadVista()*1000)/10) + ' %)' } } },
+      scales:{ x:{ stacked:true, min:0, max: Math.max(capacidadVista(), Math.ceil(o.total/50)*50), grid:{ color:TH.grid }, border:{ display:false }, ticks:{ color:TH.tick, callback:v=> fmt(v) + ' m²', maxTicksLimit:6 } },
                y:{ stacked:true, display:false } } }
   });
   // Tabla por tipo de tarima (una columna por proyecto en vista; «Total» solo con los dos)
@@ -2969,13 +3092,14 @@ function renderCapacidad(){
     html += '<tr><td>' + t.nombre + ' <span class="tm2 c">(' + t.m2.toLocaleString('es-MX', {minimumFractionDigits:2}) + ' m²)</span></td>' +
       o.proy.map(p=> '<td>' + dato(p.porTipo[t.k].tarimas, p.porTipo[t.k].m2) + '</td>').join('') + (varios ? '<td>' + dato(tot.tarimas, tot.m2) + '</td>' : '') + '</tr>';
   });
-  const pctP = (m)=> fmt1(Math.round(m/CAPACIDAD.m2*1000)/10) + ' %';
+  const pctP = (m)=> fmt1(Math.round(m/capacidadVista()*1000)/10) + ' %';
   const tot2 = (m)=> '<span>' + fm2(m) + ' m²</span><span class="sep"> · </span><span class="tm2">' + pctP(m) + '</span>';
-  html += '<tr><td>Total ocupado (de ' + fmt(CAPACIDAD.m2) + ' m²)</td>' + o.proy.map(p=> '<td>' + tot2(p.m2) + '</td>').join('') + (varios ? '<td>' + tot2(o.total) + '</td>' : '') + '</tr>';
+  if (varios && hayReparto()) html += '<tr><td>Capacidad asignada</td>' + o.proy.map(p=> '<td>' + (p.asignada ? '<span>' + fmt(p.asignada) + ' m²</span><span class="sep"> · </span><span class="tm2">' + fmt1(Math.round(p.pctA*1000)/10) + ' % usado</span>' : 'sin asignar') + '</td>').join('') + '<td>' + fmt(CAPACIDAD.m2) + ' m²</td></tr>';
+  html += '<tr><td>Total ocupado (de ' + fmt(capacidadVista()) + ' m²)</td>' + o.proy.map(p=> '<td>' + tot2(p.m2) + '</td>').join('') + (varios ? '<td>' + tot2(o.total) + '</td>' : '') + '</tr>';
   const tabla = document.getElementById('tablaCap');
   tabla.innerHTML = html; tabla.classList.toggle('cap-uno', !varios);
-  document.getElementById('capNota').textContent = 'Se cuentan las tarimas que siguen en almacén (vigentes)' + (varios ? ' de ambos proyectos' : ' de ' + quien) + ', multiplicadas por el área de su tipo: estándar 1.44 m², euro pallet 0.96 m² y sobredimensionado 3.66 m². ' +
-    CAPACIDAD.zonas + ' (' + CAPACIDAD.plano + '): ' + fm2(CAPACIDAD.m2Fisicos) + ' m² físicos; capacidad contratada ' + fmt(CAPACIDAD.m2) + ' m²' + (varios ? '.' : ' para Telcel y AT&T (con «Todos» se ve la ocupación de los dos).') +
+  document.getElementById('capNota').textContent = 'Se cuentan las tarimas que siguen en almacén (vigentes)' + (varios ? ' de ambos proyectos' : ' de ' + quien) + ', multiplicadas por el área de su tipo: ' + textoTiposM2() + '. ' +
+    CAPACIDAD.zonas + ' (' + CAPACIDAD.plano + '): ' + fm2(CAPACIDAD.m2Fisicos) + ' m² físicos; capacidad contratada ' + fmt(CAPACIDAD.m2) + ' m² para Telcel y AT&T' + (hayReparto() ? ' (reparto: Telcel ' + (CAPACIDAD.porProyecto['TELCEL'] ? fmt(CAPACIDAD.porProyecto['TELCEL']) + ' m²' : 'sin asignar') + ', AT&T ' + (CAPACIDAD.porProyecto['AT&T'] ? fmt(CAPACIDAD.porProyecto['AT&T']) + ' m²' : 'sin asignar') + ')' : '') + (varios ? '.' : '; con «Todos» se ve la ocupación de los dos.') +
     (o.sinTipo ? ' ' + fmt(o.sinTipo) + ' tarima(s) sin tipo reconocido se contaron como estándar.' : '');
   // Ocupación al cierre de cada mes
   destroy('chartCapMes');
@@ -2987,25 +3111,72 @@ function renderCapacidad(){
     const meta = chart.getDatasetMeta(chart.data.datasets.length - 1);
     const paso = meta.data.length > 1 ? Math.abs(meta.data[1].x - meta.data[0].x) : 60;
     c.font = '600 ' + Math.max(8, Math.min(10.5, paso * 0.36)).toFixed(1) + 'px Inter, sans-serif';
-    meta.data.forEach((el, i)=>{ const v = sumas[i]; if (!v) return; c.fillStyle = v > CAPACIDAD.m2 ? (imp ? '#B42318' : '#F87171') : (imp ? '#1B2430' : TH.text); c.fillText(fmt(v), el.x, el.y - 3); });
+    meta.data.forEach((el, i)=>{ const v = sumas[i]; if (!v) return; c.fillStyle = v > capacidadVista() ? (imp ? '#B42318' : '#F87171') : (imp ? '#1B2430' : TH.text); c.fillText(fmt(v), el.x, el.y - 3); });
     c.restore(); } };
   CHARTS['chartCapMes'] = new Chart(document.getElementById('chartCapMes').getContext('2d'), {
     type:'bar',
     data:{ labels: om.keys.map(k=>{ const [y, m] = k.split('-'); return MESES[parseInt(m,10)-1] + (k === hoyK ? '*' : ''); }),
       datasets: om.series.map(se=> ({ label:se.label, data:se.data, backgroundColor:se.scale.accent, borderRadius:3, maxBarThickness:30, stack:'m2' })) },
-    plugins:[pluginBandasTrimestre(om.keys, trims), pluginLineaCapacidad(CAPACIDAD.m2, false), etqTot],
+    plugins:[pluginBandasTrimestre(om.keys, trims), pluginLineaCapacidad(capacidadVista(), false), etqTot],
     options:{ responsive:true, maintainAspectRatio:false, animation:false,
       plugins:{ numeroEtiquetas:false, legend:{ position:'top', align:'end', labels:{ boxWidth:9, boxHeight:9, usePointStyle:true, pointStyle:'rectRounded' } },
         tooltip:{ backgroundColor:TH.tipBg, borderColor:TH.tipBorder, borderWidth:1, titleColor:TH.text, bodyColor:TH.text, mode:'index', intersect:false,
-          callbacks:{ label: it=> it.dataset.label + ': ' + fm2(it.raw) + ' m²', footer: it=>{ const i = it[0].dataIndex; return (varios ? 'Total: ' : '') + fm2(sumas[i]) + ' m² (' + fmt1(Math.round(sumas[i]/CAPACIDAD.m2*1000)/10) + ' % de ' + fmt(CAPACIDAD.m2) + ' m²)'; } } } },
+          callbacks:{ label: it=> it.dataset.label + ': ' + fm2(it.raw) + ' m²', footer: it=>{ const i = it[0].dataIndex; return (varios ? 'Total: ' : '') + fm2(sumas[i]) + ' m² (' + fmt1(Math.round(sumas[i]/capacidadVista()*1000)/10) + ' % de ' + fmt(capacidadVista()) + ' m²)'; } } } },
       scales:{ x:{ stacked:true, offset:true, grid:{ display:false }, border:{ display:false }, ticks:{ color:TH.tick, maxRotation:0, autoSkip:true } },
-               y:{ stacked:true, beginAtZero:true, suggestedMax: Math.max(CAPACIDAD.m2, ...sumas) * 1.22, grid:{ color:TH.grid }, border:{ display:false }, ticks:{ color:TH.tick, maxTicksLimit:6, callback:v=> fmt(v) } } } }
+               y:{ stacked:true, beginAtZero:true, suggestedMax: Math.max(capacidadVista(), ...sumas) * 1.22, grid:{ color:TH.grid }, border:{ display:false }, ticks:{ color:TH.tick, maxTicksLimit:6, callback:v=> fmt(v) } } } }
   });
-  const iMax = sumas.indexOf(Math.max(...sumas)), sobre = sumas.filter(v=> v > CAPACIDAD.m2).length;
+  const iMax = sumas.indexOf(Math.max(...sumas)), sobre = sumas.filter(v=> v > capacidadVista()).length;
   document.getElementById('footCapMes').innerHTML =
     '<div class="foot-stat"><div class="fv num">' + fm2(sumas[iMax] || 0) + ' m²</div><div class="fl">Máximo (' + monthLabel(om.keys[iMax]) + ')</div></div>' +
     '<div class="foot-stat"><div class="fv num">' + fm2(sumas.reduce((a,b)=>a+b,0)/Math.max(1,sumas.length)) + ' m²</div><div class="fl">Promedio de 12 meses</div></div>' +
-    '<div class="foot-stat"><div class="fv num" style="color:' + (sobre ? 'var(--red)' : 'var(--green)') + '">' + fmt(sobre) + '</div><div class="fl">Meses por encima de ' + fmt(CAPACIDAD.m2) + ' m²</div></div>';
+    '<div class="foot-stat"><div class="fv num" style="color:' + (sobre ? 'var(--red)' : 'var(--green)') + '">' + fmt(sobre) + '</div><div class="fl">Meses por encima de ' + fmt(capacidadVista()) + ' m²</div></div>';
+}
+
+/* ---------- Web instalable: botón «Instalar app» (solo versión web, cuando el navegador lo permite) ---------- */
+(function(){
+  if (!window.GASO_WEB_PUBLICA) return;
+  let aviso = null;
+  window.addEventListener('beforeinstallprompt', (e)=>{
+    e.preventDefault(); aviso = e;
+    if (document.getElementById('btnInstalarApp')) return;
+    const b = document.createElement('button'); b.id = 'btnInstalarApp'; b.type = 'button'; b.className = 'btn-instalar no-print';
+    b.textContent = '⤓ Instalar app en este equipo';
+    b.addEventListener('click', async ()=>{ if (!aviso) return; aviso.prompt(); try{ await aviso.userChoice; }catch(err){} aviso = null; b.remove(); });
+    document.body.appendChild(b);
+  });
+  window.addEventListener('appinstalled', ()=>{ const b = document.getElementById('btnInstalarApp'); if (b) b.remove(); });
+})();
+
+/* ---------- Alertas en pantalla (capacidad, lento movimiento, datos sin publicar) ---------- */
+function calcularAlertas(){
+  const al = [];
+  try{
+    const o = ocupacionCapacidad(), quien = nombreCapacidad();
+    if (o.estado === 'bad') al.push({ e:'bad', t: quien + ' ' + (o.proy.length > 1 ? 'rebasan' : 'rebasa') + ' la capacidad ' + capPalF() + ': ' + fm2(o.total) + ' de ' + fmt(capacidadVista()) + ' m² (excede ' + fm2(-o.libre) + ' m²)', ir:'secCapTitle' });
+    else if (o.estado === 'warn') al.push({ e:'warn', t: quien + ' al ' + fmt1(Math.round(o.pct*1000)/10) + ' % de la capacidad ' + capPalF() + ' (quedan ' + fm2(o.libre) + ' m²)', ir:'secCapTitle' });
+    if (o.proy.length > 1) o.proy.forEach(p=>{
+      if (p.estadoA === 'bad') al.push({ e:'bad', t: p.label + ' excede su área asignada: ' + fm2(p.m2) + ' de ' + fmt(p.asignada) + ' m²', ir:'secCapTitle' });
+      else if (p.estadoA === 'warn') al.push({ e:'warn', t: p.label + ' al ' + fmt1(Math.round(p.pctA*1000)/10) + ' % de su área asignada', ir:'secCapTitle' });
+    });
+  }catch(e){}
+  const lentas = filtered().filter(r=> !r.salio && r.dias > 180).length;
+  if (lentas) al.push({ e: lentas >= 20 ? 'bad' : 'warn', t: fmt(lentas) + ' ' + (lentas === 1 ? 'tarima lleva' : 'tarimas llevan') + ' más de 180 días en almacén', ir:'sec3Title' });
+  if (NUBE.modo === 'nube' && NUBE.remoto && NUBE.remoto.actualizado){
+    const dias = Math.floor((Date.now() - new Date(NUBE.remoto.actualizado).getTime()) / 86400000);
+    if (dias >= CONFIG_GASO.diasSinPublicar) al.push({ e:'warn', t:'La nube no recibe datos nuevos desde hace ' + fmt(dias) + ' días (último: ' + nubeFechaTxt(NUBE.remoto.actualizado) + ')', ir:null });
+  }
+  return al;
+}
+function renderAlertas(){
+  const tira = document.getElementById('alertasTira'); if (!tira) return;
+  const al = calcularAlertas();
+  tira.textContent = '';
+  al.forEach(a=>{
+    const b = document.createElement('button'); b.type = 'button'; b.className = 'alerta-chip'; b.dataset.e = a.e; b.textContent = a.t;
+    if (a.ir) b.addEventListener('click', ()=>{ const el = document.getElementById(a.ir); if (el) el.scrollIntoView({ behavior:'smooth', block:'start' }); });
+    tira.appendChild(b);
+  });
+  tira.style.display = al.length ? 'flex' : 'none';
 }
 
 /* ---------- Master render ---------- */
@@ -3043,6 +3214,7 @@ function renderAll(){
   igualarGrosorBarras(['chart3','chart4']);
 
   renderCapacidad();
+  renderAlertas();
   renderPermanencia();
   renderPorSitio();
   renderBuckets();
@@ -3314,7 +3486,7 @@ function estructuraReporte(){
       {titulo:'Cross dock · AT&T', canvas:'chart4', pie:'foot4'}
     ]},
     { seccion:'03 · Capacidad de almacenaje (m²) — ' + nombreCapacidad(), paneles:[
-      {titulo:'Ocupación del área contratada (zonas 1, 2 y 3 · ' + fmt(CAPACIDAD.m2) + ' m²)', canvas:'chartCap', pie:'capResumen', tabla:'tablaCap', anchos: todos ? [0.31, 0.23, 0.23, 0.23] : [0.6, 0.4]},
+      {titulo:'Ocupación del área contratada (zonas 1, 2 y 3 · ' + fmt(capacidadVista()) + ' m²)', canvas:'chartCap', pie:'capResumen', tabla:'tablaCap', anchos: todos ? [0.31, 0.23, 0.23, 0.23] : [0.6, 0.4]},
       {titulo:'Ocupación al cierre de cada mes · últimos 12 meses por trimestre', canvas:'chartCapMes', pie:'footCapMes'}
     ]},
     { seccion:'04 · Análisis de permanencia en inventario' + suf, paneles:[
@@ -3828,11 +4000,16 @@ function generarReporteEjecutivo(){
   {
     const oc = ocupacionCapacidad();
     if (oc.estado === 'bad') recos.push({id:'capacidad', p:'Alta', t:'Liberar área en la bodega',
-      c:`${nombreCapacidad()} ${oc.proy.length > 1 ? 'ocupan' : 'ocupa'} ${fm2(oc.total)} m² de ${fmt(CAPACIDAD.m2)} contratados: exceden ${fm2(-oc.libre)} m². Despachar o reubicar material.`,
-      d:`La ocupación de ${nombreCapacidad()} es de ${fm2(oc.total)} m², ${fmt1(Math.round(oc.pct*1000)/10)} % de los ${fmt(CAPACIDAD.m2)} m² contratados (zonas 1, 2 y 3 de la Bodega 4): exceden ${fm2(-oc.libre)} m². Priorizar el despacho de tarimas sobredimensionadas, que ocupan 3.66 m² cada una, o negociar más área.`});
+      c:`${nombreCapacidad()} ${oc.proy.length > 1 ? 'ocupan' : 'ocupa'} ${fm2(oc.total)} m² de ${fmt(capacidadVista())} ${capPal()}: exceden ${fm2(-oc.libre)} m². Despachar o reubicar material.`,
+      d:`La ocupación de ${nombreCapacidad()} es de ${fm2(oc.total)} m², ${fmt1(Math.round(oc.pct*1000)/10)} % de los ${fmt(capacidadVista())} m² ${capPal()} (zonas 1, 2 y 3 de la Bodega 4): exceden ${fm2(-oc.libre)} m². Priorizar el despacho de tarimas sobredimensionadas, que ocupan 3.66 m² cada una, o negociar más área.`});
     else if (oc.estado === 'warn') recos.push({id:'capacidad', p:'Media', t:'Prever espacio en la bodega',
-      c:`La ocupación llega a ${fmt1(Math.round(oc.pct*1000)/10)} % de los ${fmt(CAPACIDAD.m2)} m² contratados; quedan ${fm2(oc.libre)} m².`,
-      d:`${nombreCapacidad()} ${oc.proy.length > 1 ? 'ocupan' : 'ocupa'} ${fm2(oc.total)} m² de ${fmt(CAPACIDAD.m2)} contratados (${fmt1(Math.round(oc.pct*1000)/10)} %). Quedan ${fm2(oc.libre)} m²: programar despachos antes de recibir material sobredimensionado.`});
+      c:`La ocupación llega a ${fmt1(Math.round(oc.pct*1000)/10)} % de los ${fmt(capacidadVista())} m² ${capPal()}; quedan ${fm2(oc.libre)} m².`,
+      d:`${nombreCapacidad()} ${oc.proy.length > 1 ? 'ocupan' : 'ocupa'} ${fm2(oc.total)} m² de ${fmt(capacidadVista())} ${capPal()} (${fmt1(Math.round(oc.pct*1000)/10)} %). Quedan ${fm2(oc.libre)} m²: programar despachos antes de recibir material sobredimensionado.`});
+  }
+  if (proyectosCapacidad().length > 1){
+    ocupacionCapacidad().proy.filter(p=> p.asignada && p.estadoA === 'bad').forEach(p=> recos.push({id:'capacidad-' + p.name, proy:p.label, p:'Alta', t:`Liberar área de ${p.label}`,
+      c:`${p.label} ocupa ${fm2(p.m2)} m² de sus ${fmt(p.asignada)} asignados: excede ${fm2(p.m2 - p.asignada)} m².`,
+      d:`${p.label} ocupa ${fm2(p.m2)} m², ${fmt1(Math.round(p.pctA*1000)/10)} % de los ${fmt(p.asignada)} m² que tiene asignados en la Bodega 4. Programar despachos de ${p.label} o reasignar área.`}));
   }
   if (!recos.length) recos.push({id:'seguimiento', p:'Seguimiento', t:'Mantener el seguimiento', c:'Sin desviaciones relevantes en el periodo.', d:'Los indicadores no presentan desviaciones relevantes en el periodo; mantener el seguimiento periódico.'});
   const ordenP = {Alta:0, Media:1, Seguimiento:2};
@@ -3984,7 +4161,7 @@ function generarReporteEjecutivo(){
     if (ult6.length) claves.push({e:estInv, b:'Tendencia.', t:`En los últimos 6 meses cerrados (${rango6}) entraron ${fmt(sIn)} y salieron ${fmt(sOut)} tarimas: el inventario ${neto6 > 0 ? `creció ${fmt(neto6)}` : (neto6 < 0 ? `bajó ${fmt(-neto6)}` : 'no cambió')}.`});
     {
       const oc = ocupacionCapacidad();
-      claves.push({e: oc.estado, b:'Capacidad.', t:`${nombreCapacidad()} ${oc.proy.length > 1 ? 'ocupan' : 'ocupa'} ${fm2(oc.total)} de ${fmt(CAPACIDAD.m2)} m² contratados (${fmt1(Math.round(oc.pct*1000)/10)} %): ` +
+      claves.push({e: oc.estado, b:'Capacidad.', t:`${nombreCapacidad()} ${oc.proy.length > 1 ? 'ocupan' : 'ocupa'} ${fm2(oc.total)} de ${fmt(capacidadVista())} m² ${capPal()} (${fmt1(Math.round(oc.pct*1000)/10)} %): ` +
         (oc.estado === 'bad' ? `por encima de la capacidad, exceden ${fm2(-oc.libre)} m².` : `por debajo de la capacidad, quedan ${fm2(oc.libre)} m² libres.`)});
     }
     if (sitiosN.length) claves.push({e: sitios[0] && sitios[0].avg > 180 ? 'warn' : 'info', b:'Sitios.', t:`${sitiosN[0].site} tiene más tarimas pendientes (${fmt(sitiosN[0].n)})` + (sitios[0] && sitios[0].site !== sitiosN[0].site ? `; ${sitios[0].site} es el que más espera (${fmt1(sitios[0].avg)} días promedio).` : '.')});
@@ -4248,21 +4425,21 @@ function generarReporteEjecutivo(){
   // ---------- 03 · Capacidad de almacenaje (m²) ----------
   {
     const oc = ocupacionCapacidad(), quienC = nombreCapacidad(), variosC = oc.proy.length > 1;
-    const pctC = (m)=> fmt1(Math.round(m / CAPACIDAD.m2 * 1000)/10) + ' %';
-    const titular = `${quienC} ${variosC ? 'ocupan' : 'ocupa'} ${fm2(oc.total)} de ${fmt(CAPACIDAD.m2)} m² contratados (${pctC(oc.total)}): ` +
+    const pctC = (m)=> fmt1(Math.round(m / capacidadVista() * 1000)/10) + ' %';
+    const titular = `${quienC} ${variosC ? 'ocupan' : 'ocupa'} ${fm2(oc.total)} de ${fmt(capacidadVista())} m² ${capPal()} (${pctC(oc.total)}): ` +
       (oc.estado === 'bad' ? `por encima de la capacidad, exceden ${fm2(-oc.libre)} m²` : (oc.estado === 'warn' ? `por debajo, pero cerca del límite (${fm2(oc.libre)} m² libres)` : `por debajo de la capacidad, con ${fm2(oc.libre)} m² libres`));
     // Gráfica mensual: m² al cierre de cada mes, apilado Telcel/AT&T, con línea de capacidad y trimestres
     const om = ocupacionMensualCapacidad();
     const sumas = om.sumas;
     const trimsCap = calcularTrimestres(om.keys, sumas, sumas.map(()=>0));
     const etqSum = { id:'etqSumCap', afterDatasetsDraw(ch){ const c = ch.ctx, meta = ch.getDatasetMeta(ch.data.datasets.length - 1); c.save(); c.font = '700 14px Inter, sans-serif'; c.textAlign = 'center'; c.textBaseline = 'bottom';
-      meta.data.forEach((el, i)=>{ if (!sumas[i]) return; c.fillStyle = sumas[i] > CAPACIDAD.m2 ? '#B42318' : '#111827'; c.fillText(fmt(sumas[i]), el.x, el.y - 4); }); c.restore(); } };
+      meta.data.forEach((el, i)=>{ if (!sumas[i]) return; c.fillStyle = sumas[i] > capacidadVista() ? '#B42318' : '#111827'; c.fillText(fmt(sumas[i]), el.x, el.y - 4); }); c.restore(); } };
     const escCap = ejes(false, {x:{stacked:true, offset:true, grid:{color:'transparent'}, border:{display:false}, ticks:{color:TXT, font:{size:15, weight:'600', family:FAM}, maxRotation:0, autoSkip:false}}});
-    escCap.y.stacked = true; escCap.y.suggestedMax = Math.max(CAPACIDAD.m2, ...sumas) * 1.25;
+    escCap.y.stacked = true; escCap.y.suggestedMax = Math.max(capacidadVista(), ...sumas) * 1.25;
     const gCap = graficaTemp({type:'bar', data:{labels:om.keys.map(etqMes), datasets: om.series.map(se=>
         ({label:se.label + ' (m²)', data:se.data, backgroundColor:se.scale.accent, borderRadius:3, maxBarThickness:34, stack:'m2'}))},
       options:{layout:{padding:{top:8}}, plugins:{legend:leyenda('top')}, scales:escCap},
-      plugins:[pluginBandasTrimestre(om.keys, trimsCap, { impresion:true, fuente:15 }), pluginLineaCapacidad(CAPACIDAD.m2, false, true, 15), etqSum]}, 1100, 340);
+      plugins:[pluginBandasTrimestre(om.keys, trimsCap, { impresion:true, fuente:15 }), pluginLineaCapacidad(capacidadVista(), false, true, 15), etqSum]}, 1100, 340);
     const hCap = altoImg(gCap, AU, 56);
     const filasCap = CAPACIDAD.tipos.map(t=>{
       const c = (p)=> p.porTipo[t.k].tarimas ? `${fmt(p.porTipo[t.k].tarimas)} · ${fm2(p.porTipo[t.k].m2)} m²` : '–';
@@ -4274,17 +4451,18 @@ function generarReporteEjecutivo(){
                             : [{t:'Tipo de tarima',w:.55},{t:quienC,w:.45,a:'r'}];
     const sob = { m2: oc.proy.reduce((a,p)=> a + p.porTipo.SOBRE.m2, 0), n: oc.proy.reduce((a,p)=> a + p.porTipo.SOBRE.tarimas, 0) };
     const nTar = oc.proy.reduce((a,p)=> a + p.tarimas, 0);
-    const iMax = sumas.indexOf(Math.max(...sumas)), mesesSobre = sumas.filter(v=> v > CAPACIDAD.m2).length;
+    const iMax = sumas.indexOf(Math.max(...sumas)), mesesSobre = sumas.filter(v=> v > capacidadVista()).length;
     const pk = [
       {e: oc.estado, b:'Estado:', t: textoEstadoCapacidad(oc) + '.'},
       variosC ? {e:'info', b:'Por proyecto:', t:`Telcel ocupa ${fm2(oc.proy[0].m2)} m² (${pctC(oc.proy[0].m2)} de la capacidad) con ${fmt(oc.proy[0].tarimas)} tarimas; AT&T, ${fm2(oc.proy[1].m2)} m² (${pctC(oc.proy[1].m2)}) con ${fmt(oc.proy[1].tarimas)}.`}
-              : {e:'info', b:quienC + ':', t:`ocupa ${fm2(oc.total)} m² (${pctC(oc.total)} de los ${fmt(CAPACIDAD.m2)} m² contratados para Telcel y AT&T) con ${fmt(oc.proy[0].tarimas)} tarimas en almacén.`},
+              : {e:'info', b:quienC + ':', t:`ocupa ${fm2(oc.total)} m² (${pctC(oc.total)} de los ${fmt(capacidadVista())} m² ${capAsignada() ? 'asignados al proyecto' : 'contratados para Telcel y AT&T'}) con ${fmt(oc.proy[0].tarimas)} tarimas en almacén.`},
+      (variosC && hayReparto()) ? {e: oc.proy.some(p=> p.estadoA === 'bad') ? 'bad' : (oc.proy.some(p=> p.estadoA === 'warn') ? 'warn' : 'ok'), b:'Reparto:', t: oc.proy.map(p=> p.asignada ? `${p.label} usa ${fm2(p.m2)} de sus ${fmt(p.asignada)} m² (${fmt1(Math.round(p.pctA*1000)/10)} %)` : `${p.label} no tiene capacidad asignada`).join('; ') + '.'} : null,
       sob.n ? {e: sob.m2 > oc.total/2 ? 'warn' : 'info', b:'Sobredimensionadas:', t:`${fmt(sob.n)} de ${fmt(nTar)} tarimas (${pctTxt(sob.n, nTar)}) ocupan ${fm2(sob.m2)} m², el ${pctTxt(sob.m2, oc.total)} del área usada.`} : null,
-      {e: mesesSobre ? 'bad' : 'info', b:'Últimos 12 meses:', t:`la ocupación máxima fue de ${fm2(sumas[iMax] || 0)} m² (${mesLargo(om.keys[iMax])})` + (mesesSobre ? `; en ${fmt(mesesSobre)} ${plural(mesesSobre,'mes','meses')} se rebasaron los ${fmt(CAPACIDAD.m2)} m².` : `; ningún mes rebasó los ${fmt(CAPACIDAD.m2)} m².`)}
+      {e: mesesSobre ? 'bad' : 'info', b:'Últimos 12 meses:', t:`la ocupación máxima fue de ${fm2(sumas[iMax] || 0)} m² (${mesLargo(om.keys[iMax])})` + (mesesSobre ? `; en ${fmt(mesesSobre)} ${plural(mesesSobre,'mes','meses')} se rebasaron los ${fmt(capacidadVista())} m².` : `; ningún mes rebasó los ${fmt(capacidadVista())} m².`)}
     ].filter(Boolean);
     seccion('Capacidad de almacenaje (m²) — ' + quienC, titular, 40);
     subBloque('3.1 Ocupación actual del área contratada', 60);
-    subtitulo(`${CAPACIDAD.zonas} (${CAPACIDAD.plano}) · capacidad contratada ${fmt(CAPACIDAD.m2)} m² · tarimas en almacén al ${fechaCorta(new Date())}`); y += 5.2;
+    subtitulo(`${CAPACIDAD.zonas} (${CAPACIDAD.plano}) · capacidad ${capPalF()} ${fmt(capacidadVista())} m² · tarimas en almacén al ${fechaCorta(new Date())}`); y += 5.2;
     {
       // Estado
       const e = EST[oc.estado]; const h = 8;
@@ -4293,28 +4471,28 @@ function generarReporteEjecutivo(){
       fuenteTxt('bold', 9.4); color(e.c); doc.text((variosC ? '' : quienC + ': ') + textoEstadoCapacidad(oc), M + 7.5, y + h/2 + 1.3);
       y += h + 4;
       // Barra de m² con marca de capacidad
-      const escala = Math.max(CAPACIDAD.m2, oc.total), ab = 10, xCap = M + AU * CAPACIDAD.m2 / escala;
+      const escala = Math.max(capacidadVista(), oc.total), ab = 10, xCap = M + AU * capacidadVista() / escala;
       const segs = oc.proy.map(p=> ({v:p.m2, c:p.scale.accent, l:p.label, blanco:true}));
       if (oc.libre > 0) segs.push({v:oc.libre, c:'#E5E7EB', l:'Disponible', blanco:false});
       let x = M;
       segs.forEach(sg=>{ const w = AU * sg.v / escala; if (w <= 0) return; relleno(hexARgb(sg.c)); doc.rect(x, y, w, ab, 'F');
         if (w > 18){ fuenteTxt('bold', 8.6); if (sg.blanco) doc.setTextColor(255,255,255); else color(TXTC); doc.text(fm2(sg.v) + ' m²', x + w/2, y + ab/2 + 1.3, {align:'center'}); }
         x += w; });
-      if (oc.total > CAPACIDAD.m2){ doc.setFillColor(220,38,38); doc.rect(xCap, y, AU - (xCap - M), ab, 'F'); }
+      if (oc.total > capacidadVista()){ doc.setFillColor(220,38,38); doc.rect(xCap, y, AU - (xCap - M), ab, 'F'); }
       doc.setDrawColor(180,35,24); doc.setLineWidth(0.6); if (doc.setLineDashPattern) doc.setLineDashPattern([1.2,0.9],0);
       doc.line(xCap, y - 3, xCap, y + ab + 1.5); if (doc.setLineDashPattern) doc.setLineDashPattern([],0);
-      fuenteTxt('bold', 7.4); doc.setTextColor(180,35,24); doc.text('Capacidad contratada ' + fmt(CAPACIDAD.m2) + ' m²', xCap - 1, y - 3.6, {align:'right'});
+      fuenteTxt('bold', 7.4); doc.setTextColor(180,35,24); doc.text(etiquetaCapacidad() + ' ' + fmt(capacidadVista()) + ' m²', xCap - 1, y - 3.6, {align:'right'});
       y += ab + 4.5;
       let lx = M; segs.forEach(sg=>{ relleno(hexARgb(sg.c)); doc.rect(lx, y - 2.3, 2.6, 2.6, 'F'); fuenteTxt('normal', 7.8); color(TXTC);
         const t = `${sg.l}: ${fm2(sg.v)} m² (${pctC(sg.v)})`; doc.text(t, lx + 3.8, y); lx += doc.getTextWidth(t) + 10; });
       y += 4.5;
     }
     tabla(colsCap, filasCap, totalCap);
-    ayuda(`área ocupada = tarimas en almacén × área de su tipo (estándar 1.44 m², euro pallet 0.96 m², sobredimensionado 3.66 m²). Las zonas 1, 2 y 3 suman ${fm2(CAPACIDAD.m2Fisicos)} m² físicos; la capacidad contratada para Telcel y AT&T es de ${fmt(CAPACIDAD.m2)} m²${variosC ? '' : `; aquí solo se muestra la ocupación de ${quienC}`}.` + (oc.sinTipo ? ` ${fmt(oc.sinTipo)} tarima(s) sin tipo reconocido se contaron como estándar.` : ''));
+    ayuda(`área ocupada = tarimas en almacén × área de su tipo (${textoTiposM2()}). Las zonas 1, 2 y 3 suman ${fm2(CAPACIDAD.m2Fisicos)} m² físicos; la capacidad contratada para Telcel y AT&T es de ${fmt(CAPACIDAD.m2)} m²${capAsignada() ? `, de los que ${fmt(capacidadVista())} m² están asignados a ${quienC}` : ''}${variosC ? '' : `; aquí solo se muestra la ocupación de ${quienC}`}.` + (oc.sinTipo ? ` ${fmt(oc.sinTipo)} tarima(s) sin tipo reconocido se contaron como estándar.` : ''));
     subBloque('3.2 Ocupación al cierre de cada mes', hCap + 8);
     subtitulo(`m² ocupados por ${quienC} · últimos ${om.keys.length} meses por trimestre` + notaCurso); y += 5.2;
     ponerImg(gCap, M, AU, 56); y += hCap + 2;
-    ayuda(`cada barra es el área que ocupaban las tarimas en almacén al terminar el mes (el mes en curso, a hoy)${variosC ? ', apilada por proyecto' : ''}; la línea punteada roja es la capacidad contratada de ${fmt(CAPACIDAD.m2)} m².`);
+    ayuda(`cada barra es el área que ocupaban las tarimas en almacén al terminar el mes (el mes en curso, a hoy)${variosC ? ', apilada por proyecto' : ''}; la línea punteada roja es la capacidad ${capPalF()} de ${fmt(capacidadVista())} m².`);
     cajaPuntos(pk);
   }
 
@@ -5025,8 +5203,27 @@ function lecturaGrafica(grupo, A){
       A.mesMaxEnt ? `Mes con más entradas: ${A.mesMaxEnt.nombre} (${nf(A.mesMaxEnt.entradas)}).` : '',
       A.mesMaxSal ? `Mes con más salidas: ${A.mesMaxSal.nombre} (${nf(A.mesMaxSal.salidas)}).` : '',
       T.ultimos.length ? `Últimos 3 meses: ${nf1(T.entUlt)} entradas y ${nf1(T.salUlt)} salidas promedio por mes.` : '',
-      `Total: ${nf(R.entradas)} entradas y ${nf(R.salidas)} salidas (diferencia ${R.dif>=0?'+':''}${nf(R.dif)}).`
+      `Total: ${nf(R.entradas)} entradas y ${nf(R.salidas)} salidas (diferencia ${R.dif>=0?'+':''}${nf(R.dif)}).`,
+      ...(((CHARTS.chart1 && CHARTS.chart1.$trimestres) || []).filter(t=> !t.parcial).slice(-1).map(t=> `Último trimestre cerrado (T${t.q} ${t.y}): ${nf(t.in)} entradas y ${nf(t.out)} salidas.`))
     ].filter(Boolean);
+    case 'tar': {
+      const tr = (CHARTS.chart2 && CHARTS.chart2.$trimestres) || [];
+      const ult = tr.filter(t=> !t.parcial).slice(-2);
+      const out = [`Últimos 12 meses agrupados por trimestre (${nf(tr.length)} ${tr.length===1?'trimestre':'trimestres'}).`];
+      tr.slice(-4).forEach(t=> out.push(`T${t.q} ${t.y}${t.enCurso?' (en curso)':(t.meses.length<3?' (parcial)':'')}: ${nf(t.in)} entradas y ${nf(t.out)} salidas.`));
+      if (ult.length === 2){ const d = ult[1].in - ult[0].in; out.push(`Entradas de T${ult[1].q} frente a T${ult[0].q}: ${d>=0?'+':''}${nf(d)}.`); }
+      return out;
+    }
+    case 'cap': {
+      const o = ocupacionCapacidad(), cap = capacidadVista();
+      const out = [`${etiquetaCapacidad()}: ${fm2(cap)} m² (zonas 1, 2 y 3 · Bodega 4).`,
+        `Ocupado hoy: ${fm2(o.total)} m² (${fmt1(Math.round(o.pct*1000)/10)} %) con ${nf(o.proy.reduce((a,p)=>a+p.tarimas,0))} tarimas vigentes.`,
+        textoEstadoCapacidad(o) + '.'];
+      if (o.proy.length > 1) o.proy.forEach(p=> out.push(`${p.label}: ${fm2(p.m2)} m²` + (p.asignada ? ` de ${fm2(p.asignada)} asignados (${fmt1(Math.round(p.pctA*1000)/10)} %${p.estadoA==='bad'?', excedido':''}).` : '.')));
+      else CAPACIDAD.tipos.forEach(t=>{ const v = o.proy[0].porTipo[t.k]; if (v.tarimas) out.push(`${t.nombre}: ${nf(v.tarimas)} tarimas · ${fm2(v.m2)} m².`); });
+      if (o.proy.length > 1 && !hayReparto()) out.push('Reparto por proyecto aún sin capturar: se compara contra el total.');
+      return out;
+    }
     case 'proy': return A.comparativo ? A.comparativo.map(x=>`${x.nombre}: ${nf(x.R.entradas)} entradas, ${nf(x.R.salidas)} salidas, ${nf(x.R.vigentes)} vigentes (${pctTxt(x.R.salidas,x.R.entradas)} despachado).`)
       : [`${A.vista}: ${nf(R.entradas)} entradas, ${nf(R.salidas)} salidas y ${nf(R.vigentes)} vigentes.`, `Avance de despacho: ${pctTxt(R.salidas,R.entradas)}.`];
     case 'perm': return [
@@ -5051,7 +5248,9 @@ function lecturaGrafica(grupo, A){
    ===================================================================== */
 const PRES_GRUPOS = [
   { id:'mov',    nombre:'Movimiento mensual',                   canvases:['chart1'] },
+  { id:'tar',    nombre:'Movimiento por tarimas',               canvases:['chart2'] },
   { id:'proy',   nombre:'Movimiento por operador',              canvases:['chart3','chart4'] },
+  { id:'cap',    nombre:'Capacidad de almacenaje (m²)',         canvases:['chartCap','chartCapMes'] },
   { id:'perm',   nombre:'Antigüedad del inventario',            canvases:['chart7'] },
   { id:'sitios', nombre:'Sitios con más días en inventario',    canvases:['chart6','chart6b'] },
   { id:'asp',    nombre:'Proveedores de transporte (ASP)',      canvases:['chart8'] },
@@ -5086,11 +5285,19 @@ function recolectarPresentacion(gruposSel){
     PRES_GRUPOS.filter(g=> gruposSel.includes(g.id)).forEach(g=>{
       let ids = g.canvases.filter(id=> CHARTS[id] && document.getElementById(id) && document.getElementById(id).offsetWidth);
       if (g.uno) ids = ids.slice(0,1);
-      // Espacio de la gráfica en la diapositiva: 8.35 × 5.3 in, repartido si hay varias
-      const ratio = 8.35 / ((5.3 - 0.15*(ids.length-1)) / Math.max(1, ids.length));
-      const CAPS = { chart3:'Telcel', chart4:'AT&T', chart6:'Telcel', chart6b:'AT&T' };
+      // Tarjetas de trimestre (mismo diseño que las métricas 1 y 2) cuando hay una sola gráfica de movimiento
+      const ch1 = ids.length === 1 ? CHARTS[ids[0]] : null;
+      const trims = ch1 && ch1.$trimestres && ch1.$trimestres.length && ch1.$coloresTrim ? ch1.$trimestres.map(t=>{
+        const m0 = MESES[parseInt(t.meses[0].split('-')[1],10)-1], m1 = MESES[parseInt(t.meses[t.meses.length-1].split('-')[1],10)-1];
+        return { tq:'T'+t.q+' '+t.y, tm:(m0===m1?m0:m0+'–'+m1) + (t.enCurso?' · en curso':(t.meses.length<3?' · parcial':'')), in:t.in, out:t.out, parcial:t.parcial };
+      }) : null;
+      // Espacio de la gráfica en la diapositiva: 8.35 × 5.3 in (4.15 con tarjetas), repartido si hay varias
+      const altoCaja = trims ? 4.15 : 5.3;
+      const ratio = 8.35 / ((altoCaja - 0.15*(ids.length-1)) / Math.max(1, ids.length));
+      const CAPS = { chart3:'Telcel', chart4:'AT&T', chart6:'Telcel', chart6b:'AT&T', chartCap:'Ocupación actual', chartCapMes:'Ocupación al cierre de cada mes' };
       const imgs = ids.map(id=>{ const im = presCapturar(id, ids.length > 1 ? ratio * 1.08 : ratio); if (im && ids.length > 1) im.cap = CAPS[id] || ''; return im; }).filter(Boolean);
-      if (imgs.length) graficas.push({ id:g.id, nombre:g.nombre, imgs, lectura: lecturaGrafica(g.id, A) });
+      if (imgs.length) graficas.push({ id:g.id, nombre:g.id === 'cap' ? 'Capacidad de almacenaje (m²) — ' + nombreCapacidad() : g.nombre, imgs, lectura: lecturaGrafica(g.id, A),
+        trims, colTrim: trims ? { in: String(ch1.$coloresTrim.in).replace('#',''), out: String(ch1.$coloresTrim.out).replace('#','') } : null });
     });
   });
   const heroImg = document.querySelector('.hero-banner img');
@@ -5300,7 +5507,7 @@ async function construirPresentacion(D){
   // ---------- 4. Gráficas seleccionadas ----------
   D.graficas.forEach(g=>{
     const s = marco(g.nombre, `Gráfica del dashboard · ${vistaTxt}`);
-    const caja = { x:0.6, y:1.55, w:8.35, h:5.25 };
+    const caja = { x:0.6, y:1.55, w:8.35, h: g.trims ? 4.1 : 5.25 };
     if (T.oscuro) s.addShape(pptx.ShapeType.roundRect, { x:caja.x-0.08, y:caja.y-0.08, w:caja.w+0.16, h:caja.h+0.16, fill:{ color:'FFFFFF' }, line:{ color:LINEA, width:0.5 }, rectRadius:0.06 });
     const n = g.imgs.length, sep = 0.15, altoCada = (caja.h - sep*(n-1)) / n;
     g.imgs.forEach((im, i)=>{
@@ -5313,6 +5520,21 @@ async function construirPresentacion(D){
       if (im.cap) s.addText(im.cap, { x:caja.x + 0.05, y:yBase, w:caja.w, h:0.28, fontFace:F, fontSize:12, bold:true, color:'1B2430', margin:0 });
       s.addImage({ data: im.data, x, y, w, h });
     });
+    if (g.trims){
+      const nT = g.trims.length, sepT = 0.1, yT = caja.y + caja.h + 0.18, hT = 5.25 - caja.h - 0.18, wT = (caja.w - sepT*(nT-1)) / nT;
+      const colCI = /^[0-9A-Fa-f]{6}$/.test(g.colTrim.in) ? g.colTrim.in : ACC, colCO = /^[0-9A-Fa-f]{6}$/.test(g.colTrim.out) ? g.colTrim.out : PRO;
+      g.trims.forEach((t, i)=>{
+        const xT = caja.x + i*(wT + sepT), d = t.in - t.out;
+        s.addShape(pptx.ShapeType.roundRect, { x:xT, y:yT, w:wT, h:hT, fill:{ color: T.oscuro ? T.suave : 'FFFFFF' }, line:{ color:LINEA, width:0.75, dashType: t.parcial ? 'dash' : 'solid' }, rectRadius:0.05 });
+        s.addText(t.tq, { x:xT+0.08, y:yT+0.05, w:wT-0.16, h:0.24, fontFace:F, fontSize:10.5, bold:true, color:PRO, margin:0 });
+        s.addText(t.tm, { x:xT+0.08, y:yT+0.28, w:wT-0.16, h:0.18, fontFace:F, fontSize:7.5, color:MU, margin:0 });
+        s.addText([
+          { text:'▲ ' + fmt(t.in), options:{ color:colCI, bold:true } },
+          { text:'   ▼ ' + fmt(t.out), options:{ color:colCO, bold:true } },
+          { text:'   ' + (d > 0 ? '+' : '') + fmt(d), options:{ color: d < 0 ? 'DC2626' : TX } }
+        ], { x:xT+0.08, y:yT+0.5, w:wT-0.16, h:0.36, fontFace:F, fontSize:nT > 4 ? 9 : 10.5, margin:0, valign:'middle' });
+      });
+    }
     tarjeta(s, 9.2, 1.55, 3.53, 5.25, { acento: T.tarjeta === 'borde' ? 'izq' : null });
     s.addText('Lectura', { x:9.45, y:1.72, w:3.1, h:0.36, fontFace:FT, fontSize:14, bold:true, color:PRO, margin:0 });
     vinetas(s, g.lectura, { x:9.4, y:2.16, w:3.2, h:4.5, fontSize:11.5 });
@@ -5697,6 +5919,62 @@ async function handleFile(file){
   }
 }
 
+/* ---------- Validación del Excel antes de usarlo / publicarlo ---------- */
+function validarInventario(raw){
+  const hoy = Math.floor(todaySerial()) + 1;
+  const grupos = {
+    sinIngreso:  { t:'Sin fecha de ingreso', d:'No se cuentan en ninguna métrica.', ej:[], n:0, grave:true },
+    tipo:        { t:'Sin tipo de tarima reconocido', d:'Se cuentan como estándar en la capacidad (m²).', ej:[], n:0 },
+    pallet0:     { t:'«No. de Pallet» vacío o en 0', d:'Se cuentan como 1 tarima.', ej:[], n:0 },
+    salidaSinFecha: { t:'Salida sin fecha de salida', d:'Cuentan como despachadas, pero no aparecen en ningún mes.', ej:[], n:0 },
+    salidaAntes: { t:'Fecha de salida anterior al ingreso', d:'Los días en inventario quedan en 0.', ej:[], n:0, grave:true },
+    futuras:     { t:'Fechas en el futuro', d:'Probable error de captura: alteran los meses y los días.', ej:[], n:0, grave:true },
+    duplicados:  { t:'Renglones repetidos', d:'Mismo proyecto, folio, sitio, pallet, fecha de ingreso, tipo y descripción: puede ser la misma tarima capturada dos veces.', ej:[], n:0 }
+  };
+  const marca = (g, r)=>{ grupos[g].n++; if (grupos[g].ej.length < 3) grupos[g].ej.push([r.id, r.fo, r.ip].map(x=> String(x || '').trim()).filter(Boolean).join(' · ') || ('proyecto ' + (r.p || '¿?'))); };
+  const vistos = new Map(); let total = 0;
+  ['telcel','att'].forEach(k=> (raw[k] || []).forEach(r=>{
+    total++;
+    const fi = parseFloat(r.fi), fs = parseFloat(r.fs), es = String(r.es || '').trim().toUpperCase();
+    if (!(fi > 0)) { marca('sinIngreso', r); return; }
+    if (!tipoTarimaReconocido(r.tp)) marca('tipo', r);
+    if (!(parseFloat(r.np) > 0)) marca('pallet0', r);
+    if (es === 'SALIDA' && !(fs > 0)) marca('salidaSinFecha', r);
+    if (fs > 0 && fs < fi) marca('salidaAntes', r);
+    if (fi > hoy || fs > hoy) marca('futuras', r);
+    const clave = [r.p, r.fo, r.fc, r.ip, r.id, r.fi, r.tp, r.dm].map(x=> String(x == null ? '' : x).trim().toUpperCase()).join('|');
+    if (vistos.has(clave)) marca('duplicados', r); else vistos.set(clave, 1);
+  }));
+  const problemas = Object.values(grupos).filter(g=> g.n);
+  return { total, problemas, graves: problemas.some(g=> g.grave) };
+}
+function mostrarValidacion(val, nombreArchivo, enNube){
+  return new Promise(resolve=>{
+    const ov = document.createElement('div'); ov.className = 'gate-overlay no-print val-overlay'; ov.style.display = 'flex';
+    const card = document.createElement('div'); card.className = 'gate-card val-card';
+    const h = document.createElement('h2'); h.textContent = 'Revisión del Excel antes de ' + (enNube ? 'publicarlo' : 'usarlo');
+    const p = document.createElement('p'); p.textContent = nombreArchivo + ' · ' + fmt(val.total) + ' registros. Se encontraron ' + val.problemas.length + (val.problemas.length === 1 ? ' tipo de observación:' : ' tipos de observación:');
+    const lista = document.createElement('div'); lista.className = 'val-lista';
+    val.problemas.forEach(g=>{
+      const it = document.createElement('div'); it.className = 'val-item' + (g.grave ? ' grave' : '');
+      const t = document.createElement('div'); t.className = 'vt'; t.textContent = g.t + ': ' + fmt(g.n);
+      const d = document.createElement('div'); d.className = 'vd'; d.textContent = g.d + (g.ej.length ? ' Ejemplos: ' + g.ej.join('; ') + (g.n > g.ej.length ? '…' : '') : '');
+      it.append(t, d); lista.appendChild(it);
+    });
+    const nota = document.createElement('p'); nota.className = 'val-nota';
+    nota.textContent = 'Puedes ' + (enNube ? 'publicarlo' : 'usarlo') + ' así (las métricas aplican las reglas indicadas) o cancelar, corregir el Excel y volver a cargarlo.';
+    const fila = document.createElement('div'); fila.className = 'nube-fila';
+    const cancelar = document.createElement('button'); cancelar.type = 'button'; cancelar.className = 'nube-sec'; cancelar.textContent = 'Cancelar y corregir';
+    const seguir = document.createElement('button'); seguir.type = 'button'; seguir.className = 'gate-submit'; seguir.style.marginTop = '0';
+    seguir.textContent = enNube ? 'Publicar de todos modos' : 'Usar de todos modos';
+    fila.append(cancelar, seguir);
+    card.append(h, p, lista, nota, fila); ov.appendChild(card); document.body.appendChild(ov);
+    const fin = (v)=>{ ov.remove(); resolve(v); };
+    cancelar.addEventListener('click', ()=> fin(false));
+    seguir.addEventListener('click', ()=> fin(true));
+  });
+}
+
 // Lógica común de parseo, compartida por la carga normal (input de archivo)
 // y por la carga que llega desde el selector nativo de la app Android.
 async function procesarInventarioArrayBuffer(arrayBuffer, nombreArchivo, sizeMB){
@@ -5706,6 +5984,13 @@ async function procesarInventarioArrayBuffer(arrayBuffer, nombreArchivo, sizeMB)
   if (!telcel.length && !att.length){
     alert('No se encontraron datos reconocibles en el archivo. Verifica que use la misma estructura de columnas (encabezados en la fila con "CARRIER").');
     return;
+  }
+  // Revisión de calidad: si hay observaciones, se muestran antes de usar o publicar los datos
+  const val = validarInventario({ telcel, att });
+  if (val.problemas.length){
+    setUploadBusy(true, 'Revisando datos…');
+    const seguir = await mostrarValidacion(val, nombreArchivo, NUBE.modo === 'nube');
+    if (!seguir){ nubeAviso('Carga cancelada: no se cambió ningún dato.'); return; }
   }
   RAW = { telcel, att };
   buildAll();
@@ -5950,7 +6235,7 @@ async function nubePintarInvitados(){
       b.addEventListener('click', async ()=>{
         if (!confirm('¿Quitar el acceso de ' + it.email + '?\n\nSu cuenta de la nube se elimina y deja de ver los datos.')) return;
         b.disabled = true; nubeMsg();
-        try{ await nubeUsuarios({ accion:'quitar', email: it.email }); nubeMsg('ok', 'Se quitó el acceso de ' + it.email + '.'); nubePintarInvitados(); }
+        try{ await nubeUsuarios({ accion:'quitar', email: it.email }); nubeRegistrar('quitó acceso', it.email); nubeMsg('ok', 'Se quitó el acceso de ' + it.email + '.'); nubePintarInvitados(); }
         catch(err){ b.disabled = false; nubeMsg('error', err.message); }
       });
       fila.appendChild(b); caja.appendChild(fila);
@@ -6027,6 +6312,7 @@ function nubeInstalarInvitarVarios(){
         try{
           const r = await nubeUsuarios({ accion:'invitar', email, password: pass });
           resultados.push({ email, pass, estado:'ok', nota: (r && r.creada === false) ? 'Ya tenía cuenta: se le asignó esta contraseña nueva.' : 'Invitación creada.' });
+          nubeRegistrar('invitación', email + ((r && r.creada === false) ? ' (contraseña nueva)' : '') + ' · invitación múltiple');
           if (Array.isArray(NUBE.invitados) && !NUBE.invitados.includes(email)) NUBE.invitados.push(email);
         }catch(err){
           resultados.push({ email, estado:'err', nota: err.message });
@@ -6093,9 +6379,55 @@ async function nubeRestaurarVersion(h, boton){
     const base = String(v.nombre_archivo || 'inventario').replace(/ · restaurado del .*$/, '');
     await nubePublicar({ telcel:v.datos.telcel, att:v.datos.att, lectorVersion:v.datos.lectorVersion }, base + ' · restaurado del ' + fecha);
     nubeAplicarCache();
+    nubeRegistrar('restauración', 'Versión del ' + fecha + ' (' + base + ')');
     nubeMsg('ok', 'Listo: se restauró la versión del ' + fecha + '. Todos los equipos la recibirán en menos de un minuto.');
   }catch(err){ nubeMsg('error', err.message); }
   finally{ nubePintarHistorial(); }
+}
+// Configuración compartida del dashboard (tabla gaso_config)
+async function nubeCargarConfigGaso(){
+  const filas = await nubeApi('/rest/v1/gaso_config?id=eq.1&select=config,actualizado,actualizado_por');
+  const f = Array.isArray(filas) && filas[0];
+  if (!f || !f.config) return false;
+  if (f.actualizado === CONFIG_GASO.actualizado) return false;
+  aplicarConfigGaso(f.config);
+  CONFIG_GASO.actualizado = f.actualizado; CONFIG_GASO.por = f.actualizado_por;
+  try{ localStorage.setItem(CONFIG_CACHE_KEY, JSON.stringify({ config:f.config, actualizado:f.actualizado, por:f.actualizado_por })); }catch(e){}
+  return true;
+}
+function nubeLlenarFormConfig(){
+  const v = (id, x)=>{ document.getElementById(id).value = (x == null ? '' : x); };
+  v('cfgCap', CAPACIDAD.m2); v('cfgCapTel', CAPACIDAD.porProyecto['TELCEL']); v('cfgCapAtt', CAPACIDAD.porProyecto['AT&T']);
+  const t = (k)=> CAPACIDAD.tipos.find(x=> x.k === k).m2;
+  v('cfgEst', t('ESTANDAR')); v('cfgEuro', t('EURO')); v('cfgSobre', t('SOBRE'));
+  v('cfgAviso', Math.round(CAPACIDAD.limiteAviso*100)); v('cfgDias', CONFIG_GASO.diasSinPublicar); v('cfgCorreo', CONFIG_GASO.correoAlertas);
+  document.getElementById('cfgInfo').textContent = CONFIG_GASO.actualizado ? ('Última modificación: ' + nubeFechaTxt(CONFIG_GASO.actualizado) + (CONFIG_GASO.por ? ' por ' + CONFIG_GASO.por : '') + '.') : 'Valores iniciales.';
+}
+async function nubeGuardarConfigGaso(cfg){
+  await nubeApi('/rest/v1/gaso_config?on_conflict=id', { method:'POST', headers:{ 'Prefer':'resolution=merge-duplicates,return=minimal' }, body: JSON.stringify({ id:1, config:cfg }) });
+  CONFIG_GASO.actualizado = null;
+  await nubeCargarConfigGaso();
+}
+async function nubePintarActividad(){
+  const caja = document.getElementById('nubeActLista'); if (!caja) return;
+  caja.innerHTML = '<div class="sub">Cargando…</div>';
+  try{
+    const filas = await nubeApi('/rest/v1/gaso_actividad?select=fecha,email,accion,detalle&order=fecha.desc&limit=60');
+    caja.textContent = '';
+    if (!Array.isArray(filas) || !filas.length){ const d = document.createElement('div'); d.className = 'sub'; d.textContent = 'Todavía no hay movimientos registrados.'; caja.appendChild(d); return; }
+    filas.forEach(f=>{
+      const r = document.createElement('div'); r.className = 'act-fila';
+      const a = document.createElement('div'); a.className = 'af'; a.textContent = nubeFechaTxt(f.fecha);
+      const b = document.createElement('div'); b.className = 'aa'; b.textContent = (f.accion.charAt(0).toUpperCase() + f.accion.slice(1)) + ' · ' + f.email;
+      const c = document.createElement('div'); c.className = 'ad'; c.textContent = f.detalle || '';
+      r.append(a, b, c); caja.appendChild(r);
+    });
+  }catch(err){ caja.textContent = ''; const d = document.createElement('div'); d.className = 'sub'; d.textContent = 'No se pudo cargar el registro: ' + err.message; caja.appendChild(d); }
+}
+// Registro de actividad (no interrumpe si falla)
+function nubeRegistrar(accion, detalle){
+  if (!NUBE.sesion || !nubeConfigurada()) return;
+  nubeApi('/rest/v1/gaso_actividad', { method:'POST', headers:{ 'Prefer':'return=minimal' }, body: JSON.stringify({ accion, detalle: detalle || null, email: NUBE.sesion.email }) }).catch(()=>{});
 }
 async function nubeCerrarSesion(){
   if (NUBE.sesion && NUBE.sesion.access_token){
@@ -6140,6 +6472,7 @@ async function nubeSincronizar(op){
       return;
     }
     NUBE.remoto = { actualizado: meta.actualizado, por: meta.actualizado_por, nombreArchivo: meta.nombre_archivo };
+    try{ if (await nubeCargarConfigGaso() && typeof renderAll === 'function' && ALL.length) renderAll(); }catch(e){}
     const cache = nubeLeerJSON(NUBE_CACHE_KEY);
     const yaLaTengo = cache && cache.actualizado === meta.actualizado && Array.isArray(cache.telcel);
     if (!yaLaTengo){
@@ -6159,6 +6492,7 @@ async function nubeSincronizar(op){
     }
     if (op.rol) await nubeConsultarRol();
     nubeEstado('ok', 'Sincronizado');
+    try{ renderAlertas(); }catch(e){}
   }catch(err){
     if (err.tipo === 'auth'){ if (NUBE.sesion === sesionInicial) nubeGuardarSesion(null); nubeEstado('aviso', err.message); }
     else if (err.tipo === 'red') nubeEstado('error', 'Sin conexión: se muestra la última copia descargada.');
@@ -6189,6 +6523,10 @@ async function nubePublicar(raw, nombreArchivo){
     nubeGuardarJSON(NUBE_CACHE_KEY, c);
     NUBE.remoto = { actualizado:c.actualizado, por:c.por, nombreArchivo };
     nubeEstado('ok', 'Sincronizado');
+    if (!/ · restaurado del /.test(nombreArchivo)){
+      let obs = 0; try{ obs = validarInventario(raw).problemas.reduce((a,g)=> a + g.n, 0); }catch(e){}
+      nubeRegistrar('publicación', nombreArchivo + ' · ' + fmt((raw.telcel||[]).length + (raw.att||[]).length) + ' registros' + (obs ? ' · ' + fmt(obs) + ' observaciones de calidad' : ''));
+    }
     return c;
   }catch(err){
     if (err.tipo === 'permiso') err.message = 'Tu cuenta de la nube no está registrada como Líder de Almacén, así que no puede publicar datos. Los datos se guardaron solo en este equipo.';
@@ -6239,6 +6577,8 @@ function nubePintarPanel(){
   ov.querySelector('.nube-solo-lider').style.display = (conSesion && NUBE.esLider) ? 'flex' : 'none';
   document.getElementById('nubeInvitadosBox').style.display = (conSesion && NUBE.esLider) ? 'block' : 'none';
   document.getElementById('nubeHistBox').style.display = (conSesion && NUBE.esLider) ? 'block' : 'none';
+  document.getElementById('nubeCfgBox').style.display = (conSesion && NUBE.esLider) ? 'block' : 'none';
+  document.getElementById('nubeActBox').style.display = (conSesion && NUBE.esLider) ? 'block' : 'none';
   document.getElementById('nubeSyncBtn').disabled = NUBE.ocupado;
   document.getElementById('nubePublicarBtn').disabled = NUBE.ocupado;
   if (conSesion){
@@ -6323,6 +6663,7 @@ function nubeInstalarInterfaz(){
     btn.disabled = true; btn.textContent = 'Conectando…';
     try{
       await nubeIniciarSesion(document.getElementById('nubeEmail').value, document.getElementById('nubePass').value);
+      nubeRegistrar('inicio de sesión', (NUBE.rol === 'lider' ? 'Líder' : 'Invitado') + ' · ' + (window.AndroidNative ? 'Android' : (typeof window.gasoAbrirManual === 'function' ? 'Windows' : 'navegador')));
       document.getElementById('nubePass').value = '';
       document.getElementById('nubeConfig').open = false;
       await nubeSincronizar({ aplicar:true });
@@ -6357,6 +6698,30 @@ function nubeInstalarInterfaz(){
   });
   document.getElementById('nubeInvitadosBox').addEventListener('toggle', (e)=>{ if (e.target.open) nubePintarInvitados(); });
   document.getElementById('nubeHistBox').addEventListener('toggle', (e)=>{ if (e.target.open) nubePintarHistorial(); });
+  document.getElementById('nubeActBox').addEventListener('toggle', (e)=>{ if (e.target.open) nubePintarActividad(); });
+  document.getElementById('nubeCfgBox').addEventListener('toggle', async (e)=>{ if (e.target.open){ nubeLlenarFormConfig(); try{ if (await nubeCargarConfigGaso()){ nubeLlenarFormConfig(); if (ALL.length) renderAll(); } }catch(err){} } });
+  document.getElementById('nubeCfgForm').addEventListener('submit', async (e)=>{
+    e.preventDefault(); nubeMsg();
+    const n = (id)=>{ const t = document.getElementById(id).value.trim(); return t === '' ? null : parseFloat(t); };
+    const cap = n('cfgCap'), tel = n('cfgCapTel'), att = n('cfgCapAtt');
+    if (!(cap > 0)){ nubeMsg('error', 'Escribe la capacidad contratada total en m².'); return; }
+    if ((tel || 0) + (att || 0) > cap + 0.001){ nubeMsg('error', 'La suma de lo asignado a Telcel y AT&T (' + fm2((tel||0)+(att||0)) + ' m²) supera la capacidad contratada (' + fm2(cap) + ' m²).'); return; }
+    const cfg = configGasoActual();
+    cfg.capacidad_m2 = cap; cfg.capacidad_proyecto = { 'TELCEL': tel || null, 'AT&T': att || null };
+    cfg.m2_tipo = { ESTANDAR: n('cfgEst'), EURO: n('cfgEuro'), SOBRE: n('cfgSobre') };
+    cfg.umbrales.ocupacion_aviso = n('cfgAviso'); cfg.umbrales.dias_sin_publicar = n('cfgDias');
+    cfg.alertas_correo = document.getElementById('cfgCorreo').value.trim();
+    const btn = document.getElementById('nubeCfgBtn'); btn.disabled = true; btn.textContent = 'Guardando…';
+    try{
+      await nubeGuardarConfigGaso(cfg);
+      nubeRegistrar('config', 'Capacidad ' + fm2(cap) + ' m²' + (tel || att ? ' · Telcel ' + (tel ? fm2(tel) : '–') + ' · AT&T ' + (att ? fm2(att) : '–') : ''));
+      if (ALL.length) renderAll();
+      nubeLlenarFormConfig();
+      const suma = (tel || 0) + (att || 0);
+      nubeMsg('ok', 'Configuración guardada. Todos los equipos la aplicarán en menos de un minuto.' + ((tel && att && Math.abs(suma - cap) > 0.001) ? ' Nota: lo asignado (' + fm2(suma) + ' m²) no suma toda la capacidad (' + fm2(cap) + ' m²).' : ''));
+    }catch(err){ nubeMsg('error', err.tipo === 'permiso' ? 'Solo un líder puede cambiar la configuración.' : err.message); }
+    finally{ btn.disabled = false; btn.textContent = 'Guardar configuración'; }
+  });
   document.getElementById('nubeInvCopiar').addEventListener('click', async ()=>{
     const email = document.getElementById('nubeInvResEmail').textContent, pass = document.getElementById('nubeInvResPass').textContent;
     const texto = nubeTextoInvitacion(email, pass);
@@ -6379,6 +6744,7 @@ function nubeInstalarInterfaz(){
     try{
       const r = await nubeUsuarios({ accion:'invitar', email, password: pass });
       const nueva = !(r && r.creada === false);
+      nubeRegistrar('invitación', email.toLowerCase() + (nueva ? '' : ' (contraseña nueva)'));
       document.getElementById('nubeInvResTitulo').textContent = nueva ? '✓ Invitación creada' : '✓ Se asignó una contraseña nueva a esta persona';
       document.getElementById('nubeInvResEmail').textContent = email.toLowerCase();
       document.getElementById('nubeInvResPass').textContent = pass;
@@ -6401,7 +6767,7 @@ function nubeInstalarInterfaz(){
     if (a.length < 8){ nubeMsg('error', 'La contraseña debe tener al menos 8 caracteres.'); return; }
     if (a !== b){ nubeMsg('error', 'Las dos contraseñas no coinciden.'); return; }
     const btn = document.getElementById('nubeMiPassBtn'); btn.disabled = true;
-    try{ await nubeCambiarMiPassword(a); document.getElementById('nubeMiPassForm').reset(); document.getElementById('nubeMiPassBox').open = false; nubeMsg('ok', 'Tu contraseña de la nube se cambió. Úsala la próxima vez que inicies sesión.'); }
+    try{ await nubeCambiarMiPassword(a); nubeRegistrar('cambio de contraseña', ''); document.getElementById('nubeMiPassForm').reset(); document.getElementById('nubeMiPassBox').open = false; nubeMsg('ok', 'Tu contraseña de la nube se cambió. Úsala la próxima vez que inicies sesión.'); }
     catch(err){ nubeMsg('error', /same|different|igual/i.test(err.message) ? 'La nueva contraseña debe ser distinta de la actual.' : err.message); }
     finally{ btn.disabled = false; }
   });
