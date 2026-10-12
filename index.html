@@ -812,7 +812,7 @@
               <div class="t" id="nubeInvResTitulo">Invitación lista</div>
               <div class="nube-inv-dato"><span>Correo</span><b id="nubeInvResEmail"></b></div>
               <div class="nube-inv-dato"><span>Contraseña</span><b id="nubeInvResPass"></b></div>
-              <div class="nube-inv-nota">Envíale la invitación: con el link entra desde cualquier navegador (computadora o celular) y solo escribe su contraseña.</div>
+              <div class="nube-inv-nota">Envíale la invitación con uno de los botones y, aparte, el programa (.exe para Windows o .apk para Android) por WhatsApp o correo.</div>
               <div class="nube-inv-dato"><span>Link</span><b id="nubeInvResLink"></b></div>
               <div class="nube-fila" style="margin-top:10px;">
                 <a class="gate-submit nube-mail" id="nubeInvCorreo" href="#" target="_blank" rel="noopener">Enviar invitación por correo</a>
@@ -5153,6 +5153,7 @@ const INVENTARIO_STORAGE_KEY = 'gaso_inventario_guardado_v1';
 // la seguridad la ponen las reglas de la base de datos, no esta clave.
 const NUBE_DEF = { url: 'https://peqrxjgmdzogqdifugte.supabase.co', key: 'sb_publishable_qfH_cpXzBDTdlQXipz_4Yg_Msqeo3K9' };
 // Dirección web pública del dashboard (GitHub Pages): es el link que reciben las personas invitadas.
+// Vacío mientras no haya una página web publicada: la invitación indica usar el programa (.exe / .apk).
 const NUBE_WEB_URL = 'https://p366937-lgtm.github.io/GASO-COMUNICACIONES/';
 // La versión web pública trae esta marca: arranca en modo nube y sin datos dentro del archivo.
 const NUBE_WEB_PUBLICA = !!window.GASO_WEB_PUBLICA;
@@ -5275,12 +5276,22 @@ async function nubeConsultarRol(){
   NUBE.esLider = NUBE.rol === 'lider';
   if (NUBE.sesion){ NUBE.sesion.esLider = NUBE.esLider; NUBE.sesion.rol = NUBE.rol; nubeGuardarSesion(NUBE.sesion); }
 }
-function nubeLinkInvitacion(email){ return NUBE_WEB_URL + '?correo=' + encodeURIComponent(email); }
+function nubeLinkInvitacion(email){ return NUBE_WEB_URL ? NUBE_WEB_URL + '?correo=' + encodeURIComponent(email) : ''; }
 function nubeTextoInvitacion(email, pass){
+  const link = nubeLinkInvitacion(email);
+  if (link){
+    return 'Hola, te invito a consultar el dashboard del Cross Dock Chihuahua (GASO Cross Dock Analytics).\n\n' +
+      'Entra desde este link (computadora o celular):\n' + link + '\n\n' +
+      'Tus datos de acceso:\n• Correo: ' + email + '\n• Contraseña: ' + pass + '\n\n' +
+      'Al abrir el link elige el perfil «Invitado»; se abre la ventana de la nube con tu correo ya escrito: escribe tu contraseña y presiona «Iniciar sesión en la nube».\n\n' +
+      'Te recomiendo cambiar la contraseña en «Cambiar mi contraseña de la nube». Este acceso es solo de consulta.';
+  }
   return 'Hola, te invito a consultar el dashboard del Cross Dock Chihuahua (GASO Cross Dock Analytics).\n\n' +
-    'Entra desde este link (computadora o celular):\n' + nubeLinkInvitacion(email) + '\n\n' +
-    'Tus datos de acceso:\n• Correo: ' + email + '\n• Contraseña: ' + pass + '\n\n' +
-    'Al abrir el link elige el perfil «Invitado»; se abre la ventana de la nube con tu correo ya escrito: escribe tu contraseña y presiona «Iniciar sesión en la nube».\n\n' +
+    'Te envío por separado el programa: «GASO Cross Dock Analytics.exe» para computadora con Windows o «GASO_Cross_Dock_Analytics.apk» para celular Android.\n\n' +
+    'Tus datos de acceso a la nube:\n• Correo: ' + email + '\n• Contraseña: ' + pass + '\n\n' +
+    'Cómo entrar:\n1. Abre el programa (Windows: doble clic al .exe · Android: instala el .apk).\n' +
+    '2. Elige el perfil «Invitado».\n3. Presiona el botón amarillo «Local» de la barra de arriba y elige «Nube sincronizada».\n' +
+    '4. Escribe tu correo y contraseña y presiona «Iniciar sesión en la nube».\n5. El botón se pone verde y verás los datos.\n\n' +
     'Te recomiendo cambiar la contraseña en «Cambiar mi contraseña de la nube». Este acceso es solo de consulta.';
 }
 // Administración de invitados (función de la nube «gaso-usuarios», solo líderes)
@@ -5596,7 +5607,9 @@ function nubeInstalarInterfaz(){
       document.getElementById('nubeInvResTitulo').textContent = nueva ? '✓ Invitación creada' : '✓ Se asignó una contraseña nueva a esta persona';
       document.getElementById('nubeInvResEmail').textContent = email.toLowerCase();
       document.getElementById('nubeInvResPass').textContent = pass;
-      document.getElementById('nubeInvResLink').textContent = nubeLinkInvitacion(email.toLowerCase());
+      const linkInv = nubeLinkInvitacion(email.toLowerCase());
+      document.getElementById('nubeInvResLink').textContent = linkInv;
+      document.getElementById('nubeInvResLink').parentNode.style.display = linkInv ? '' : 'none';
       document.getElementById('nubeInvCorreo').href = 'mailto:' + encodeURIComponent(email.toLowerCase()) +
         '?subject=' + encodeURIComponent('Invitación: dashboard GASO Cross Dock Chihuahua') +
         '&body=' + encodeURIComponent(nubeTextoInvitacion(email.toLowerCase(), pass));
