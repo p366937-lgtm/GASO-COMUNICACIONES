@@ -544,6 +544,12 @@
   .nube-inv{display:flex; align-items:center; gap:8px; background:var(--panel-2); border:1px solid var(--line); border-radius:7px; padding:7px 10px; font-size:12.5px; color:var(--text);}
   .nube-inv span{flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
   .nube-mini{flex:0 0 auto; padding:6px 10px; font-size:11.5px;}
+  .nh-fila{display:flex; align-items:center; gap:8px; background:var(--panel-2); border:1px solid var(--line); border-radius:7px; padding:8px 10px; font-size:12px; color:var(--text);}
+  .nh-fila .nh-i{flex:1; min-width:0;}
+  .nh-fila .nh-f{font-weight:600;}
+  .nh-fila .nh-d{font-size:11px; color:var(--muted-2); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .nh-tag{font-size:10.5px; font-weight:700; color:#3FB950; border:1px solid rgba(63,185,80,.5); border-radius:999px; padding:2px 8px; white-space:nowrap;}
+  html[data-apariencia="claro"] .nh-tag, html[data-apariencia="gris"] .nh-tag{color:#1A7F37;}
   .nube-varios-btn{width:100%; margin-top:12px; font-weight:600; border-style:dashed;}
   .nube-varios{margin-top:12px; border:1px solid var(--line); border-radius:8px; padding:12px; background:var(--panel-2);}
   .nube-varios textarea{width:100%; box-sizing:border-box; background:var(--panel); border:1px solid var(--line); border-radius:7px; padding:9px 11px; color:var(--text); font:13px 'IBM Plex Mono',monospace; resize:vertical; min-height:96px;}
@@ -882,6 +888,11 @@
                 <div class="nube-nota">Guarda la lista o copia los mensajes ahora: las contraseñas no se vuelven a mostrar.</div>
               </div>
             </div>
+          </details>
+          <details class="nube-config nube-solo-lider-bloque" id="nubeHistBox" style="display:none;">
+            <summary>Historial de publicaciones</summary>
+            <div class="nube-nota" style="margin-top:4px;">La nube guarda las últimas 6 publicaciones. Si alguien publicó un Excel equivocado, restaura una versión anterior: todos los equipos la recibirán.</div>
+            <div class="nube-lista" id="nubeHistLista" style="margin-top:10px;"><div class="sub">Cargando…</div></div>
           </details>
           <details class="nube-config" id="nubeMiPassBox">
             <summary>Cambiar mi contraseña de la nube</summary>
@@ -5462,6 +5473,27 @@ async function nubeConsultarRol(){
   }
   NUBE.esLider = NUBE.rol === 'lider';
   if (NUBE.sesion){ NUBE.sesion.esLider = NUBE.esLider; NUBE.sesion.rol = NUBE.rol; nubeGuardarSesion(NUBE.sesion); }
+  nubeAjustarPerfil();
+}
+// En modo nube, el perfil Líder lo da la cuenta de la nube (no la contraseña local).
+function nubeAjustarPerfil(op){
+  op = op || {};
+  if (NUBE.modo !== 'nube' || typeof aplicarUsuario !== 'function') return;
+  const actual = document.body.getAttribute('data-user');
+  const esLiderNube = !!(NUBE.sesion && NUBE.rol === 'lider');
+  if (esLiderNube && actual !== 'lider'){
+    aplicarUsuario('lider');
+    if (!op.silencioso) nubeAviso('Perfil Líder de Almacén activado con tu cuenta de la nube.');
+  } else if (!esLiderNube && actual === 'lider' && (NUBE.sesion ? NUBE.rol : op.sinSesion)){
+    aplicarUsuario('invitado');
+    if (!op.silencioso) nubeAviso(NUBE.sesion ? 'Tu cuenta de la nube es de solo consulta: perfil Invitado.' : 'Inicia sesión en la nube con tu cuenta de líder para usar el perfil Líder de Almacén.');
+  }
+  actualizarMenuLider();
+}
+// «Cambiar contraseña» (local) solo aplica en uso local; en la nube se cambia la de la cuenta.
+function actualizarMenuLider(){
+  const b = document.getElementById('menuCambiarPassword'); if (!b) return;
+  b.style.display = (document.body.getAttribute('data-user') === 'lider' && NUBE.modo !== 'nube') ? '' : 'none';
 }
 function nubeLinkInvitacion(email){ return NUBE_WEB_URL ? NUBE_WEB_URL + '?correo=' + encodeURIComponent(email) : ''; }
 function nubeTextoInvitacion(email, pass){
@@ -5616,6 +5648,48 @@ function nubeInstalarInvitarVarios(){
     catch(err){ nubeMsg('error', 'No se pudo guardar la lista: ' + err.message); }
   });
 }
+// Historial de publicaciones (solo líderes): lista y restauración de versiones anteriores
+async function nubePintarHistorial(){
+  const caja = document.getElementById('nubeHistLista');
+  if (!caja) return;
+  caja.innerHTML = '<div class="sub">Cargando…</div>';
+  try{
+    const filas = await nubeApi('/rest/v1/gaso_historial?select=casilla,nombre_archivo,actualizado,actualizado_por&order=actualizado.desc');
+    caja.textContent = '';
+    if (!Array.isArray(filas) || !filas.length){ const d = document.createElement('div'); d.className = 'sub'; d.textContent = 'Todavía no hay publicaciones guardadas.'; caja.appendChild(d); return; }
+    const actual = NUBE.remoto && NUBE.remoto.actualizado;
+    filas.forEach((h, i)=>{
+      const f = document.createElement('div'); f.className = 'nh-fila';
+      const info = document.createElement('div'); info.className = 'nh-i';
+      const a = document.createElement('div'); a.className = 'nh-f'; a.textContent = nubeFechaTxt(h.actualizado);
+      const b = document.createElement('div'); b.className = 'nh-d'; b.textContent = (h.nombre_archivo || 'inventario') + (h.actualizado_por ? ' · ' + h.actualizado_por : '');
+      b.title = b.textContent; info.append(a, b); f.appendChild(info);
+      const esActual = actual ? (new Date(h.actualizado).getTime() === new Date(actual).getTime()) : i === 0;
+      if (esActual){ const t = document.createElement('span'); t.className = 'nh-tag'; t.textContent = 'En uso'; f.appendChild(t); }
+      else {
+        const r = document.createElement('button'); r.type = 'button'; r.className = 'nube-sec nube-mini'; r.textContent = 'Restaurar';
+        r.addEventListener('click', ()=> nubeRestaurarVersion(h, r));
+        f.appendChild(r);
+      }
+      caja.appendChild(f);
+    });
+  }catch(err){ caja.textContent = ''; const d = document.createElement('div'); d.className = 'sub'; d.textContent = 'No se pudo cargar el historial: ' + err.message; caja.appendChild(d); }
+}
+async function nubeRestaurarVersion(h, boton){
+  const fecha = nubeFechaTxt(h.actualizado);
+  if (!confirm('¿Restaurar la versión del ' + fecha + ' (' + (h.nombre_archivo || 'inventario') + ')?\n\nReemplaza los datos actuales de la nube y todos los equipos la recibirán. La versión actual queda guardada en el historial.')) return;
+  nubeMsg(); boton.disabled = true; boton.textContent = 'Restaurando…';
+  try{
+    const filas = await nubeApi('/rest/v1/gaso_historial?casilla=eq.' + encodeURIComponent(h.casilla) + '&select=datos,nombre_archivo,actualizado', { timeout:120000 });
+    const v = Array.isArray(filas) && filas[0];
+    if (!v || !v.datos || !Array.isArray(v.datos.telcel) || !Array.isArray(v.datos.att)) throw NubeError('servidor', 'Esa versión ya no está disponible. Actualiza la lista.');
+    const base = String(v.nombre_archivo || 'inventario').replace(/ · restaurado del .*$/, '');
+    await nubePublicar({ telcel:v.datos.telcel, att:v.datos.att, lectorVersion:v.datos.lectorVersion }, base + ' · restaurado del ' + fecha);
+    nubeAplicarCache();
+    nubeMsg('ok', 'Listo: se restauró la versión del ' + fecha + '. Todos los equipos la recibirán en menos de un minuto.');
+  }catch(err){ nubeMsg('error', err.message); }
+  finally{ nubePintarHistorial(); }
+}
 async function nubeCerrarSesion(){
   if (NUBE.sesion && NUBE.sesion.access_token){
     try{ await nubeHttp('/auth/v1/logout', { method:'POST', headers:{ 'Authorization': 'Bearer ' + NUBE.sesion.access_token }, timeout:8000 }); }catch(e){}
@@ -5698,12 +5772,12 @@ async function nubePublicar(raw, nombreArchivo){
     await nubeApi('/rest/v1/' + NUBE_TABLA + '?on_conflict=id', {
       method:'POST', timeout:180000,
       headers:{ 'Prefer':'resolution=merge-duplicates,return=minimal' },
-      body: JSON.stringify({ id:NUBE_FILA, datos:{ telcel:raw.telcel, att:raw.att, lectorVersion:LECTOR_EXCEL_VERSION }, nombre_archivo:nombreArchivo, actualizado:ahora, actualizado_por:NUBE.sesion.email })
+      body: JSON.stringify({ id:NUBE_FILA, datos:{ telcel:raw.telcel, att:raw.att, lectorVersion:raw.lectorVersion || LECTOR_EXCEL_VERSION }, nombre_archivo:nombreArchivo, actualizado:ahora, actualizado_por:NUBE.sesion.email })
     });
     // La base de datos pone la hora y el correo definitivos; se leen para quedar al día.
     let meta = null;
     try{ const filas = await nubeApi('/rest/v1/' + NUBE_TABLA + '?id=eq.' + NUBE_FILA + '&select=actualizado,actualizado_por,nombre_archivo'); meta = filas && filas[0]; }catch(e){}
-    const c = { telcel:raw.telcel, att:raw.att, lectorVersion:LECTOR_EXCEL_VERSION, nombreArchivo, actualizado:(meta && meta.actualizado) || ahora, por:(meta && meta.actualizado_por) || NUBE.sesion.email };
+    const c = { telcel:raw.telcel, att:raw.att, lectorVersion:raw.lectorVersion || LECTOR_EXCEL_VERSION, nombreArchivo, actualizado:(meta && meta.actualizado) || ahora, por:(meta && meta.actualizado_por) || NUBE.sesion.email };
     nubeGuardarJSON(NUBE_CACHE_KEY, c);
     NUBE.remoto = { actualizado:c.actualizado, por:c.por, nombreArchivo };
     nubeEstado('ok', 'Sincronizado');
@@ -5756,6 +5830,7 @@ function nubePintarPanel(){
   document.getElementById('nubeSesion').style.display = conSesion ? 'block' : 'none';
   ov.querySelector('.nube-solo-lider').style.display = (conSesion && NUBE.esLider) ? 'flex' : 'none';
   document.getElementById('nubeInvitadosBox').style.display = (conSesion && NUBE.esLider) ? 'block' : 'none';
+  document.getElementById('nubeHistBox').style.display = (conSesion && NUBE.esLider) ? 'block' : 'none';
   document.getElementById('nubeSyncBtn').disabled = NUBE.ocupado;
   document.getElementById('nubePublicarBtn').disabled = NUBE.ocupado;
   if (conSesion){
@@ -5819,6 +5894,7 @@ function nubeInstalarInterfaz(){
     const m = b.dataset.modo;
     if (m === NUBE.modo) return;
     NUBE.modo = m; nubeGuardarConfig(); nubeMsg();
+    nubeAjustarPerfil({ sinSesion:true }); actualizarMenuLider();
     if (m === 'local'){
       nubeEstado('local');
       nubeCargarDatosDelModo();
@@ -5853,6 +5929,7 @@ function nubeInstalarInterfaz(){
   });
   document.getElementById('nubeSalirBtn').addEventListener('click', async ()=>{
     await nubeCerrarSesion();
+    NUBE.rol = null; nubeAjustarPerfil({ sinSesion:true });
     nubeEstado('aviso', 'Inicia sesión en la nube.');
     nubeMsg('ok', 'Sesión cerrada. Se sigue mostrando la última copia descargada.');
     nubePintarPanel();
@@ -5871,6 +5948,7 @@ function nubeInstalarInterfaz(){
     }catch(err){ nubeMsg('error', err.message); }
   });
   document.getElementById('nubeInvitadosBox').addEventListener('toggle', (e)=>{ if (e.target.open) nubePintarInvitados(); });
+  document.getElementById('nubeHistBox').addEventListener('toggle', (e)=>{ if (e.target.open) nubePintarHistorial(); });
   document.getElementById('nubeInvCopiar').addEventListener('click', async ()=>{
     const email = document.getElementById('nubeInvResEmail').textContent, pass = document.getElementById('nubeInvResPass').textContent;
     const texto = nubeTextoInvitacion(email, pass);
@@ -6075,7 +6153,8 @@ function aplicarUsuario(key){
   if (nm) nm.textContent = u.nombre;
   if (rl) rl.textContent = u.rol;
   cerrarSelectorUsuario();
-  document.getElementById('menuCambiarPassword').style.display = (key==='lider') ? '' : 'none';
+  if (typeof actualizarMenuLider === 'function') actualizarMenuLider();
+  else document.getElementById('menuCambiarPassword').style.display = (key==='lider') ? '' : 'none';
   try{ localStorage.setItem(GATE_STORAGE_KEY, key); }catch(e){ /* almacenamiento no disponible, no pasa nada */ }
   if (typeof nubeAbrirSiFaltaSesion === 'function') setTimeout(nubeAbrirSiFaltaSesion, 150);
 }
@@ -6103,8 +6182,16 @@ function cerrarSelectorUsuario(){
 
 document.querySelectorAll('.gate-opt').forEach(opt=>{
   opt.addEventListener('click', ()=>{
-    if (opt.dataset.user === 'lider') mostrarPasoPassword();
-    else aplicarUsuario('invitado');
+    if (opt.dataset.user !== 'lider'){ aplicarUsuario('invitado'); return; }
+    if (typeof NUBE !== 'undefined' && NUBE.modo === 'nube'){
+      // En modo nube el Líder entra con su cuenta de la nube, sin contraseña local
+      if (NUBE.sesion && NUBE.rol === 'lider'){ aplicarUsuario('lider'); return; }
+      if (NUBE.sesion){ aplicarUsuario('invitado'); nubeAviso('Tu cuenta de la nube (' + NUBE.sesion.email + ') es de solo consulta: entras como Invitado.'); return; }
+      aplicarUsuario('invitado');
+      setTimeout(()=>{ abrirPanelNube(); nubeMsg('ok', 'Para entrar como Líder de Almacén, inicia sesión con tu cuenta de líder de la nube. El perfil se activa solo al conectarte.'); }, 200);
+      return;
+    }
+    mostrarPasoPassword();
   });
 });
 document.getElementById('gateBackBtn').addEventListener('click', mostrarPasoRol);
@@ -6213,9 +6300,14 @@ document.getElementById('pwChangeForm').addEventListener('submit', async (e)=>{
 });
 
 (function initSelectorUsuario(){
+  try{ nubeCargarConfig(); }catch(e){}
   let guardado = null;
   try{ guardado = localStorage.getItem(GATE_STORAGE_KEY); }catch(e){ /* sin storage disponible */ }
-  if (guardado && USUARIOS[guardado]) aplicarUsuario(guardado);
+  const enNube = typeof NUBE !== 'undefined' && NUBE.modo === 'nube';
+  const liderNube = enNube && NUBE.sesion && NUBE.rol === 'lider';
+  if (liderNube) aplicarUsuario('lider');
+  else if (guardado === 'lider' && enNube) aplicarUsuario('invitado');   // en la nube, Líder solo con cuenta de líder
+  else if (guardado && USUARIOS[guardado]) aplicarUsuario(guardado);
   else abrirSelectorUsuario();
 })();
 
