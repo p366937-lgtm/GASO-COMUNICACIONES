@@ -1070,7 +1070,6 @@
   </div>
 
   <!-- 1. MOVIMIENTOS GENERALES -->
-  <div class="alertas-tira no-print" id="alertasTira" style="display:none;"></div>
 
   <div class="section-title"><span class="tag">01</span> <span id="sec1Title">Movimientos generales — Telcel &amp; AT&amp;T</span></div>
   <div class="grid">
@@ -3167,6 +3166,7 @@ function calcularAlertas(){
   }
   return al;
 }
+// La tira de alertas se retiró del dashboard a petición del Líder; las alertas siguen llegando por correo.
 function renderAlertas(){
   const tira = document.getElementById('alertasTira'); if (!tira) return;
   const al = calcularAlertas();
