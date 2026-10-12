@@ -141,6 +141,11 @@
   .brand{display:flex; flex-direction:column; gap:2px;}
   .brand p{margin:2px 0 0; color:var(--muted); font-size:13.5px;}
   .brand p .dot{color:var(--muted-2); margin:0 8px;}
+  .brand{flex-direction:row; align-items:center; flex-wrap:wrap; gap:10px 14px;}
+  .proy-logos{display:flex; align-items:center; gap:8px;}
+  .proy-logo{height:34px; padding:4px 10px; border-radius:8px; background:#FFFFFF; border:1px solid var(--line); display:flex; align-items:center;}
+  .proy-logo img{height:24px; width:auto; display:block;}
+  .proy-logo.txt{background:transparent; font-weight:700; font-size:13px; letter-spacing:.2px; border-width:1.5px;}
 
   .controls{display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
   .seg{
@@ -237,7 +242,7 @@
   .pdf-pres-opts{margin-top:2px;}
   /* ===== Menú de apariencia ===== */
   .apar-wrap{position:relative;}
-  .apar-menu{display:none; position:absolute; top:calc(100% + 8px); right:0; width:300px; max-width:88vw; z-index:60;
+  .apar-menu{display:none; position:absolute; top:calc(100% + 8px); right:0; width:470px; max-width:92vw; z-index:60;
     background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:14px; box-shadow:0 10px 30px rgba(0,0,0,0.35);}
   .apar-menu.open{display:block;}
   .apar-lbl{font-size:10.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); font-weight:600; margin:0 0 8px;}
@@ -246,7 +251,8 @@
   .apar-seg button:last-child{border-right:none;}
   .apar-seg button.active{background:var(--scale-accent,#3987E5); color:#FFFFFF;}
   .apar-seg svg{width:14px; height:14px;}
-  .apar-pals{display:flex; flex-direction:column; gap:6px;}
+  .apar-pals{display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:6px;}
+  @media (max-width:520px){ .apar-pals{grid-template-columns:1fr; max-height:46vh; overflow-y:auto;} }
   .apar-pal{display:flex; align-items:center; gap:10px; padding:8px 10px; border:1px solid var(--line); border-radius:8px; background:var(--panel-2); cursor:pointer; text-align:left; color:var(--text); font:600 12.5px 'Inter',sans-serif;}
   .apar-pal:hover{background:var(--hover);}
   .apar-pal.active{border-color:var(--scale-accent,#3987E5); box-shadow:0 0 0 1px var(--scale-accent,#3987E5) inset;}
@@ -694,6 +700,7 @@
   <header class="topbar">
     <div class="brand">
       <p>Cross Dock Chihuahua <span class="dot">·</span> Dashboard operativo Telcel &amp; AT&amp;T <span class="dot">·</span> <span id="rangeLabel">todo el histórico</span></p>
+      <div class="proy-logos" id="proyLogos" aria-label="Proyecto"></div>
     </div>
     <div class="controls no-print">
       <div class="seg" id="projectSeg">
@@ -1646,7 +1653,19 @@ const PALETAS = {
   ejecutiva:   { nombre:'Ejecutiva', desc:'Azul marino · dorado · vino',
     oscuro:{all:'#4F7FC4', telcel:'#AD8616', att:'#C8465A'}, claro:{all:'#2F5E9E', telcel:'#B8860B', att:'#B8364A'} },
   vibrante:    { nombre:'Vibrante', desc:'Violeta · cian · magenta',
-    oscuro:{all:'#8B6FE0', telcel:'#1C9FC7', att:'#D1497F'}, claro:{all:'#6A4FD0', telcel:'#0E86AD', att:'#C13A70'} }
+    oscuro:{all:'#8B6FE0', telcel:'#1C9FC7', att:'#D1497F'}, claro:{all:'#6A4FD0', telcel:'#0E86AD', att:'#C13A70'} },
+  oceano:      { nombre:'Océano', desc:'Azul · verde mar · coral',
+    oscuro:{all:'#3D8FD9', telcel:'#2BA88A', att:'#E8735A'}, claro:{all:'#1F6FB8', telcel:'#13805F', att:'#D24F35'} },
+  atardecer:   { nombre:'Atardecer', desc:'Púrpura · rosa · mostaza',
+    oscuro:{all:'#9A6CE0', telcel:'#E0607E', att:'#D9A21C'}, claro:{all:'#7A4CC8', telcel:'#C2405D', att:'#A87900'} },
+  bosque:      { nombre:'Bosque', desc:'Verde pino · azul acero · cobre',
+    oscuro:{all:'#3E9E6A', telcel:'#5B8BC9', att:'#C77A3A'}, claro:{all:'#2A7F52', telcel:'#3F6FB0', att:'#B0602A'} },
+  grafito:     { nombre:'Grafito', desc:'Gris azulado · cian · rojo',
+    oscuro:{all:'#8796A8', telcel:'#1FA7C9', att:'#E05252'}, claro:{all:'#5A6878', telcel:'#0E7FA0', att:'#C93A3A'} },
+  tierra:      { nombre:'Tierra', desc:'Café · verde olivo · azul',
+    oscuro:{all:'#B07D4F', telcel:'#7F9A3A', att:'#4D8FD6'}, claro:{all:'#8E5F34', telcel:'#5B7520', att:'#2F6FBE'} },
+  contraste:   { nombre:'Alto contraste', desc:'Azul · amarillo · rojo',
+    oscuro:{all:'#4C9BF0', telcel:'#E6B800', att:'#F0506E'}, claro:{all:'#1F63C7', telcel:'#9A7800', att:'#D62F4F'} }
 };
 const PROY_PALETAS = {
   oscuro: ['#3987E5','#D95926','#199E70','#C98500','#D55181','#9085E9','#E66767','#2E9E4F','#7C8A99','#5B6773','#B7D3F6','#F5A27C'],
@@ -3187,7 +3206,24 @@ function renderAlertas(){
 }
 
 /* ---------- Master render ---------- */
+/* Logos de los proyectos junto al título: Telcel, AT&T o ambos (Todos).
+   Se usan los archivos oficiales que entregue el cliente (data URI). Mientras no
+   estén cargados se muestra el nombre del proyecto con su color. */
+const LOGOS_PROYECTO = { 'TELCEL': '', 'AT&T': '' };
+function pintarLogosProyecto(){
+  const el = document.getElementById('proyLogos'); if (!el) return;
+  const ps = [{ k:'TELCEL', n:'Telcel', sc:SCALES.telcel }, { k:'AT&T', n:'AT&T', sc:SCALES.att }]
+    .filter(p=> currentFilter === 'all' || currentFilter === p.k);
+  el.textContent = '';
+  ps.forEach(p=>{
+    const d = document.createElement('div'); d.className = 'proy-logo'; d.title = 'Proyecto ' + p.n;
+    if (LOGOS_PROYECTO[p.k]){ const im = document.createElement('img'); im.src = LOGOS_PROYECTO[p.k]; im.alt = p.n; d.appendChild(im); }
+    else { d.classList.add('txt'); d.textContent = p.n; d.style.color = p.sc.accent; d.style.borderColor = p.sc.accent; }
+    el.appendChild(d);
+  });
+}
 function renderAll(){
+  try { pintarLogosProyecto(); } catch(e){}
   renderKPIs();
 
   const sc = activeScale();
