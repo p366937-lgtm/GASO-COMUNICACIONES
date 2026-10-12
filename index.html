@@ -491,10 +491,12 @@
   .nube-btn svg{color:var(--nube-c);}
   .nube-btn .nube-dot{width:9px; height:9px; border-radius:50%; background:var(--nube-c); box-shadow:0 0 0 3px color-mix(in srgb, var(--nube-c) 22%, transparent); flex-shrink:0;}
   .nube-btn[data-estado="ok"], .nube-btn[data-estado="sync"], .nube-btn[data-estado="aviso"], .nube-btn[data-estado="error"]{--nube-c:#3FB950;}
+  .nube-btn[data-estado="sinsesion"]{--nube-c:#F87171;}
   .nube-btn[data-estado="sync"] .nube-dot{animation:nubePulso 1s ease-in-out infinite;}
   .nube-btn[data-estado="aviso"] .nube-dot, .nube-btn[data-estado="error"] .nube-dot{background:#F87171; box-shadow:0 0 0 3px rgba(248,113,113,0.25);}
   html[data-apariencia="claro"] .nube-btn, html[data-apariencia="gris"] .nube-btn{--nube-c:#A06A00;}
   html[data-apariencia="claro"] .nube-btn:not([data-estado="local"]), html[data-apariencia="gris"] .nube-btn:not([data-estado="local"]){--nube-c:#1A7F37;}
+  html[data-apariencia="claro"] .nube-btn[data-estado="sinsesion"], html[data-apariencia="gris"] .nube-btn[data-estado="sinsesion"]{--nube-c:#C62828;}
   @keyframes nubePulso{0%,100%{opacity:1}50%{opacity:.35}}
   .nube-card{max-width:460px; text-align:left; max-height:calc(100vh - 24px); overflow-y:auto; overscroll-behavior:contain;}
   .nube-card h2, .nube-card > p{text-align:center;}
@@ -772,7 +774,7 @@
 
         <form id="nubeLoginForm" style="margin-top:12px;">
           <div class="pw-field">
-            <label for="nubeEmail">Correo de la cuenta invitada</label>
+            <label for="nubeEmail">Correo de tu cuenta de la nube</label>
             <input type="email" id="nubeEmail" autocomplete="username" required>
           </div>
           <div class="pw-field">
@@ -5162,7 +5164,7 @@ const NUBE_SES_KEY = 'gaso_nube_sesion_v1';
 const NUBE_CACHE_KEY = 'gaso_inventario_nube_v1';
 const NUBE_TABLA = 'gaso_datos';
 const NUBE_FILA = 1;
-const NUBE_INTERVALO_MS = 5 * 60 * 1000;
+const NUBE_INTERVALO_MS = 60 * 1000;
 
 const NUBE = { modo:'local', url:'', key:'', sesion:null, esLider:false, remoto:null, estado:'local', mensaje:'', ocupado:false };
 
@@ -5172,7 +5174,8 @@ function nubeLimpiarUrl(u){ return String(u || '').trim().replace(/\/+$/, '').re
 
 function nubeCargarConfig(){
   const c = nubeLeerJSON(NUBE_CFG_KEY) || {};
-  NUBE.modo = c.modo === 'nube' ? 'nube' : (c.modo === 'local' ? 'local' : (NUBE_WEB_PUBLICA ? 'nube' : 'local'));
+  NUBE.modo = c.modo === 'nube' ? 'nube' : (c.modo === 'local' ? 'local' : 'nube');
+  NUBE.ultimoCorreo = c.correo || '';
   // Link de invitación (…?correo=persona@dominio): abre en modo nube con el correo ya escrito
   try{
     const q = new URLSearchParams(location.search);
@@ -5185,7 +5188,7 @@ function nubeCargarConfig(){
   NUBE.esLider = !!(NUBE.sesion && NUBE.sesion.esLider);
   NUBE.rol = (NUBE.sesion && NUBE.sesion.rol) || (NUBE.esLider ? 'lider' : null);
 }
-function nubeGuardarConfig(){ nubeGuardarJSON(NUBE_CFG_KEY, { modo:NUBE.modo, url:NUBE.url, key:NUBE.key }); }
+function nubeGuardarConfig(){ nubeGuardarJSON(NUBE_CFG_KEY, { modo:NUBE.modo, url:NUBE.url, key:NUBE.key, correo:NUBE.ultimoCorreo || '' }); }
 function nubeConfigurada(){ return /^https:\/\/[^\s/]+/.test(NUBE.url) && NUBE.key.length > 20; }
 function nubeGuardarSesion(s){ NUBE.sesion = s; nubeGuardarJSON(NUBE_SES_KEY, s); }
 
@@ -5260,6 +5263,7 @@ async function nubeIniciarSesion(email, password){
     throw err;
   }
   nubeGuardarSesion({ access_token:d.access_token, refresh_token:d.refresh_token, expires_at: Date.now() + (d.expires_in || 3600) * 1000, email: (d.user && d.user.email) || email.trim(), esLider:false });
+  NUBE.ultimoCorreo = email.trim().toLowerCase(); nubeGuardarConfig();
   await nubeConsultarRol();
 }
 // Rol en la nube: 'lider', 'invitado' o 'sin_acceso' (lo decide la base de datos).
@@ -5431,12 +5435,12 @@ async function nubePublicar(raw, nombreArchivo){
 
 /* --- Interfaz --- */
 function nubeEstado(estado, mensaje){
-  NUBE.estado = NUBE.modo === 'nube' ? estado : 'local';
-  NUBE.mensaje = mensaje || '';
+  NUBE.estado = NUBE.modo === 'nube' ? (NUBE.sesion ? estado : 'sinsesion') : 'local';
+  NUBE.mensaje = NUBE.estado === 'sinsesion' ? 'Sin conectar: inicia sesión en la nube.' : (mensaje || '');
   const b = document.getElementById('nubeBtn');
   if (!b) return;
   b.dataset.estado = NUBE.estado;
-  document.getElementById('nubeBtnLabel').textContent = NUBE.modo === 'nube' ? 'Nube' : 'Local';
+  document.getElementById('nubeBtnLabel').textContent = NUBE.modo === 'nube' ? (NUBE.estado === 'sinsesion' ? 'Nube: sin conectar' : 'Nube') : 'Local';
   b.title = NUBE.modo === 'nube' ? ('Nube sincronizada · ' + (NUBE.mensaje || '')) : 'Uso local: los datos se guardan solo en este equipo';
 }
 let nubeAvisoTimer = null;
@@ -5496,12 +5500,14 @@ function nubeLeerCamposConfig(){
 // Versión web o link de invitación: si falta iniciar sesión, se abre el panel con el correo listo.
 function nubeAbrirSiFaltaSesion(){
   if (NUBE.sesion || NUBE.modo !== 'nube') return;
-  if (!(NUBE_WEB_PUBLICA || NUBE.correoInvitacion)) return;
   if (document.getElementById('gateOverlay').style.display === 'flex') return;
   if (document.getElementById('nubeOverlay').style.display === 'flex') return;
   abrirPanelNube();
-  if (NUBE.correoInvitacion){ document.getElementById('nubeEmail').value = NUBE.correoInvitacion; setTimeout(()=> document.getElementById('nubePass').focus(), 80); }
-  nubeMsg('ok', 'Bienvenido. Escribe la contraseña que te envió el Líder de Almacén y presiona «Iniciar sesión en la nube».');
+  const correo = NUBE.correoInvitacion || NUBE.ultimoCorreo;
+  if (correo){ document.getElementById('nubeEmail').value = correo; setTimeout(()=> document.getElementById('nubePass').focus(), 80); }
+  nubeMsg('ok', NUBE.correoInvitacion || NUBE_WEB_PUBLICA
+    ? 'Bienvenido. Escribe la contraseña que te envió el Líder de Almacén y presiona «Iniciar sesión en la nube».'
+    : 'Este equipo todavía no está conectado a la nube. Inicia sesión una sola vez con tu correo y contraseña de la nube; después se queda conectado y se actualiza solo.');
 }
 function abrirPanelNube(){
   nubeMsg();
