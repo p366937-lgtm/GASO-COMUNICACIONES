@@ -338,7 +338,10 @@
   .trim-c{border:1px solid var(--line-soft); border-radius:7px; padding:6px 8px; background:color-mix(in srgb, var(--panel-2) 70%, transparent); min-width:0;}
   .trim-c .tq{font:700 12px 'Inter',sans-serif; color:var(--text); white-space:nowrap;}
   .trim-c .tm{font:500 10.5px 'Inter',sans-serif; color:var(--muted-2); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
-  .trim-c .tv{display:flex; gap:8px; margin-top:3px; font:600 11.5px 'IBM Plex Mono',monospace; flex-wrap:wrap;}
+  .trim-c .tv{display:grid; grid-template-columns:auto 1fr; column-gap:6px; row-gap:1px; margin-top:4px; align-items:baseline;}
+  .trim-c .tv .tl{font:500 10.5px 'Inter',sans-serif; color:var(--muted-2); white-space:nowrap;}
+  .trim-c .tv .tn{font:600 12px 'IBM Plex Mono',monospace; text-align:right; white-space:nowrap; font-variant-numeric:tabular-nums;}
+  .trim-c .tv .dif{border-top:1px solid var(--line-soft); padding-top:2px; margin-top:1px;}
   .trim-c.parcial{border-style:dashed;}
   @media (max-width:600px){ .trim-tira{grid-template-columns:repeat(2,minmax(0,1fr)) !important;} }
   .foot-stat .fv{font-size:19px; font-weight:700; font-family:'Barlow Condensed',sans-serif;}
@@ -1986,8 +1989,11 @@ function setTrimestres(id, trimestres, scale){
     return '<div class="trim-c' + (g.parcial ? ' parcial' : '') + '" title="T' + g.q + ' ' + g.y + ': ' + fmt(g.in) + ' entradas, ' + fmt(g.out) + ' salidas">' +
       '<div class="tq">T' + g.q + ' ' + g.y + '</div>' +
       '<div class="tm">' + (m0 === m1 ? m0 : m0 + '–' + m1) + nota + '</div>' +
-      '<div class="tv"><span style="color:' + sc.entrada + '">▲' + fmt(g.in) + '</span><span style="color:' + sc.salida + '">▼' + fmt(g.out) + '</span>' +
-      '<span style="color:' + (d < 0 ? 'var(--red)' : 'var(--text)') + '">' + (d > 0 ? '+' : '') + fmt(d) + '</span></div></div>';
+      '<div class="tv">' +
+        '<span class="tl">▲ Entradas</span><span class="tn" style="color:' + sc.entrada + '">' + fmt(g.in) + '</span>' +
+        '<span class="tl">▼ Salidas</span><span class="tn" style="color:' + sc.salida + '">' + fmt(g.out) + '</span>' +
+        '<span class="tl dif">Diferencia</span><span class="tn dif" style="color:' + (d < 0 ? 'var(--red)' : 'var(--text)') + '">' + (d > 0 ? '+' : '') + fmt(d) + '</span>' +
+      '</div></div>';
   }).join('');
 }
 
