@@ -942,14 +942,16 @@
   <div class="grid" id="grid2">
     <div class="panel" id="panel3">
       <div class="panel-head"><span class="ptitle">Cross dock · Telcel</span><span class="pnum">TEL</span></div>
-      <div class="panel-sub">Entradas, salidas y diferencia por periodo</div>
+      <div class="panel-sub">Entradas, salidas y diferencia · últimos 12 meses por trimestre</div>
       <div class="panel-body"><canvas id="chart3"></canvas></div>
+      <div class="trim-tira" id="trim3"></div>
       <div class="panel-foot" id="foot3"></div>
     </div>
     <div class="panel" id="panel4">
       <div class="panel-head"><span class="ptitle">Cross dock · AT&amp;T</span><span class="pnum">ATT</span></div>
-      <div class="panel-sub">Entradas, salidas y diferencia por periodo</div>
+      <div class="panel-sub">Entradas, salidas y diferencia · últimos 12 meses por trimestre</div>
       <div class="panel-body"><canvas id="chart4"></canvas></div>
+      <div class="trim-tira" id="trim4"></div>
       <div class="panel-foot" id="foot4"></div>
     </div>
   </div>
@@ -2707,13 +2709,15 @@ function renderAll(){
 
   // Paneles por proyecto: siempre con su escala propia; solo los del proyecto en vista
   if (verTel){
-    const tel = renderMovChart('chart3', byProject('TELCEL'), 'mov', SCALES.telcel);
-    setFoot('foot3', tel.totalIn, tel.totalOut, 'mov.', SCALES.telcel);
+    const tel = renderMovChart('chart3', byProject('TELCEL'), 'mov', SCALES.telcel, 'bar', { ultimos:12 });
+    setTrimestres('trim3', tel.trimestres, SCALES.telcel);
+    setFoot('foot3', tel.totalIn, tel.totalOut, 'mov., 12 meses', SCALES.telcel);
   } else destroy('chart3');
 
   if (verAtt){
-    const att = renderMovChart('chart4', byProject('AT&T'), 'mov', SCALES.att);
-    setFoot('foot4', att.totalIn, att.totalOut, 'mov.', SCALES.att);
+    const att = renderMovChart('chart4', byProject('AT&T'), 'mov', SCALES.att, 'bar', { ultimos:12 });
+    setTrimestres('trim4', att.trimestres, SCALES.att);
+    setFoot('foot4', att.totalIn, att.totalOut, 'mov., 12 meses', SCALES.att);
   } else destroy('chart4');
   igualarGrosorBarras(['chart3','chart4']);
 
