@@ -333,6 +333,14 @@
   .panel-body canvas{max-width:100%;}
   .panel-foot{display:flex; gap:18px; margin-top:10px; padding-top:10px; border-top:1px solid var(--line-soft); flex-wrap:wrap;}
   .foot-stat{display:flex; flex-direction:column; gap:1px;}
+  .trim-tira{display:grid; gap:6px; margin-top:10px;}
+  .trim-tira:empty{display:none;}
+  .trim-c{border:1px solid var(--line-soft); border-radius:7px; padding:6px 8px; background:color-mix(in srgb, var(--panel-2) 70%, transparent); min-width:0;}
+  .trim-c .tq{font:700 12px 'Inter',sans-serif; color:var(--text); white-space:nowrap;}
+  .trim-c .tm{font:500 10.5px 'Inter',sans-serif; color:var(--muted-2); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .trim-c .tv{display:flex; gap:8px; margin-top:3px; font:600 11.5px 'IBM Plex Mono',monospace; flex-wrap:wrap;}
+  .trim-c.parcial{border-style:dashed;}
+  @media (max-width:600px){ .trim-tira{grid-template-columns:repeat(2,minmax(0,1fr)) !important;} }
   .foot-stat .fv{font-size:19px; font-weight:700; font-family:'Barlow Condensed',sans-serif;}
   .foot-stat .fl{font-size:11.5px; color:var(--muted); text-transform:none;}
   .legend-row{display:flex; gap:14px; font-size:11.5px; color:var(--muted); margin-bottom:8px; flex-wrap:wrap;}
@@ -917,12 +925,14 @@
       <div class="panel-head"><span class="ptitle">Entradas vs. salidas por periodo</span><span class="pnum">MOV</span></div>
       <div class="panel-sub" id="sub1">Total de movimientos de entrada y salida, ambos proyectos combinados</div>
       <div class="panel-body"><canvas id="chart1"></canvas></div>
+      <div class="trim-tira" id="trim1"></div>
       <div class="panel-foot" id="foot1"></div>
     </div>
     <div class="panel">
       <div class="panel-head"><span class="ptitle">Movimiento por tarimas</span><span class="pnum">TAR</span></div>
       <div class="panel-sub" id="sub2">Cantidad de tarimas (pallets) que entran y salen por periodo</div>
       <div class="panel-body"><canvas id="chart2"></canvas></div>
+      <div class="trim-tira" id="trim2"></div>
       <div class="panel-foot" id="foot2"></div>
     </div>
   </div>
@@ -1843,7 +1853,9 @@ function etiquetasMesAnio(keys){
   });
 }
 
-function renderMovChart(canvasId, records, mode, scale, tipo){
+// Trimestre calendario de un mes «AAAA-MM»: T1 (ene–mar) … T4 (oct–dic)
+function trimestreDe(k){ const [y, m] = k.split('-').map(Number); return { clave: y + '-T' + Math.ceil(m/3), q: Math.ceil(m/3), y }; }
+function renderMovChart(canvasId, records, mode, scale, tipo, op){
   // mode: 'mov' -> counts of movements, 'tar' -> pallet quantities
   // scale: escala de color a usar (activeScale() para las gráficas combinadas,
   //        o la escala fija del proyecto para los paneles de Telcel / AT&T)
@@ -1851,7 +1863,18 @@ function renderMovChart(canvasId, records, mode, scale, tipo){
   const sc = scale || activeScale();
   const esLinea = tipo === 'line';
   const ps = periodSeries(records);
-  const keys = calendarioContinuo(ps.keys);
+  let keys = calendarioContinuo(ps.keys);
+  const conTrimestres = !!(op && op.ultimos);
+  if (conTrimestres){
+    // Solo los últimos N meses (hasta el mes en curso) y sin «sin fecha»
+    keys = keys.filter(k=> k !== 'SIN-FECHA');
+    const hoy = monthKey(new Date());
+    if (keys.length && keys[keys.length-1] < hoy) keys = calendarioContinuo([keys[0], hoy]);
+    if (!keys.length) keys = [hoy];
+    const [yh, mh] = keys[keys.length-1].split('-').map(Number);
+    const ini = new Date(yh, mh - op.ultimos, 1);
+    keys = calendarioContinuo([monthKey(ini), keys[keys.length-1]]);
+  }
   const vacio = {in:0, out:0, palIn:0, palOut:0};
   const months = (k)=> ps.months[k] || vacio;
   const labels = keys.map(monthLabel);
@@ -1878,30 +1901,92 @@ function renderMovChart(canvasId, records, mode, scale, tipo){
       {label:'Entradas', data:dataIn, backgroundColor:sc.entrada, borderRadius:4, maxBarThickness:26, categoryPercentage:0.94, barPercentage:0.97},
       {label:'Salidas', data:dataOut, backgroundColor:sc.salida, borderRadius:4, maxBarThickness:26, categoryPercentage:0.94, barPercentage:0.97}
     ];
+  // Trimestres dentro de la ventana: inicio/fin (índices), totales y si están completos
+  const trimestres = [];
+  if (conTrimestres){
+    keys.forEach((k, i)=>{
+      const t = trimestreDe(k);
+      let g = trimestres[trimestres.length-1];
+      if (!g || g.clave !== t.clave){ g = { clave:t.clave, q:t.q, y:t.y, i0:i, i1:i, in:0, out:0, meses:[] }; trimestres.push(g); }
+      g.i1 = i; g.in += dataIn[i]; g.out += dataOut[i]; g.meses.push(k);
+    });
+    const hoy = monthKey(new Date());
+    trimestres.forEach(g=>{ g.enCurso = g.meses.includes(hoy); g.parcial = g.meses.length < 3 || g.enCurso; });
+  }
+  const bandas = {
+    id:'bandasTrimestre',
+    beforeDatasetsDraw(chart){
+      if (!trimestres.length) return;
+      const a = chart.chartArea, x = chart.scales.x, c = chart.ctx;
+      const paso = keys.length > 1 ? (x.getPixelForValue(1) - x.getPixelForValue(0)) : a.width;
+      c.save();
+      trimestres.forEach((g, n)=>{
+        const xa = Math.max(a.left, x.getPixelForValue(g.i0) - paso/2), xb = Math.min(a.right, x.getPixelForValue(g.i1) + paso/2);
+        if (n % 2 === 0){ c.fillStyle = hexAlpha(TH.text, APARIENCIA.tema === 'oscuro' ? 0.045 : 0.05); c.fillRect(xa, a.top, xb - xa, a.bottom - a.top); }
+        if (n > 0){ c.strokeStyle = hexAlpha(TH.text, 0.22); c.setLineDash([3,3]); c.lineWidth = 1; c.beginPath(); c.moveTo(xa + 0.5, a.top); c.lineTo(xa + 0.5, a.bottom); c.stroke(); c.setLineDash([]); }
+        const ancho = xb - xa;
+        c.fillStyle = TH.tick; c.textAlign = 'center'; c.textBaseline = 'top';
+        c.font = '700 11px Inter, sans-serif';
+        const txt = ancho > 70 ? ('T' + g.q + ' ' + g.y) : ('T' + g.q + (ancho > 40 ? ' ' + String(g.y).slice(2) : ''));
+        c.fillText(txt, (xa + xb)/2, a.top + 4);
+      });
+      c.restore();
+    }
+  };
   const muchos = labels.length > 14;
   const escalas = baseGridOpts();
   escalas.x.grid = { display:false };
   escalas.x.ticks = Object.assign({}, escalas.x.ticks, {maxRotation:0, minRotation:0, autoSkip:true, autoSkipPadding:6, padding:6}, muchos ? {font:{size:10.5}} : {});
   escalas.y.ticks = Object.assign({}, escalas.y.ticks, {maxTicksLimit:6, precision:0});
-  escalas.y.grace = '8%';
+  escalas.y.grace = conTrimestres ? '22%' : '8%';
+  if (conTrimestres){
+    escalas.x.offset = true;   // cada mes ocupa su espacio completo: las franjas de trimestre quedan parejas
+    // El mes en curso va con línea punteada (todavía no está completo)
+    const iCurso = keys.indexOf(monthKey(new Date()));
+    if (iCurso > 0 && esLinea) datasets.forEach(ds=>{ ds.segment = { borderDash: c=> c.p1DataIndex === iCurso ? [5,4] : undefined }; });
+  }
+  const etiquetasX = conTrimestres
+    ? keys.map(k=>{ const [y, m] = k.split('-'); return MESES[parseInt(m,10)-1] + (k === monthKey(new Date()) ? '*' : ''); })
+    : etiquetasMesAnio(keys);
   CHARTS[canvasId] = new Chart(ctx, {
     type: esLinea ? 'line' : 'bar',
-    data:{ labels: etiquetasMesAnio(keys), datasets },
+    plugins: conTrimestres ? [bandas] : [],
+    data:{ labels: etiquetasX, datasets },
     options:{
       responsive:true, maintainAspectRatio:false,
       interaction:{mode:'index', intersect:false},
       plugins:{ legend:{ position:'top', align:'end', labels:{boxWidth:9, boxHeight:9, usePointStyle:true, pointStyle:esLinea?'circle':'rectRounded', sort:(a,b)=> a.datasetIndex - b.datasetIndex} },
                  tooltip:{ backgroundColor:TH.tipBg, borderColor:TH.tipBorder, borderWidth:1, titleColor:TH.text, bodyColor:TH.text, padding:10,
                            itemSort:(a,b)=> a.datasetIndex - b.datasetIndex, usePointStyle:true, boxWidth:8, boxHeight:8,
-                           callbacks:{ title: it=> it.length ? labels[it[0].dataIndex] : '',
-                                       footer: it=>{ if (it.length < 2) return ''; const d = dataIn[it[0].dataIndex] - dataOut[it[0].dataIndex];
-                                         return 'Diferencia: ' + (d > 0 ? '+' : '') + fmt(d); } } } },
+                           callbacks:{ title: it=> it.length ? labels[it[0].dataIndex] + (conTrimestres && keys[it[0].dataIndex] === monthKey(new Date()) ? ' (mes en curso)' : '') : '',
+                                       footer: it=>{ if (it.length < 2) return ''; const i = it[0].dataIndex, d = dataIn[i] - dataOut[i];
+                                         const lineas = ['Diferencia: ' + (d > 0 ? '+' : '') + fmt(d)];
+                                         const g = trimestres.find(t=> i >= t.i0 && i <= t.i1);
+                                         if (g) lineas.push('T' + g.q + ' ' + g.y + (g.parcial ? ' (parcial)' : '') + ': ' + fmt(g.in) + ' entradas · ' + fmt(g.out) + ' salidas');
+                                         return lineas; } } } },
       scales: escalas
     }
   });
+  CHARTS[canvasId].$meses = keys;
   const totalIn = dataIn.reduce((a,b)=>a+b,0);
   const totalOut = dataOut.reduce((a,b)=>a+b,0);
-  return {totalIn, totalOut};
+  return {totalIn, totalOut, trimestres, meses: keys};
+}
+// Resumen por trimestre debajo de la gráfica (entradas, salidas y diferencia)
+function setTrimestres(id, trimestres, scale){
+  const el = document.getElementById(id); if (!el) return;
+  const sc = scale || activeScale();
+  el.style.gridTemplateColumns = 'repeat(' + Math.max(1, trimestres.length) + ', minmax(0,1fr))';
+  el.innerHTML = trimestres.map(g=>{
+    const d = g.in - g.out;
+    const m0 = MESES[parseInt(g.meses[0].split('-')[1],10)-1], m1 = MESES[parseInt(g.meses[g.meses.length-1].split('-')[1],10)-1];
+    const nota = g.enCurso ? ' · en curso' : (g.meses.length < 3 ? ' · parcial' : '');
+    return '<div class="trim-c' + (g.parcial ? ' parcial' : '') + '" title="T' + g.q + ' ' + g.y + ': ' + fmt(g.in) + ' entradas, ' + fmt(g.out) + ' salidas">' +
+      '<div class="tq">T' + g.q + ' ' + g.y + '</div>' +
+      '<div class="tm">' + (m0 === m1 ? m0 : m0 + '–' + m1) + nota + '</div>' +
+      '<div class="tv"><span style="color:' + sc.entrada + '">▲' + fmt(g.in) + '</span><span style="color:' + sc.salida + '">▼' + fmt(g.out) + '</span>' +
+      '<span style="color:' + (d < 0 ? 'var(--red)' : 'var(--text)') + '">' + (d > 0 ? '+' : '') + fmt(d) + '</span></div></div>';
+  }).join('');
 }
 
 /* Mismo grosor de barra en los paneles de Telcel y AT&T: se toma el grosor del
@@ -2607,11 +2692,14 @@ function renderAll(){
   const sc = activeScale();
 
   // Paneles combinados: siguen la escala del filtro activo
-  const gen1 = renderMovChart('chart1', filtered(), 'mov', sc, 'line');
-  setFoot('foot1', gen1.totalIn, gen1.totalOut, 'mov.', sc);
+  // Sección 01: últimos 12 meses, separados por trimestre
+  const gen1 = renderMovChart('chart1', filtered(), 'mov', sc, 'line', { ultimos:12 });
+  setTrimestres('trim1', gen1.trimestres, sc);
+  setFoot('foot1', gen1.totalIn, gen1.totalOut, 'mov., 12 meses', sc);
 
-  const gen2 = renderMovChart('chart2', filtered(), 'tar', sc, 'line');
-  setFoot('foot2', gen2.totalIn, gen2.totalOut, 'tarimas', sc);
+  const gen2 = renderMovChart('chart2', filtered(), 'tar', sc, 'line', { ultimos:12 });
+  setTrimestres('trim2', gen2.trimestres, sc);
+  setFoot('foot2', gen2.totalIn, gen2.totalOut, 'tarimas, 12 meses', sc);
 
   // Mostrar/ocultar paneles y ajustar textos según el proyecto elegido
   aplicarVistaProyecto();
@@ -2659,9 +2747,9 @@ function aplicarVistaProyecto(){
 
   // 01 · Movimientos generales
   setTxt('sec1Title', 'Movimientos generales — ' + vista);
-  setTxt('sub1', todos ? 'Total de movimientos de entrada y salida, ambos proyectos combinados'
-                       : ('Total de movimientos de entrada y salida, solo proyecto ' + vista));
-  setTxt('sub2', 'Cantidad de tarimas (pallets) que entran y salen por periodo' + (todos ? '' : (' — ' + vista)));
+  setTxt('sub1', (todos ? 'Movimientos de entrada y salida, ambos proyectos combinados'
+                        : ('Movimientos de entrada y salida, solo proyecto ' + vista)) + ' · últimos 12 meses por trimestre');
+  setTxt('sub2', 'Tarimas que entran y salen' + (todos ? '' : (' — ' + vista)) + ' · últimos 12 meses por trimestre');
 
   // 02 · Cross dock por proyecto
   setTxt('sec2Title', todos ? 'Movimiento del cross dock por proyecto' : ('Movimiento del cross dock — ' + vista));
