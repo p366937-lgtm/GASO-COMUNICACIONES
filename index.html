@@ -143,10 +143,16 @@
   .brand p .dot{color:var(--muted-2); margin:0 8px;}
   .brand{flex-direction:row; align-items:center; flex-wrap:wrap; gap:10px 14px;}
   .proy-logos{display:flex; align-items:center; gap:8px;}
-  .proy-logo{height:46px; padding:5px 12px; border-radius:9px; background:#FFFFFF; border:1px solid var(--line); display:flex; align-items:center;}
-  .proy-logo img{height:30px; width:auto; display:block;}
-  .proy-logo.att{background:#009EDC; border-color:#009EDC; padding:3px 12px;}
-  .proy-logo.att img{height:40px;}
+  /* Logos en forma de esfera: círculo con brillo y sombra suaves */
+  .proy-logo{position:relative; width:64px; height:64px; border-radius:50%; background:#FFFFFF; border:1px solid var(--line); display:flex; align-items:center; justify-content:center; overflow:hidden;
+    box-shadow:0 4px 10px rgba(0,0,0,.28), inset 0 -6px 12px rgba(0,0,0,.10);}
+  .proy-logo::after{content:''; position:absolute; inset:0; border-radius:50%; pointer-events:none;
+    background:radial-gradient(circle at 32% 26%, rgba(255,255,255,.55) 0, rgba(255,255,255,.12) 32%, rgba(255,255,255,0) 55%);}
+  .proy-logo img{width:54px; height:auto; display:block;}
+  .proy-logo.att{background:#009EDC; border-color:#0A8CC4;}
+  .proy-logo.att img{width:auto; height:44px;}
+  .proy-logo.txt{width:auto; height:34px; border-radius:8px; padding:0 10px; box-shadow:none;}
+  .proy-logo.txt::after{display:none;}
   .proy-logo.txt{background:transparent; font-weight:700; font-size:13px; letter-spacing:.2px; border-width:1.5px;}
 
   .controls{display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
