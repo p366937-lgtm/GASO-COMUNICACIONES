@@ -1137,6 +1137,7 @@
     <div class="panel" id="panel3">
       <div class="panel-head"><span class="ptitle">Cross dock · Telcel</span><span class="pnum">TEL</span></div>
       <div class="panel-sub">Entradas, salidas y diferencia · últimos 12 meses por trimestre</div>
+      <div class="mov-nav no-print" id="nav3" data-chart="chart3"><button type="button" class="mn-prev" title="Meses anteriores" aria-label="Meses anteriores">◀</button><span class="mn-rango"></span><button type="button" class="mn-hoy" hidden title="Volver a los últimos 12 meses">Actual</button><button type="button" class="mn-next" title="Meses siguientes" aria-label="Meses siguientes">▶</button></div>
       <div class="panel-body"><canvas id="chart3"></canvas></div>
       <div class="trim-tira" id="trim3"></div>
       <div class="panel-foot" id="foot3"></div>
@@ -1144,6 +1145,7 @@
     <div class="panel" id="panel4">
       <div class="panel-head"><span class="ptitle">Cross dock · AT&amp;T</span><span class="pnum">ATT</span></div>
       <div class="panel-sub">Entradas, salidas y diferencia · últimos 12 meses por trimestre</div>
+      <div class="mov-nav no-print" id="nav4" data-chart="chart4"><button type="button" class="mn-prev" title="Meses anteriores" aria-label="Meses anteriores">◀</button><span class="mn-rango"></span><button type="button" class="mn-hoy" hidden title="Volver a los últimos 12 meses">Actual</button><button type="button" class="mn-next" title="Meses siguientes" aria-label="Meses siguientes">▶</button></div>
       <div class="panel-body"><canvas id="chart4"></canvas></div>
       <div class="trim-tira" id="trim4"></div>
       <div class="panel-foot" id="foot4"></div>
@@ -3290,8 +3292,14 @@ const PLANO_BODEGA = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAc
 })();
 /* Flechas ◀ ▶ de las métricas 1 y 2: recorren los meses de 3 en 3, desde el primer mes
    del inventario hasta el mes en curso (siempre se ven 12 meses). */
-const MOV_DESP = { chart1:0, chart2:0 };
+const MOV_DESP = { chart1:0, chart2:0, chart3:0, chart4:0 };
 const MOV_PASO = 3;
+const MOV_CFG = {
+  chart1:{ recs:()=> filtered(),            mode:'mov', sc:()=> activeScale(),  tipo:'line', n:1, unidad:'mov., 12 meses' },
+  chart2:{ recs:()=> filtered(),            mode:'tar', sc:()=> activeScale(),  tipo:'line', n:2, unidad:'tarimas, 12 meses' },
+  chart3:{ recs:()=> byProject('TELCEL'),   mode:'mov', sc:()=> SCALES.telcel,  tipo:'bar',  n:3, unidad:'mov., 12 meses' },
+  chart4:{ recs:()=> byProject('AT&T'),     mode:'mov', sc:()=> SCALES.att,     tipo:'bar',  n:4, unidad:'mov., 12 meses' }
+};
 function pintarNavMov(id, gen){
   const nav = document.getElementById(id); if (!nav || !gen.meses || !gen.meses.length) return;
   const m = gen.meses, nom = k=>{ const [y, mm] = k.split('-'); return MESES[parseInt(mm,10)-1] + ' ' + y; };
@@ -3300,16 +3308,19 @@ function pintarNavMov(id, gen){
   nav.querySelector('.mn-next').disabled = gen.desplaza <= 0;
   const hoy = nav.querySelector('.mn-hoy'); if (hoy) hoy.hidden = !gen.desplaza;
 }
+// Dibuja una gráfica de movimientos (métricas 1, 2 y sección 02) con su rango, trimestres y totales
+function dibujarMov(id){
+  const c = MOV_CFG[id], sc = c.sc();
+  const g = renderMovChart(id, c.recs(), c.mode, sc, c.tipo, { ultimos:12, desplaza: MOV_DESP[id] });
+  MOV_DESP[id] = g.desplaza; pintarNavMov('nav' + c.n, g);
+  setTrimestres('trim' + c.n, g.trimestres, sc);
+  setFoot('foot' + c.n, g.totalIn, g.totalOut, c.unidad, sc);
+  return g;
+}
 function moverMov(chartId, delta){
-  if (delta === 0) MOV_DESP[chartId] = 0; else MOV_DESP[chartId] = Math.max(0, (MOV_DESP[chartId] || 0) + delta);
-  const sc = activeScale();
-  if (chartId === 'chart1'){
-    const g = renderMovChart('chart1', filtered(), 'mov', sc, 'line', { ultimos:12, desplaza: MOV_DESP.chart1 });
-    MOV_DESP.chart1 = g.desplaza; pintarNavMov('nav1', g); setTrimestres('trim1', g.trimestres, sc); setFoot('foot1', g.totalIn, g.totalOut, 'mov., 12 meses', sc);
-  } else {
-    const g = renderMovChart('chart2', filtered(), 'tar', sc, 'line', { ultimos:12, desplaza: MOV_DESP.chart2 });
-    MOV_DESP.chart2 = g.desplaza; pintarNavMov('nav2', g); setTrimestres('trim2', g.trimestres, sc); setFoot('foot2', g.totalIn, g.totalOut, 'tarimas, 12 meses', sc);
-  }
+  MOV_DESP[chartId] = delta === 0 ? 0 : Math.max(0, (MOV_DESP[chartId] || 0) + delta);
+  dibujarMov(chartId);
+  if (chartId === 'chart3' || chartId === 'chart4') igualarGrosorBarras(['chart3','chart4']);
 }
 document.addEventListener('click', (e)=>{
   const b = e.target.closest('.mov-nav button'); if (!b || b.disabled) return;
@@ -3324,15 +3335,8 @@ function renderAll(){
 
   // Paneles combinados: siguen la escala del filtro activo
   // Sección 01: últimos 12 meses, separados por trimestre
-  const gen1 = renderMovChart('chart1', filtered(), 'mov', sc, 'line', { ultimos:12, desplaza: MOV_DESP.chart1 });
-  MOV_DESP.chart1 = gen1.desplaza; pintarNavMov('nav1', gen1);
-  setTrimestres('trim1', gen1.trimestres, sc);
-  setFoot('foot1', gen1.totalIn, gen1.totalOut, 'mov., 12 meses', sc);
-
-  const gen2 = renderMovChart('chart2', filtered(), 'tar', sc, 'line', { ultimos:12, desplaza: MOV_DESP.chart2 });
-  MOV_DESP.chart2 = gen2.desplaza; pintarNavMov('nav2', gen2);
-  setTrimestres('trim2', gen2.trimestres, sc);
-  setFoot('foot2', gen2.totalIn, gen2.totalOut, 'tarimas, 12 meses', sc);
+  dibujarMov('chart1');
+  dibujarMov('chart2');
 
   // Mostrar/ocultar paneles y ajustar textos según el proyecto elegido
   aplicarVistaProyecto();
@@ -3340,15 +3344,11 @@ function renderAll(){
 
   // Paneles por proyecto: siempre con su escala propia; solo los del proyecto en vista
   if (verTel){
-    const tel = renderMovChart('chart3', byProject('TELCEL'), 'mov', SCALES.telcel, 'bar', { ultimos:12 });
-    setTrimestres('trim3', tel.trimestres, SCALES.telcel);
-    setFoot('foot3', tel.totalIn, tel.totalOut, 'mov., 12 meses', SCALES.telcel);
+    dibujarMov('chart3');
   } else destroy('chart3');
 
   if (verAtt){
-    const att = renderMovChart('chart4', byProject('AT&T'), 'mov', SCALES.att, 'bar', { ultimos:12 });
-    setTrimestres('trim4', att.trimestres, SCALES.att);
-    setFoot('foot4', att.totalIn, att.totalOut, 'mov., 12 meses', SCALES.att);
+    dibujarMov('chart4');
   } else destroy('chart4');
   igualarGrosorBarras(['chart3','chart4']);
 
