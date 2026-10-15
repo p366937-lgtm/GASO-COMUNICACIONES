@@ -229,6 +229,14 @@
   .plano-full button{position:fixed; top:12px; right:16px; font:inherit; font-weight:600; padding:8px 14px; border-radius:8px; border:1px solid rgba(255,255,255,.3); background:#1B232C; color:#fff; cursor:pointer;}
   @media (max-width:700px){ .plano-tab .lbl-largo{display:none;} .plano-full img{width:1400px;} }
 
+  /* Flechas para recorrer los meses (métricas 1 y 2) */
+  .mov-nav{display:flex; align-items:center; gap:8px; margin:6px 0 2px;}
+  .mov-nav .mn-rango{flex:1; text-align:center; font-size:13px; font-weight:600; color:var(--muted);}
+  .mov-nav button{font:inherit; cursor:pointer; border:1px solid var(--line); background:var(--panel-2); color:var(--scale-accent,#3987E5); border-radius:8px; height:32px; min-width:38px; font-size:15px; line-height:1;}
+  .mov-nav button:hover:not(:disabled){background:var(--hover);}
+  .mov-nav button:disabled{opacity:.35; cursor:default;}
+  .mov-nav .mn-hoy{font-size:12px; font-weight:600; padding:0 10px; color:var(--text);}
+
   .grid{display:grid; grid-template-columns:1fr 1fr; gap:18px;}
   /* Los paneles no deben crecer más que su columna (la tabla de inventario se desplaza dentro de su marco) */
   .grid > *{min-width:0;}
@@ -1108,6 +1116,7 @@
     <div class="panel">
       <div class="panel-head"><span class="ptitle">Entradas vs. salidas por periodo</span><span class="pnum">MOV</span></div>
       <div class="panel-sub" id="sub1">Total de movimientos de entrada y salida, ambos proyectos combinados</div>
+      <div class="mov-nav no-print" id="nav1" data-chart="chart1"><button type="button" class="mn-prev" title="Meses anteriores" aria-label="Meses anteriores">◀</button><span class="mn-rango"></span><button type="button" class="mn-hoy" hidden title="Volver a los últimos 12 meses">Actual</button><button type="button" class="mn-next" title="Meses siguientes" aria-label="Meses siguientes">▶</button></div>
       <div class="panel-body"><canvas id="chart1"></canvas></div>
       <div class="trim-tira" id="trim1"></div>
       <div class="panel-foot" id="foot1"></div>
@@ -1115,6 +1124,7 @@
     <div class="panel">
       <div class="panel-head"><span class="ptitle">Movimiento por tarimas</span><span class="pnum">TAR</span></div>
       <div class="panel-sub" id="sub2">Cantidad de tarimas (pallets) que entran y salen por periodo</div>
+      <div class="mov-nav no-print" id="nav2" data-chart="chart2"><button type="button" class="mn-prev" title="Meses anteriores" aria-label="Meses anteriores">◀</button><span class="mn-rango"></span><button type="button" class="mn-hoy" hidden title="Volver a los últimos 12 meses">Actual</button><button type="button" class="mn-next" title="Meses siguientes" aria-label="Meses siguientes">▶</button></div>
       <div class="panel-body"><canvas id="chart2"></canvas></div>
       <div class="trim-tira" id="trim2"></div>
       <div class="panel-foot" id="foot2"></div>
@@ -2172,9 +2182,13 @@ function renderMovChart(canvasId, records, mode, scale, tipo, op){
     const hoy = monthKey(new Date());
     if (keys.length && keys[keys.length-1] < hoy) keys = calendarioContinuo([keys[0], hoy]);
     if (!keys.length) keys = [hoy];
-    const [yh, mh] = keys[keys.length-1].split('-').map(Number);
+    // Desplazamiento con las flechas: meses hacia atrás desde el mes en curso (sin pasar del primer mes con datos)
+    var maxDesp = Math.max(0, keys.length - op.ultimos);
+    var desp = Math.max(0, Math.min(op.desplaza || 0, maxDesp));
+    const fin = keys[keys.length - 1 - desp];
+    const [yh, mh] = fin.split('-').map(Number);
     const ini = new Date(yh, mh - op.ultimos, 1);
-    keys = calendarioContinuo([monthKey(ini), keys[keys.length-1]]);
+    keys = calendarioContinuo([monthKey(ini), fin]);
   }
   const vacio = {in:0, out:0, palIn:0, palOut:0};
   const months = (k)=> ps.months[k] || vacio;
@@ -2244,7 +2258,7 @@ function renderMovChart(canvasId, records, mode, scale, tipo, op){
   CHARTS[canvasId].$coloresTrim = { in: sc.entrada, out: sc.salida };
   const totalIn = dataIn.reduce((a,b)=>a+b,0);
   const totalOut = dataOut.reduce((a,b)=>a+b,0);
-  return {totalIn, totalOut, trimestres, meses: keys};
+  return {totalIn, totalOut, trimestres, meses: keys, desplaza: conTrimestres ? desp : 0, maxDesplaza: conTrimestres ? maxDesp : 0};
 }
 // Resumen por trimestre debajo de la gráfica (entradas, salidas y diferencia)
 function setTrimestres(id, trimestres, scale){
@@ -3274,6 +3288,34 @@ const PLANO_BODEGA = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAc
   full.addEventListener('click', (e)=>{ if (e.target === full || e.target === imgF || e.target.id === 'planoCerrar') cerrar(); });
   document.addEventListener('keydown', (e)=>{ if (e.key === 'Escape' && full.classList.contains('open')) cerrar(); });
 })();
+/* Flechas ◀ ▶ de las métricas 1 y 2: recorren los meses de 3 en 3, desde el primer mes
+   del inventario hasta el mes en curso (siempre se ven 12 meses). */
+const MOV_DESP = { chart1:0, chart2:0 };
+const MOV_PASO = 3;
+function pintarNavMov(id, gen){
+  const nav = document.getElementById(id); if (!nav || !gen.meses || !gen.meses.length) return;
+  const m = gen.meses, nom = k=>{ const [y, mm] = k.split('-'); return MESES[parseInt(mm,10)-1] + ' ' + y; };
+  nav.querySelector('.mn-rango').textContent = nom(m[0]) + ' – ' + nom(m[m.length-1]) + (gen.desplaza ? '' : ' · actual');
+  nav.querySelector('.mn-prev').disabled = gen.desplaza >= gen.maxDesplaza;
+  nav.querySelector('.mn-next').disabled = gen.desplaza <= 0;
+  const hoy = nav.querySelector('.mn-hoy'); if (hoy) hoy.hidden = !gen.desplaza;
+}
+function moverMov(chartId, delta){
+  if (delta === 0) MOV_DESP[chartId] = 0; else MOV_DESP[chartId] = Math.max(0, (MOV_DESP[chartId] || 0) + delta);
+  const sc = activeScale();
+  if (chartId === 'chart1'){
+    const g = renderMovChart('chart1', filtered(), 'mov', sc, 'line', { ultimos:12, desplaza: MOV_DESP.chart1 });
+    MOV_DESP.chart1 = g.desplaza; pintarNavMov('nav1', g); setTrimestres('trim1', g.trimestres, sc); setFoot('foot1', g.totalIn, g.totalOut, 'mov., 12 meses', sc);
+  } else {
+    const g = renderMovChart('chart2', filtered(), 'tar', sc, 'line', { ultimos:12, desplaza: MOV_DESP.chart2 });
+    MOV_DESP.chart2 = g.desplaza; pintarNavMov('nav2', g); setTrimestres('trim2', g.trimestres, sc); setFoot('foot2', g.totalIn, g.totalOut, 'tarimas, 12 meses', sc);
+  }
+}
+document.addEventListener('click', (e)=>{
+  const b = e.target.closest('.mov-nav button'); if (!b || b.disabled) return;
+  const c = b.closest('.mov-nav').dataset.chart;
+  moverMov(c, b.classList.contains('mn-prev') ? MOV_PASO : (b.classList.contains('mn-next') ? -MOV_PASO : 0));
+});
 function renderAll(){
   try { pintarLogosProyecto(); } catch(e){}
   renderKPIs();
@@ -3282,11 +3324,13 @@ function renderAll(){
 
   // Paneles combinados: siguen la escala del filtro activo
   // Sección 01: últimos 12 meses, separados por trimestre
-  const gen1 = renderMovChart('chart1', filtered(), 'mov', sc, 'line', { ultimos:12 });
+  const gen1 = renderMovChart('chart1', filtered(), 'mov', sc, 'line', { ultimos:12, desplaza: MOV_DESP.chart1 });
+  MOV_DESP.chart1 = gen1.desplaza; pintarNavMov('nav1', gen1);
   setTrimestres('trim1', gen1.trimestres, sc);
   setFoot('foot1', gen1.totalIn, gen1.totalOut, 'mov., 12 meses', sc);
 
-  const gen2 = renderMovChart('chart2', filtered(), 'tar', sc, 'line', { ultimos:12 });
+  const gen2 = renderMovChart('chart2', filtered(), 'tar', sc, 'line', { ultimos:12, desplaza: MOV_DESP.chart2 });
+  MOV_DESP.chart2 = gen2.desplaza; pintarNavMov('nav2', gen2);
   setTrimestres('trim2', gen2.trimestres, sc);
   setFoot('foot2', gen2.totalIn, gen2.totalOut, 'tarimas, 12 meses', sc);
 
