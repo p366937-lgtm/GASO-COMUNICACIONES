@@ -237,6 +237,13 @@
   .mov-nav button:disabled{opacity:.35; cursor:default;}
   .mov-nav .mn-hoy{font-size:12px; font-weight:600; padding:0 10px; color:var(--text);}
 
+  /* Aviso discreto al cargar el Excel (ESTATUS SALIDA) */
+  .aviso-salidas{position:fixed; right:16px; bottom:16px; z-index:150; max-width:420px; background:var(--panel); color:var(--text); border:1px solid var(--line); border-left:4px solid var(--muted-2, #8a96a3); border-radius:10px; padding:12px 14px; box-shadow:0 6px 18px rgba(0,0,0,.25); font-size:13px;}
+  .aviso-salidas .as-t{font-weight:700; margin-bottom:6px;}
+  .aviso-salidas .as-p{margin:6px 0 2px;}
+  .aviso-salidas .as-ids{color:var(--muted); font-size:12px; max-height:90px; overflow:auto; word-break:break-word;}
+  .aviso-salidas button{margin-top:10px; font:inherit; font-weight:600; padding:5px 12px; border-radius:7px; border:1px solid var(--line); background:var(--panel-2); color:var(--text); cursor:pointer;}
+
   .grid{display:grid; grid-template-columns:1fr 1fr; gap:18px;}
   /* Los paneles no deben crecer más que su columna (la tabla de inventario se desplaza dentro de su marco) */
   .grid > *{min-width:0;}
@@ -842,6 +849,7 @@
           </div>
           <button type="submit" class="gate-submit">Entrar</button>
         </form>
+        <p class="gate-note pw-nota-local">En uso local este acceso solo evita cambios accidentales; para control real de acceso usa la nube.</p>
         <button type="button" class="gate-forgot" id="gateForgotBtn">¿Olvidaste tu contraseña?</button>
         <div class="forgot-note" id="gateForgotNote">
           No hay un servidor detrás de este dashboard, así que no existe un correo de recuperación. Para volver a la contraseña inicial, borra los datos de este sitio en tu navegador (Configuración del sitio → Borrar datos) y vuelve a entrar — o pide que te compartan de nuevo la contraseña inicial.
@@ -1820,7 +1828,13 @@ function momentoLocal(){
 function diffDaysDates(a,b){
   return Math.round((a.getTime()-b.getTime())/86400000);
 }
+// Mes de una fecha del Excel. excelSerialToDate() crea las fechas a medianoche UTC, así que se leen en UTC
+// (en México, UTC-6, leerlas en hora local mandaba el día 1 al mes anterior).
 function monthKey(d){
+  return d.getUTCFullYear()+'-'+String(d.getUTCMonth()+1).padStart(2,'0');
+}
+// Mes de «hoy» en la hora local del equipo (mes en curso)
+function monthKeyLocal(d){
   return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
 }
 function monthLabel(key){
@@ -1847,21 +1861,21 @@ function processRecord(r){
   // pero no ocupa espacio propio en la bodega (no suma m² en la capacidad).
   const npTxt = String(r.np == null ? '' : r.np).trim();
   const consolidada = npTxt !== '' && parseFloat(npTxt) === 0;
-  // SALIDA = tiene Fecha de Salida capturada o el estatus dice explícitamente "SALIDA".
-  // Se usan ambas señales porque la columna ESTATUS SALIDA a veces viene incompleta,
-  // mientras que Fecha de Salida es más consistente entre archivos.
-  const salioReal = !!fs || estatusSalida === 'SALIDA';
+  // SALIDA = SOLO cuando ESTATUS SALIDA (columna S) dice "SALIDA" (regla acordada, igual para Telcel y AT&T).
+  // Una Fecha de Salida con otro estatus no cuenta como salida (se avisa al cargar el Excel).
+  const salioReal = estatusSalida === 'SALIDA';
   let dias;
-  if (fs){
+  if (salioReal && fs){
     dias = Math.floor(parseFloat(r.fs)) - Math.floor(parseFloat(r.fi));   // días completos, sin horas
   } else {
-    // Días completos de calendario (igual que =HOY()-Fecha de ingreso en Excel):
+    // Vigente, o salida sin Fecha de Salida: días completos hasta hoy (igual que =HOY()-Fecha de ingreso en Excel):
     // se descarta la hora del día para que el conteo no aumente a mediodía.
     dias = Math.floor(todaySerial()) - Math.floor(parseFloat(r.fi));
   }
   if (dias < 0) dias = 0;
-  const np = parseFloat(r.np) || 1;
-  const pa = parseFloat(r.pa) || (salioReal ? np : 0);
+  // Tarimas físicas («Movimiento por tarimas»): una consolidada cuenta 0 (vacío = 1 tarima)
+  const np = consolidada ? 0 : (parseFloat(r.np) || 1);
+  const pa = consolidada ? 0 : (parseFloat(r.pa) || (salioReal ? np : 0));
   return {
     proyecto: (r.p||'').trim(),
     tipoIngreso: (r.ti||'').trim().toUpperCase().replace('DEVOLUCIÓN','DEVOLUCION'),
@@ -2102,7 +2116,7 @@ function etiquetasMesAnio(keys){
 function trimestreDe(k){ const [y, m] = k.split('-').map(Number); return { clave: y + '-T' + Math.ceil(m/3), q: Math.ceil(m/3), y }; }
 // Agrupa una serie mensual por trimestre: índices, totales y si está completo o en curso
 function calcularTrimestres(keys, dataIn, dataOut){
-  const trimestres = [], hoy = monthKey(new Date());
+  const trimestres = [], hoy = monthKeyLocal(new Date());
   keys.forEach((k, i)=>{
     const t = trimestreDe(k);
     let g = trimestres[trimestres.length-1];
@@ -2181,7 +2195,7 @@ function renderMovChart(canvasId, records, mode, scale, tipo, op){
   if (conTrimestres){
     // Solo los últimos N meses (hasta el mes en curso) y sin «sin fecha»
     keys = keys.filter(k=> k !== 'SIN-FECHA');
-    const hoy = monthKey(new Date());
+    const hoy = monthKeyLocal(new Date());
     if (keys.length && keys[keys.length-1] < hoy) keys = calendarioContinuo([keys[0], hoy]);
     if (!keys.length) keys = [hoy];
     // Desplazamiento con las flechas: meses hacia atrás desde el mes en curso (sin pasar del primer mes con datos)
@@ -2189,7 +2203,7 @@ function renderMovChart(canvasId, records, mode, scale, tipo, op){
     var desp = Math.max(0, Math.min(op.desplaza || 0, maxDesp));
     const fin = keys[keys.length - 1 - desp];
     const [yh, mh] = fin.split('-').map(Number);
-    const ini = new Date(yh, mh - op.ultimos, 1);
+    const ini = new Date(Date.UTC(yh, mh - op.ultimos, 1));
     keys = calendarioContinuo([monthKey(ini), fin]);
   }
   const vacio = {in:0, out:0, palIn:0, palOut:0};
@@ -2230,11 +2244,11 @@ function renderMovChart(canvasId, records, mode, scale, tipo, op){
   if (conTrimestres){
     escalas.x.offset = true;   // cada mes ocupa su espacio completo: las franjas de trimestre quedan parejas
     // El mes en curso va con línea punteada (todavía no está completo)
-    const iCurso = keys.indexOf(monthKey(new Date()));
+    const iCurso = keys.indexOf(monthKeyLocal(new Date()));
     if (iCurso > 0 && esLinea) datasets.forEach(ds=>{ ds.segment = { borderDash: c=> c.p1DataIndex === iCurso ? [5,4] : undefined }; });
   }
   const etiquetasX = conTrimestres
-    ? keys.map(k=>{ const [y, m] = k.split('-'); return MESES[parseInt(m,10)-1] + (k === monthKey(new Date()) ? '*' : ''); })
+    ? keys.map(k=>{ const [y, m] = k.split('-'); return MESES[parseInt(m,10)-1] + (k === monthKeyLocal(new Date()) ? '*' : ''); })
     : etiquetasMesAnio(keys);
   CHARTS[canvasId] = new Chart(ctx, {
     type: esLinea ? 'line' : 'bar',
@@ -2246,7 +2260,7 @@ function renderMovChart(canvasId, records, mode, scale, tipo, op){
       plugins:{ legend:{ position:'top', align:'end', labels:{boxWidth:9, boxHeight:9, usePointStyle:true, pointStyle:esLinea?'circle':'rectRounded', sort:(a,b)=> a.datasetIndex - b.datasetIndex} },
                  tooltip:{ backgroundColor:TH.tipBg, borderColor:TH.tipBorder, borderWidth:1, titleColor:TH.text, bodyColor:TH.text, footerColor:TH.text, padding:10,
                            itemSort:(a,b)=> a.datasetIndex - b.datasetIndex, usePointStyle:true, boxWidth:8, boxHeight:8,
-                           callbacks:{ title: it=> it.length ? labels[it[0].dataIndex] + (conTrimestres && keys[it[0].dataIndex] === monthKey(new Date()) ? ' (mes en curso)' : '') : '',
+                           callbacks:{ title: it=> it.length ? labels[it[0].dataIndex] + (conTrimestres && keys[it[0].dataIndex] === monthKeyLocal(new Date()) ? ' (mes en curso)' : '') : '',
                                        footer: it=>{ if (it.length < 2) return ''; const i = it[0].dataIndex, d = dataIn[i] - dataOut[i];
                                          const lineas = ['Diferencia: ' + (d > 0 ? '+' : '') + fmt(d)];
                                          const g = trimestres.find(t=> i >= t.i0 && i <= t.i1);
@@ -2700,7 +2714,7 @@ function renderDistribucionProyecto(){
   // Lista de proyectos (como la leyenda de la imagen) con su estatus
   let html = '<thead><tr><th>Proyecto</th><th>Vigente</th><th>Salida</th><th>Total</th></tr></thead><tbody>';
   filas.forEach(f=>{
-    html += `<tr><td><div class="pn"><span class="sw" style="background:${f.color}"></span><span>${f.proy}${currentFilter==='all' ? `<span class="pj">${f.carrier}</span>` : ''}</span></div></td>
+    html += `<tr><td><div class="pn"><span class="sw" style="background:${f.color}"></span><span>${escHtml(f.proy)}${currentFilter==='all' ? `<span class="pj">${escHtml(f.carrier)}</span>` : ''}</span></div></td>
       <td class="cv">${fmt(f.vig)}</td><td class="cs">${fmt(f.sal)}</td><td class="ct">${fmt(f.total)}</td></tr>`;
   });
   html += `</tbody><tfoot><tr><td>Total</td><td class="cv">${fmt(totVig)}</td><td class="cs">${fmt(totSal)}</td><td class="ct">${fmt(total)}</td></tr></tfoot>`;
@@ -3076,16 +3090,16 @@ function textoEstadoCapacidad(o){
 // Ventana de 12 meses hasta el mes en curso (igual que las métricas 1 y 2)
 function ventana12Meses(records){
   let keys = calendarioContinuo(periodSeries(records).keys).filter(k=> k !== 'SIN-FECHA');
-  const hoy = monthKey(new Date());
+  const hoy = monthKeyLocal(new Date());
   if (!keys.length) keys = [hoy];
   if (keys[keys.length-1] < hoy) keys = calendarioContinuo([keys[0], hoy]);
   const [yh, mh] = keys[keys.length-1].split('-').map(Number);
-  return calendarioContinuo([monthKey(new Date(yh, mh - 12, 1)), keys[keys.length-1]]);
+  return calendarioContinuo([monthKey(new Date(Date.UTC(yh, mh - 12, 1))), keys[keys.length-1]]);
 }
 function ocupacionMensualCapacidad(){
   const ps = proyectosCapacidad().map(p=> Object.assign({}, p, { recs: byProject(p.name) }));
-  const keys = ventana12Meses([].concat(...ps.map(p=> p.recs))), hoy = monthKey(new Date());
-  const m2Al = (rs, k)=>{ const [y, m] = k.split('-').map(Number); const fin = k === hoy ? new Date() : new Date(y, m, 0, 23, 59, 59);
+  const keys = ventana12Meses([].concat(...ps.map(p=> p.recs))), hoy = monthKeyLocal(new Date());
+  const m2Al = (rs, k)=>{ const [y, m] = k.split('-').map(Number); const fin = k === hoy ? new Date() : new Date(Date.UTC(y, m, 0, 23, 59, 59));
     return rs.reduce((a, r)=> a + (enAlmacenAl(r, fin) ? m2DeRegistro(r) : 0), 0); };
   const series = ps.map(p=> ({ name:p.name, label:p.label, scale:p.scale, data: keys.map(k=> m2Al(p.recs, k)) }));
   const sumas = keys.map((k, i)=> Math.round(series.reduce((a, se)=> a + se.data[i], 0)*10)/10);
@@ -3182,7 +3196,7 @@ function renderCapacidad(){
   destroy('chartCapMes');
   const om = ocupacionMensualCapacidad(), sumas = om.sumas;
   const trims = calcularTrimestres(om.keys, sumas, sumas.map(()=>0));
-  const hoyK = monthKey(new Date());
+  const hoyK = monthKeyLocal(new Date());
   const etqTot = { id:'etqCapMes', afterDatasetsDraw(chart){
     const c = chart.ctx, imp = !!chart.$showNumberLabels; c.save(); c.textAlign = 'center'; c.textBaseline = 'bottom';
     const meta = chart.getDatasetMeta(chart.data.datasets.length - 1);
@@ -3693,7 +3707,7 @@ const mesLargo = (key)=>{
 function analisisPeriodos(recs){
   const {keys, months} = periodSeries(recs);
   const kv = keys.filter(k=>k !== 'SIN-FECHA');
-  const hoyKey = monthKey(new Date());
+  const hoyKey = monthKeyLocal(new Date());
   const cal = [];
   if (kv.length){
     let [ya, ma] = kv[0].split('-').map(Number);
@@ -3709,10 +3723,10 @@ function analisisPeriodos(recs){
   const sIn = u6.reduce((a,k)=>a+months[k].in,0), sOut = u6.reduce((a,k)=>a+months[k].out,0);
   const neto6 = sIn - sOut;
   // Tarimas en almacén al cierre de un mes (el mes en curso, a hoy)
-  const finDeMes = (k)=>{ const [yy, mm] = k.split('-').map(Number); return new Date(yy, mm, 0, 23, 59, 59); };
+  const finDeMes = (k)=>{ const [yy, mm] = k.split('-').map(Number); return new Date(Date.UTC(yy, mm, 0, 23, 59, 59)); };
   const invAl = (fin)=> recs.filter(r=> r.fechaIngreso && r.fechaIngreso <= fin && !(r.salio && (!r.fechaSalida || r.fechaSalida <= fin))).length;
   let invInicio = 0;
-  if (u6.length){ const [yy, mm] = u6[0].split('-').map(Number); invInicio = invAl(new Date(yy, mm - 1, 0, 23, 59, 59)); }
+  if (u6.length){ const [yy, mm] = u6[0].split('-').map(Number); invInicio = invAl(new Date(Date.UTC(yy, mm - 1, 0, 23, 59, 59))); }
   const pctCrec = invInicio ? neto6 / invInicio * 100 : (neto6 > 0 ? Infinity : 0);
   const rango6 = u6.length ? `${monthLabel(u6[0])} a ${monthLabel(u6[u6.length-1])}` : '';
   return { months, cal, cerrados, hoyKey, enCurso: cal.length && cal[cal.length-1] === hoyKey, u6, u3, p3, sIn, sOut, neto6, invInicio, pctCrec, rango6, finDeMes, invAl };
@@ -4077,7 +4091,7 @@ function generarReporteEjecutivo(){
   const porTipo = {};
   recs.forEach(r=>{ const k = r.tipoIngreso || 'SIN DATO'; porTipo[k] = (porTipo[k]||0)+1; });
   const tipos = Object.entries(porTipo).sort((a,b)=>b[1]-a[1]);
-  const hoyKey = monthKey(new Date());
+  const hoyKey = monthKeyLocal(new Date());
   const mesMaxIn = keysValidas.length ? keysValidas.reduce((a,k)=> months[k].in > months[a].in ? k : a, keysValidas[0]) : null;
   const mesMaxOut = keysValidas.length ? keysValidas.reduce((a,k)=> months[k].out > months[a].out ? k : a, keysValidas[0]) : null;
   const pct180 = pctN(R.buckets[3], R.vigentes);
@@ -4400,7 +4414,7 @@ function generarReporteEjecutivo(){
   // Tarimas en almacén al cierre de cada mes (el mes en curso, a hoy)
   const inventarioAlCierre = (rs, k)=>{
     const [yy, mm] = k.split('-').map(Number);
-    const fin = k === hoyKey ? new Date() : new Date(yy, mm, 0, 23, 59, 59);
+    const fin = k === hoyKey ? new Date() : new Date(Date.UTC(yy, mm, 0, 23, 59, 59));
     return rs.filter(r=> r.fechaIngreso && r.fechaIngreso <= fin && !(r.salio && (!r.fechaSalida || r.fechaSalida <= fin))).length;
   };
   const statsDias = (rs)=>{ const d = rs.map(r=>r.dias); return d.length ? {min:Math.min(...d), max:Math.max(...d), avg:d.reduce((a,b)=>a+b,0)/d.length} : {min:0,max:0,avg:0}; };
@@ -5247,7 +5261,7 @@ function analizarDatos(recs){
   const meses = ps.keys.filter(k=>k !== 'SIN-FECHA').map(k=>({ key:k, nombre: mesLargo(k), corto: monthLabel(k), entradas: ps.months[k].in, salidas: ps.months[k].out }));
   const ingresos = recs.map(r=>r.fechaIngreso).filter(Boolean).sort((a,b)=>a-b);
   const periodo = ingresos.length ? { desde: ingresos[0], hasta: ingresos[ingresos.length-1] } : null;
-  const fechaTxt = (d)=> d ? `${d.getDate()} de ${MESES_NOMBRE[d.getMonth()]} de ${d.getFullYear()}` : '';
+  const fechaTxt = (d)=> d ? `${d.getUTCDate()} de ${MESES_NOMBRE[d.getUTCMonth()]} de ${d.getUTCFullYear()}` : '';
   const periodoTxt = periodo ? `del ${fechaTxt(periodo.desde)} al ${fechaTxt(periodo.hasta)}` : 'sin fechas registradas';
 
   // Tendencia: últimos 3 meses contra los 3 anteriores
@@ -6065,12 +6079,15 @@ function validarInventario(raw){
     sinIngreso:  { t:'Sin fecha de ingreso', d:'No se cuentan en ninguna métrica.', ej:[], n:0, grave:true },
     tipo:        { t:'Sin tipo de tarima reconocido', d:'Se cuentan como estándar en la capacidad (m²).', ej:[], n:0 },
     pallet0:     { t:'«No. de Pallet» vacío', d:'Se cuentan como 1 tarima. (Las que traen 0 son tarimas consolidadas: cuentan como entrada, pero no ocupan m² en la capacidad.)', ej:[], n:0 },
-    salidaSinFecha: { t:'Salida sin fecha de salida', d:'Cuentan como despachadas, pero no aparecen en ningún mes.', ej:[], n:0 },
+    salidaSinFecha: { t:'ESTATUS SALIDA sin Fecha de Salida', d:'Cuentan como salida, pero no aparecen en ningún mes y sus días en almacén se cuentan hasta hoy.', ej:[], n:0, info:true, ids:[] },
+    fechaSinEstatus: { t:'Fecha de Salida sin ESTATUS «SALIDA»', d:'No se cuentan como salida: siguen como inventario vigente hasta que su ESTATUS diga SALIDA.', ej:[], n:0, info:true, ids:[] },
     salidaAntes: { t:'Fecha de salida anterior al ingreso', d:'Los días en inventario quedan en 0.', ej:[], n:0, grave:true },
     futuras:     { t:'Fechas en el futuro', d:'Probable error de captura: alteran los meses y los días.', ej:[], n:0, grave:true },
     duplicados:  { t:'Renglones repetidos', d:'Mismo proyecto, folio, sitio, pallet, fecha de ingreso, tipo y descripción: puede ser la misma tarima capturada dos veces.', ej:[], n:0 }
   };
-  const marca = (g, r)=>{ grupos[g].n++; if (grupos[g].ej.length < 3) grupos[g].ej.push([r.id, r.fo, r.ip].map(x=> String(x || '').trim()).filter(Boolean).join(' · ') || ('proyecto ' + (r.p || '¿?'))); };
+  const marca = (g, r)=>{ grupos[g].n++;
+    if (grupos[g].ids){ const id = String(r.id || '').trim() || ('sin ID · ' + (r.p || '¿?')); if (!grupos[g].ids.includes(id)) grupos[g].ids.push(id); }
+    if (grupos[g].ej.length < 3) grupos[g].ej.push([r.id, r.fo, r.ip].map(x=> String(x || '').trim()).filter(Boolean).join(' · ') || ('proyecto ' + (r.p || '¿?'))); };
   const vistos = new Map(); let total = 0;
   ['telcel','att'].forEach(k=> (raw[k] || []).forEach(r=>{
     total++;
@@ -6079,13 +6096,35 @@ function validarInventario(raw){
     if (!tipoTarimaReconocido(r.tp)) marca('tipo', r);
     if (String(r.np == null ? '' : r.np).trim() === '') marca('pallet0', r);
     if (es === 'SALIDA' && !(fs > 0)) marca('salidaSinFecha', r);
+    if (fs > 0 && es !== 'SALIDA') marca('fechaSinEstatus', r);
     if (fs > 0 && fs < fi) marca('salidaAntes', r);
     if (fi > hoy || fs > hoy) marca('futuras', r);
     const clave = [r.p, r.fo, r.fc, r.ip, r.id, r.fi, r.tp, r.dm].map(x=> String(x == null ? '' : x).trim().toUpperCase()).join('|');
     if (vistos.has(clave)) marca('duplicados', r); else vistos.set(clave, 1);
   }));
   const problemas = Object.values(grupos).filter(g=> g.n);
-  return { total, problemas, graves: problemas.some(g=> g.grave) };
+  return { total, problemas, graves: problemas.some(g=> g.grave), bloquea: problemas.some(g=> !g.info), avisos: problemas.filter(g=> g.info) };
+}
+// Aviso discreto (no bloquea) al cargar el Excel: salidas por fecha sin estatus y estatus sin fecha, con los ID de sitio
+function mostrarAvisoSalidas(avisos){
+  const prev = document.getElementById('avisoSalidas'); if (prev) prev.remove();
+  if (!avisos || !avisos.length) return;
+  const box = document.createElement('div'); box.id = 'avisoSalidas'; box.className = 'aviso-salidas no-print'; box.setAttribute('role', 'status');
+  const h = document.createElement('div'); h.className = 'as-t'; h.textContent = 'Revisión del ESTATUS SALIDA';
+  box.appendChild(h);
+  avisos.forEach(g=>{
+    const p = document.createElement('div'); p.className = 'as-p';
+    const txt = g === undefined ? '' : (g.t.indexOf('Fecha de Salida sin') === 0
+      ? g.n + (g.n === 1 ? ' registro tiene' : ' registros tienen') + ' Fecha de Salida pero su ESTATUS no dice SALIDA; no se ' + (g.n === 1 ? 'cuenta' : 'cuentan') + ' como salida.'
+      : g.n + (g.n === 1 ? ' registro tiene' : ' registros tienen') + ' ESTATUS SALIDA sin Fecha de Salida; ' + (g.n === 1 ? 'cuenta' : 'cuentan') + ' como salida y sus días se cuentan hasta hoy.');
+    p.textContent = txt;
+    const ids = document.createElement('div'); ids.className = 'as-ids'; ids.textContent = 'ID de sitio: ' + g.ids.join(', ');
+    box.append(p, ids);
+  });
+  const b = document.createElement('button'); b.type = 'button'; b.textContent = 'Entendido';
+  b.addEventListener('click', ()=> box.remove());
+  box.appendChild(b);
+  document.body.appendChild(box);
 }
 function mostrarValidacion(val, nombreArchivo, enNube){
   return new Promise(resolve=>{
@@ -6126,7 +6165,7 @@ async function procesarInventarioArrayBuffer(arrayBuffer, nombreArchivo, sizeMB)
   }
   // Revisión de calidad: si hay observaciones, se muestran antes de usar o publicar los datos
   const val = validarInventario({ telcel, att });
-  if (val.problemas.length){
+  if (val.bloquea){
     setUploadBusy(true, 'Revisando datos…');
     const seguir = await mostrarValidacion(val, nombreArchivo, NUBE.modo === 'nube');
     if (!seguir){ nubeAviso('Carga cancelada: no se cambió ningún dato.'); return; }
@@ -6135,6 +6174,7 @@ async function procesarInventarioArrayBuffer(arrayBuffer, nombreArchivo, sizeMB)
   buildAll();
   renderAll();
   quitarAvisoRecarga();
+  mostrarAvisoSalidas(val.avisos);
   const guardado = guardarInventarioLocal(RAW, nombreArchivo);
   const horaTxt = new Date().toLocaleString('es-MX');
   document.getElementById('updatedTag').textContent =
@@ -6164,14 +6204,15 @@ const LECTOR_EXCEL_VERSION = 2;
 const INVENTARIO_STORAGE_KEY = 'gaso_inventario_guardado_v1';
 
 /* ---------- Modo de datos: uso local o nube sincronizada ----------
-   Uso local (predeterminado): todo funciona como siempre; los datos se
-   guardan solo en este navegador/app.
-   Nube sincronizada: la computadora (.exe), el celular (APK) y la web leen
+   Nube sincronizada (predeterminado si el equipo no tiene una elección guardada):
+   la computadora (.exe), el celular (APK) y la web leen
    el mismo inventario desde un proyecto de Supabase del Líder de Almacén.
    Solo entran las cuentas que él invita; solo los correos registrados como
    líderes pueden publicar datos (lo controla la base de datos, no esta
    página). Se habla con Supabase por su API REST con fetch, sin librerías.
-   Sin internet se muestra la última copia descargada de la nube. */
+   Sin internet se muestra la última copia descargada de la nube.
+   Uso local (se elige en el panel «Local / Nube»): los datos se guardan solo
+   en este navegador/app. */
 // Si se rellenan aquí, todos los equipos quedan configurados de fábrica y
 // solo hay que iniciar sesión. Se pueden cambiar en el panel.
 // Proyecto «GASO Cross Dock» en Supabase. La clave es la pública (publishable):
@@ -6196,6 +6237,7 @@ function nubeGuardarJSON(k, v){ try{ if (v == null) localStorage.removeItem(k); 
 function nubeLimpiarUrl(u){ return String(u || '').trim().replace(/\/+$/, '').replace(/\/(rest|auth)\/v1.*$/, ''); }
 
 function nubeCargarConfig(){
+  // Sin elección guardada en este equipo, arranca en NUBE (no en uso local).
   const c = nubeLeerJSON(NUBE_CFG_KEY) || {};
   NUBE.modo = c.modo === 'nube' ? 'nube' : (c.modo === 'local' ? 'local' : 'nube');
   NUBE.ultimoCorreo = c.correo || '';
@@ -6333,16 +6375,18 @@ function nubeTextoInvitacion(email, pass){
     return 'Hola, te invito a consultar el dashboard del Cross Dock Chihuahua (GASO Cross Dock Analytics).\n\n' +
       'Entra desde este link (computadora o celular):\n' + link + '\n\n' +
       'Tus datos de acceso:\n• Correo: ' + email + '\n• Contraseña: ' + pass + '\n\n' +
+      '⚠️ IMPORTANTE: cambia esta contraseña la primera vez que inicies sesión (panel «Nube» → «Cambiar mi contraseña de la nube»).\n\n' +
       'Al abrir el link elige el perfil «Invitado»; se abre la ventana de la nube con tu correo ya escrito: escribe tu contraseña y presiona «Iniciar sesión en la nube».\n\n' +
-      'Te recomiendo cambiar la contraseña en «Cambiar mi contraseña de la nube». Este acceso es solo de consulta.';
+      'Este acceso es solo de consulta.';
   }
   return 'Hola, te invito a consultar el dashboard del Cross Dock Chihuahua (GASO Cross Dock Analytics).\n\n' +
     'Te envío por separado el programa: «GASO Cross Dock Analytics.exe» para computadora con Windows o «GASO_Cross_Dock_Analytics.apk» para celular Android.\n\n' +
     'Tus datos de acceso a la nube:\n• Correo: ' + email + '\n• Contraseña: ' + pass + '\n\n' +
+    '⚠️ IMPORTANTE: cambia esta contraseña la primera vez que inicies sesión (panel «Nube» → «Cambiar mi contraseña de la nube»).\n\n' +
     'Cómo entrar:\n1. Abre el programa (Windows: doble clic al .exe · Android: instala el .apk).\n' +
     '2. Elige el perfil «Invitado».\n3. Presiona el botón amarillo «Local» de la barra de arriba y elige «Nube sincronizada».\n' +
     '4. Escribe tu correo y contraseña y presiona «Iniciar sesión en la nube».\n5. El botón se pone verde y verás los datos.\n\n' +
-    'Te recomiendo cambiar la contraseña en «Cambiar mi contraseña de la nube». Este acceso es solo de consulta.';
+    'Este acceso es solo de consulta.';
 }
 // Administración de invitados (función de la nube «gaso-usuarios», solo líderes)
 async function nubeUsuarios(cuerpo){
@@ -6807,6 +6851,16 @@ function nubeInstalarInterfaz(){
       document.getElementById('nubeConfig').open = false;
       await nubeSincronizar({ aplicar:true });
       nubeMsg('ok', 'Sesión iniciada. Este equipo ya muestra los datos de la nube.');
+      // Primer inicio de sesión de un invitado en este equipo: se abre una sola vez «Cambiar mi contraseña de la nube»
+      try{
+        const marca = 'gaso_cambio_pass_sugerido_' + String((NUBE.sesion && NUBE.sesion.email) || '').toLowerCase();
+        if (NUBE.rol !== 'lider' && !localStorage.getItem(marca)){
+          localStorage.setItem(marca, '1');
+          const box = document.getElementById('nubeMiPassBox'); box.open = true;
+          setTimeout(()=>{ box.scrollIntoView({ behavior:'smooth', block:'center' }); const i = document.getElementById('nubeMiPass1'); if (i) i.focus(); }, 300);
+          nubeMsg('ok', 'Sesión iniciada. Por seguridad, cambia ahora la contraseña que te enviaron (mínimo 8 caracteres).');
+        }
+      }catch(e){}
     }catch(err){ nubeMsg('error', err.message); }
     finally{ btn.disabled = false; btn.textContent = 'Iniciar sesión en la nube'; nubePintarPanel(); }
   });
